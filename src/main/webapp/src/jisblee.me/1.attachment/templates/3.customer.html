@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+table.customer {
+  width: 100%;
+  margin: 10px;
+  margin-top: 30px;
+}
+table.customer tr {
+  text-align: left;
+}
+table.customer td {
+  width: 220px;
+  height: 110px;
+}
+</style>
+</head>
+<body>
+
+<div class="subMenuTitle">
+{{menuTitle}}
+</div>
+
+<div class="breadcrumb">
+<a style="text-decoration: none;" href="/">HOME</a> &gt; <a style="text-decoration: none;" href="{{mainMenuUrl}}">{{mainMenuTitle}}</a> &gt; {{menuTitle}}
+</div>
+
+<hr class="subHr" />
+
+
+<table class="customer">
+  <tr ng-repeat="(k1, v1) in newLists track by $index">
+    <td ng-repeat="(k2, v2) in v1 track by $index">
+      
+      <a href="{{v2.url}}" target="_blank" ng-if="v2.url != ''">
+        <img src="/assets/images/customer_logo/{{v2.imageFile}}" alt="{{v2.customerName}}" width="{{v2.width}}px" height="{{v2.height}}px" />
+      </a>
+      
+      <img src="/assets/images/customer_logo/{{v2.imageFile}}" alt="{{v2.customerName}}" width="{{v2.width}}px" height="{{v2.height}}px" ng-if="v2.url == ''" />
+
+    </td>
+  </tr>
+</table>
+
+<!--
+<table class="customer" style="margin-top: 50px;">
+  <tr>
+    <td>
+      <a href="http://www.nikom.or.kr/" target="_blank"><img src="/assets/images/customer_logo/www.nikom.or.kr.png" alt="한약진흥재단 로고" /></a>
+    </td>
+    <td>
+      <a href="http://www.andonghospital.co.kr/" target="_blank"><img src="/assets/images/customer_logo/www.andonghospital.co.kr.gif" alt="안동병원 로고" /></a>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.gilhospital.com/" target="_blank"><img src="/assets/images/customer_logo/www.gilhospital.com.gif" alt="가천대 길병원 로고" /></a>
+    </td>
+    <td>
+      <a href="http://www.medcmd.mil.kr/" target="_blank"><img src="/assets/images/customer_logo/www.medcmd.mil.kr.gif" alt="국군의무사령부 로고" /></a>
+    </td>
+    <td>
+      <a href="http://www.kaist.ac.kr/" target="_blank"><img src="/assets/images/customer_logo/www.kaist.ac.kr.jpg" height="45" alt="한국과학기술원 로고" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.ssis.or.kr/" target="_blank"><img src="/assets/images/customer_logo/www.ssis.or.kr.gif" alt="사회보장정보원 로고" /></a>
+    </td>
+    <td>
+      <a href="http://ch.cauhs.or.kr/" target="_blank"><img src="/assets/images/customer_logo/ch.cauhs.or.kr.gif" alt="중앙대학교 병원 로고" /></a>
+    </td>
+    <td>
+      <a href="http://www.pnuh.or.kr/" target="_blank"><img src="/assets/images/customer_logo/www.pnuh.or.kr.gif" alt="부산대학교 병원 로고" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://www.cbnuh.or.kr/" target="_blank"><img src="/assets/images/customer_logo/www.cbnuh.or.kr.jpg" alt="충북대학교 병원 로고" /></a>
+    </td>
+    <td>
+      <a href="http://yumc.ac.kr/" target="_blank"><img src="/assets/images/customer_logo/yumc.ac.kr.png" alt="영남대학교 병원 로고" /></a>
+    </td>
+    <td>
+      <a href="http://knuh.knu.ac.kr/" target="_blank"><img src="/assets/images/customer_logo/knuh.knu.ac.kr.gif" alt="경북대학교 병원 로고" /></a>
+    </td>
+  </tr>
+</table>
+-->
+
+</body>
+</html>

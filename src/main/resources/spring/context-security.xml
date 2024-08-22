@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd"
+        >
+-->
+<b:beans xmlns="http://www.springframework.org/schema/security"
+		 xmlns:b="http://www.springframework.org/schema/beans"
+         xmlns:p="http://www.springframework.org/schema/p"		 
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		                           http://www.springframework.org/schema/beans/spring-beans.xsd
+						           http://www.springframework.org/schema/security 
+			            		   http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <http auto-config="true" use-expressions="true">
+    
+    	<csrf disabled="true" />
+    	
+        <intercept-url pattern="/" access="permitAll" />
+        <intercept-url pattern="/*" access="permitAll" />
+        <intercept-url pattern="/assets/**" access="permitAll" />
+        <intercept-url pattern="/src/**" access="permitAll" />
+        <intercept-url pattern="/goaccess/**" access="permitAll" />
+        <intercept-url pattern="/rg/getLoginUserInfo.do" access="permitAll" />
+        <intercept-url pattern="/rg/*" access="hasRole('USER')" />
+        
+        <!--
+        <intercept-url pattern="/login.jsp" access="permitAll" />
+        <intercept-url pattern="/tobe/**" access="permitAll" />
+        <intercept-url pattern="/fileUpload.do" access="permitAll" />
+        <intercept-url pattern="/rg/**" access="hasRole('USER')" />
+        <intercept-url pattern="/rg/**" access="permitAll" />
+        <intercept-url pattern="/dba**" access="hasRole('SUPER') and hasRole('DBA')" />
+        <intercept-url pattern="/nexacro/**" access="hasRole('SUPER')" />
+        -->
+        
+        <!--
+        <form-login
+          login-page='/login.do'
+          login-processing-url="/login"
+          default-target-url="/rg/"
+          authentication-failure-url="/login.do?error=true"
+          username-parameter="username"
+          password-parameter="password"
+          always-use-default-target="true"
+          />
+        -->
+        
+        <form-login
+          login-page='/login.do'
+          login-processing-url="/login"
+          username-parameter="username"
+          password-parameter="password"
+          authentication-failure-url="/login.do?error=true"
+          authentication-success-handler-ref="loginSuccessHandler"
+          />
+
+ 
+        <logout logout-url="/logout"
+        	delete-cookies="JSESSIONID"
+        	invalidate-session="true"
+        	success-handler-ref="logoutSuccessHandler"
+        	/>
+
+
+        
+        <session-management session-fixation-protection="none">
+            <!-- <concurrency-control max-sessions="1" error-if-maximum-exceeded="false" expired-url="/login.do" /> -->
+            <concurrency-control max-sessions="1" error-if-maximum-exceeded="false" expired-url="/login.do" session-registry-ref="sessionRegistry" />
+        </session-management>
+
+    </http>
+
+	<authentication-manager>
+		<authentication-provider ref="customAuthenticationProvider" />
+		<!-- <authentication-provider user-service-ref="userService" /> -->
+	</authentication-manager>
+
+
+	<b:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
+
+	<b:bean id="customAuthenticationProvider" class="com.rg.login.controller.CustomAuthenticationProvider" />
+	<!-- <b:bean id="userService" class="com.rg.login.service.LoginServiceImpl"/> -->
+	<!-- <b:bean id="logoutHandler" class="com.rg.login.controller.CustomLogoutHandler" /> -->
+	<b:bean id="logoutSuccessHandler" class="com.rg.login.controller.CustomLogoutSuccessHandler" />
+	<b:bean id="loginSuccessHandler" class="com.rg.login.controller.CustomLoginSuccessHandler" />
+</b:beans>

@@ -1,0 +1,161 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+/* * {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #374954;
+  color: white;
+  text-align: center;
+} */
+
+.menu {
+  position: relative;
+  list-style: none;
+  
+  font-weight: 400;
+  font-size: 0;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 0;
+  margin: auto;
+  height: 54px;
+}
+div#main .menu {
+  background: #6BBE92;
+}
+.menu li {
+  font-size: 0.8rem;
+  display: inline-block;
+  position: relative;
+  padding: 20px 5px;
+  cursor: pointer;
+  z-index: 5;
+  min-width: 120px; 
+}
+
+li {
+  margin: 0;
+}
+
+.drop {
+  overflow: hidden;
+  list-style: none;
+  position: absolute;
+  padding: 0;
+  width: 100%;
+  left: 0;
+  top: 48px;
+}
+.drop div {
+  -webkit-transform: translate(0, -100%);
+  -moz-transform: translate(0, -100%);
+  -ms-transform: translate(0, -100%);
+  transform: translate(0, -100%);
+  -webkit-transition: all 0.5s 0.1s;
+  -moz-transition: all 0.5s 0.1s;
+  -ms-transition: all 0.5s 0.1s;
+  transition: all 0.5s 0.1s;
+  position: relative;
+}
+.drop li {
+  display: block;
+  padding: 0;
+  width: 100%;
+  background: #3E8760 !important;
+}
+
+#marker {
+  height: 6px;
+  background: #3E8760 !important;
+  position: absolute;
+  bottom: 0;
+  width: 128px;
+  z-index: 2;
+  -webkit-transition: all 0.35s;
+  -moz-transition: all 0.35s;
+  -ms-transition: all 0.35s;
+  transition: all 0.35s;
+  -webkit-transform: translate(-310px, 0);
+  -moz-transform: translate(-310px, 0);
+  -ms-transform: translate(-310px, 0);
+  transform: translate(-310px, 0)
+}
+
+.menu li:nth-child(1):hover ul div {
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.menu li:nth-child(1):hover ~ #marker {
+  -webkit-transform: translate(0px, 0);
+  -moz-transform: translate(0px, 0);
+  -ms-transform: translate(0px, 0);
+  transform: translate(0px, 0);
+}
+
+.menu li:nth-child(2):hover ul div {
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.menu li:nth-child(2):hover ~ #marker {
+  -webkit-transform: translate(132px, 0);
+  -moz-transform: translate(132px, 0);
+  -ms-transform: translate(132px, 0);
+  transform: translate(132px, 0);
+}
+
+.menu li:nth-child(3):hover ul div {
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.menu li:nth-child(3):hover ~ #marker {
+  -webkit-transform: translate(264px, 0);
+  -moz-transform: translate(264px, 0);
+  -ms-transform: translate(264px, 0);
+  transform: translate(264px, 0);
+}
+
+.menu li:nth-child(4):hover ul div {
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.menu li:nth-child(4):hover ~ #marker {
+  -webkit-transform: translate(396px, 0);
+  -moz-transform: translate(396px, 0);
+  -ms-transform: translate(396px, 0);
+  transform: translate(396px, 0);
+}
+.menu li:nth-child(5):hover ul div {
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.menu li:nth-child(5):hover ~ #marker {
+  -webkit-transform: translate(522px, 0);
+  -moz-transform: translate(522px, 0);
+  -ms-transform: translate(522px, 0);
+  transform: translate(522px, 0);
+}
+.menu li:nth-child(6):hover ul div {
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.menu li:nth-child(6):hover ~ #marker {
+  -webkit-transform: translate(645px, 0);
+  -moz-transform: translate(645px, 0);
+  -ms-transform: translate(645px, 0);
+  transform: translate(645px, 0);
+}

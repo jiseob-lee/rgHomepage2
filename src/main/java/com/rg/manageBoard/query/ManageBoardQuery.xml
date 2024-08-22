@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rg.manageBoard.ManageBoardMapper">
+
+	<select id="getManageBoardList" parameterType="com.rg.manageBoard.dto.ManageBoardDTO" resultType="com.rg.manageBoard.dto.ManageBoardDTO">
+	
+		SELECT
+		
+			board_idx         as boardIdx,
+			<if test="locale == null or locale == 'ko'">
+			board_name        as boardName,
+			</if>
+			<if test="locale != null and locale != 'ko'">
+			board_name_en     as boardName,
+			</if>
+			DATE_FORMAT(date_created, '%Y-%m-%d')	as dateCreated,
+			user_id_created   as userIdCreated,
+			(select user_name_ko from user where user_id = b.user_id_created) as userNameCreated,
+			DATE_FORMAT(date_modified, '%Y-%m-%d')	as dateModified,
+			user_id_modified  as userIdModified,
+			(select user_name_ko from user where user_id = b.user_id_modified) as userNameModified,
+			(select count(*) from board_article c where c.board_idx = b.board_idx and c.delete_yn = 'N'
+				<if test="openYn != null and openYn == 1">
+					 and c.open_yn = 'y'
+				</if>
+			) as articleCount,
+			(select count(*) from attachment where board_idx = b.board_idx and flag_deleted = '0') as attachmentCount
+		
+		FROM board b
+		
+		<if test="openYn != null and openYn == 1">
+			/*
+			WHERE 
+				exists (select d.board_article_idx from board_article d where d.board_idx = b.board_idx and d.open_yn = 'y')
+				OR 
+				b.board_idx = 0
+			*/
+		</if>
+			
+		ORDER BY
+			(
+			CASE board_idx
+			WHEN 0 THEN 1
+			ELSE 2
+			END
+			) ASC,
+			date_created DESC
+	
+	</select>
+
+
+	<select id="getManageBoardListCount" resultType="integer">
+	
+		SELECT
+			COUNT(*) AS CNT
+		
+		FROM 
+			board b
+	
+	</select>
+
+
+	<select id="getBoardContent" resultType="com.rg.board.dto.BoardDTO">
+	
+		SELECT
+		
+			board_article_idx as boardArticleIdx,
+			board_idx         as boardIdx,
+			subject           as subject,
+			content           as content,
+			hit_count         as hitCount,
+			DATE_FORMAT(date_created, '%Y-%m-%d')      as dateCreated,
+			user_id_created   as userIdCreated,
+			(select user_name_ko from user where user_id = b.user_id_created) as userNameCreated,
+			DATE_FORMAT(date_modified, '%Y-%m-%d')     as dateModified,
+			user_id_modified  as userIdModified,
+			(select user_name_ko from user where user_id = b.user_id_modified) as userNameModified
+		
+		FROM board_article b
+		
+		WHERE
+			board_article_idx = #{boardArticleIdx}
+	
+	</select>
+
+	<insert id="createBoard" useGeneratedKeys="true" keyProperty="boardIdx" parameterType="com.rg.manageBoard.dto.ManageBoardDTO">
+		INSERT INTO board
+		(
+			board_name,
+			date_created,
+			user_id_created
+		)
+		VALUES
+		(
+			#{boardName},
+			now(),
+			#{userIdCreated}
+		)
+	</insert>
+
+
+	<update id="updateBoardArticle">
+	
+		UPDATE
+			board_article
+			
+		SET
+			subject = #{subject},
+			content = #{content},
+			date_modified = now(),
+			user_id_modified = #{userIdModified}
+			
+		WHERE
+			board_article_idx = #{boardArticleIdx}
+
+	</update>
+
+
+
+	<update id="editBoardName" parameterType="com.rg.manageBoard.dto.ManageBoardDTO">
+	
+		UPDATE
+			board
+			
+		SET
+			<if test="locale == null or locale == 'ko'">
+			board_name = #{boardName},
+			</if>
+			
+			<if test="locale != null and locale != 'ko'">
+			board_name_en = #{boardName},
+			</if>
+			
+			user_id_modified = #{userIdModified},
+			
+			date_modified = now()
+			
+		WHERE
+			board_idx =  #{boardIdx}
+
+	</update>
+
+
+	<update id="increaseHitCount">
+	
+		UPDATE
+			board_article
+			
+		SET
+			hit_count = hit_count + 1
+			
+		WHERE
+			board_article_idx = #{boardArticleIdx}
+
+	</update>
+
+
+	<update id="deleteBoardArticle">
+	
+		UPDATE 
+			board_article
+			
+		SET
+			date_modified = now(),
+			user_id_modified = #{userIdModified},
+			delete_yn = 'Y'
+			
+		WHERE
+			board_article_idx = #{boardArticleIdx}
+			
+	</update>
+
+
+	<update id="updateAttachmentBoardArticleIdx">
+	
+		UPDATE 
+
+			attachment
+			
+		SET
+			board_article_idx = #{boardArticleIdx},
+			
+			attachment_order = CASE
+
+				<foreach collection="attachmentIdxs" item="attachmentIdx" index="index">
+
+				WHEN attachment_idx = #{attachmentIdx} THEN (#{index} + 1) 
+
+				</foreach>
+			
+				END
+
+		WHERE attachment_idx IN
+
+			<foreach collection="attachmentIdxs" item="attachmentIdx" open="(" close=")" separator=", ">
+
+			#{attachmentIdx}
+
+			</foreach>
+			
+			AND flag_deleted = '0'
+			
+	</update>
+
+</mapper>

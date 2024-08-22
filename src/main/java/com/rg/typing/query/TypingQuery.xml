@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rg.typing.TypingMapper">
+
+	<select id="getTypingRecord" resultType="com.rg.typing.dto.TypingParamDTO">
+	
+		SELECT
+
+			title,
+			char_count as charCount,
+			average,
+			time_elapsed as timeElapsed,
+			DATE_FORMAT(time_created, '%Y/%m/%d %H:%i') as timeCreated
+			
+		FROM
+		
+			typing
+			
+		WHERE
+		
+			login_id = #{loginId}
+			
+		ORDER BY
+			
+			time_created desc
+
+	</select>
+
+
+	<insert id="insertTypingRecord" parameterType="com.rg.typing.dto.TypingParamDTO">
+		INSERT INTO typing
+		(
+			average,
+			title,
+			time_elapsed,
+			char_count,
+			login_id,
+			abbreviation_eng,
+			chapter
+		)
+		VALUES
+		(
+			#{average},
+			#{title},
+			#{timeElapsed},
+			#{charCount},
+			#{loginId},
+			#{phrase},
+			#{chapter}
+		)
+	</insert>
+
+
+
+	<update id="deleteTyping" parameterType="com.rg.typing.dto.TypingParamDTO">
+		
+		UPDATE typing_temporary_storage
+		SET
+			result_string = REPEAT('0', #{typingLength})
+		WHERE 
+			user_id = #{loginId} 
+			and phrase = #{phrase} 
+			and chapter = #{chapter}
+
+	</update>
+
+
+
+
+
+
+	<select id="getBibleList" resultType="com.rg.typing.dto.BibleDTO">
+	
+		SELECT
+
+			c.bible_name as bibleName,
+			c.bible_chapters as bibleChapters,
+			c.abbreviation_kor as abbreviationKor,
+			c.abbreviation_eng as abbreviationEng,
+			d.cnt as typedChaptersCount
+			
+		FROM
+		
+			bible c left join
+			(
+				select phrase as abbreviation_eng, count(*) as cnt
+				from typing_temporary_storage
+				where user_id = #{loginId}
+				and instr(result_string, '0') = 0
+				group by phrase
+			) d
+			
+			on c.abbreviation_eng = d.abbreviation_eng
+			
+		ORDER BY
+			
+			bible_index, abbreviationEng
+			
+	</select>
+
+
+
+	<select id="getBibleList_backup_20240519" resultType="com.rg.typing.dto.BibleDTO">
+	
+		SELECT
+
+			c.bible_name as bibleName,
+			c.bible_chapters as bibleChapters,
+			c.abbreviation_kor as abbreviationKor,
+			c.abbreviation_eng as abbreviationEng,
+			d.cnt as typedChaptersCount
+			
+		FROM
+		
+			bible c left join
+			(
+				select abbreviation_eng, count(distinct chapter) as cnt
+				from typing
+				where login_id = #{loginId}
+				and abbreviation_eng is not null
+				group by abbreviation_eng
+			) d
+			
+			on c.abbreviation_eng = d.abbreviation_eng
+			
+		ORDER BY
+			
+			bible_index, abbreviationEng
+			
+	</select>
+
+
+
+	<select id="getTemporaryTypingStorage" parameterType="com.rg.typing.dto.TemporaryTypingStorageDTO" resultType="com.rg.typing.dto.TemporaryTypingStorageDTO">
+	
+		SELECT
+			user_id as userId,
+			phrase,
+			chapter,
+			result_string as resultString,
+			time_string as timeString
+			
+		FROM
+			typing_temporary_storage
+			
+		WHERE
+			user_id = #{userId}
+			and phrase = #{phrase}
+			and chapter = #{chapter}
+
+	</select>
+
+
+	<insert id="createTemporaryTypingStorage" parameterType="com.rg.typing.dto.TemporaryTypingStorageDTO">
+	
+		INSERT INTO
+		
+			typing_temporary_storage
+			
+			(user_id, phrase, chapter)
+			
+		VALUES
+		
+			( #{userId}, #{phrase}, #{chapter} )
+
+	</insert>
+
+
+	<update id="putTemporaryTypingStorage" parameterType="com.rg.typing.dto.TemporaryTypingStorageDTO">
+	
+		UPDATE
+			typing_temporary_storage
+			
+		SET
+			result_string = #{resultString},
+			time_string = #{timeString},
+			time_doing = CURRENT_TIMESTAMP
+			
+		WHERE
+			user_id = #{userId}
+			and phrase = #{phrase}
+			and chapter = #{chapter}
+
+	</update>
+
+
+	<delete id="deleteTemporaryTypingStorage" parameterType="com.rg.typing.dto.TemporaryTypingStorageDTO">
+	
+		DELETE FROM
+			typing_temporary_storage
+			
+		WHERE
+			user_id = #{userId}
+			and phrase = #{phrase}
+			and chapter = #{chapter}
+
+	</delete>
+
+
+	<select id="getRecordCountList" parameterType="com.rg.typing.dto.RecordCountDTO" resultType="com.rg.typing.dto.RecordCountDTO">
+	
+		SELECT
+
+			title,
+			count(*) as recordCount
+			
+		FROM
+		
+			typing
+			
+		WHERE
+		
+			login_id = #{loginId}
+			and title like #{phrase} || '%'
+			
+		GROUP BY
+		
+			title
+			
+	</select>
+
+
+	<select id="getTypingIntro" resultType="com.rg.typing.dto.TypingIntroDTO">
+
+		SELECT
+			bible_index as bibleIndex,
+			bible_name as bibleName,
+			bible_chapters as bibleChapters,
+			abbreviation_kor as abbreviationKor,
+			e.abbreviation_eng as abbreviationEng,
+			d.cnt as completeCount,
+			round(d.cnt / bible_chapters * 100) as percent,
+			d.completeCount as completeTotalCount,
+			(select count(*) from typing_temporary_storage f
+				WHERE f.user_id = #{loginId} 
+				and f.phrase = e.abbreviation_eng 
+				and INSTR(result_string, '0') > 0
+				and INSTR(result_string, '1') > 0
+				and result_string is not null) as doingCount
+		FROM
+			rg.bible e
+		left join (
+			select
+				abbreviation_eng,
+				count(*) as cnt,
+				sum(cnt) as completeCount
+			from
+				(
+				select
+					abbreviation_eng,
+					count(*) as cnt
+				from
+					typing
+				where
+					login_id = #{loginId}
+				group by
+					abbreviation_eng, chapter ) c
+			group by
+				abbreviation_eng 
+			) d on
+			e.abbreviation_eng = d.abbreviation_eng
+
+	</select>
+
+	
+	<select id="getChaptersTypedCount" resultType="com.rg.typing.dto.ChaptersTypedCount">
+
+		select
+			abbreviation_eng as abbreviationEng,
+			chapter,
+			count(*) as cnt
+		from
+			typing
+		where
+			login_id = #{loginId}
+		group by
+			abbreviation_eng, chapter
+		order by abbreviation_eng, chapter
+
+	</select>
+	
+	
+	<select id="getDoingChapter" parameterType="map" resultType="java.lang.Integer">
+		select chapter
+		from typing_temporary_storage
+		where time_doing = (
+			select max(time_doing)
+			from typing_temporary_storage
+			where user_id = #{userId}
+			and phrase = #{phrase}
+			and result_string is not null
+			and INSTR(result_string, '0') > 0
+		)
+	</select>
+
+	
+	<select id="getChapterCount" parameterType="map" resultType="java.lang.Integer">
+		select bible_chapters
+		from bible
+		where abbreviation_eng = #{phrase}
+	</select>
+	
+	
+	<select id="getNewChapter" parameterType="map" resultType="java.lang.Integer">
+		select c.value
+		from
+		(	
+			<foreach collection="chapterList" item="chapter" separator="union all">
+				select #{chapter} as value
+			</foreach>
+		) c 
+		left JOIN
+		(
+			select abbreviation_eng, chapter, count(*) as cnt
+			from typing
+			where login_id = #{loginId}
+			and abbreviation_eng = #{phrase}
+			group by abbreviation_eng, chapter
+		) d 
+		on c.value = d.chapter
+		order by d.cnt asc, c.value asc
+	</select>
+	
+
+</mapper>

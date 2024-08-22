@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rg.user.UserMapper">
+
+	<select id="getUserList" resultType="com.rg.user.dto.UserDTO">
+		
+		SELECT
+		
+			user_id          as userId,
+			user_name_ko     as userNameKo,
+			user_name_en     as userNameEn,
+			user_password    as userPassword,
+			user_email       as userEmail,
+			user_phone       as userPhone,
+			user_cellphone   as userCellphone,
+			user_zipno       as userZipno,
+			user_address     as userAddress,
+			user_address_2   as userAddress2,
+			DATE_FORMAT(date_created, '%Y-%m-%d')     as dateCreated,
+			user_id_created  as userIdCreated,
+			DATE_FORMAT(date_modified, '%Y-%m-%d')    as dateModified,
+			user_id_modified as userIdModified,
+			DATE_FORMAT(date_deleted, '%Y-%m-%d')     as dateDeleted,
+			user_id_deleted  as userIdDeleted
+
+		FROM
+			user
+		
+		ORDER BY
+			date_created desc
+
+	</select>
+
+	<insert id="insertUser">
+		
+		INSERT INTO user
+			(
+			user_id,
+			user_name_ko,
+			user_name_en,
+			user_password,
+			user_email,
+			user_phone,
+			user_cellphone,
+			user_zipno,
+			user_address,
+			user_address_2,
+			user_id_created
+			)
+		VALUES
+			(
+			#{userId},
+			#{userNameKo},
+			#{userNameEn},
+			#{userPassword},
+			#{userEmail},
+			#{userPhone},
+			#{userCellphone},
+			#{userZipno},
+			#{userAddress},
+			#{userAddress2},
+			#{userIdCreated}
+			)
+
+	</insert>
+
+	<update id="updateUser">
+
+		UPDATE user
+		SET
+			user_name_ko = #{userNameKo},
+			user_name_en = #{userNameEn},
+			
+			<if test="userPassword != null and userPassword != ''">
+				user_password = #{userPassword},
+			</if>
+			
+			user_email = #{userEmail},
+			user_phone = #{userPhone},
+			user_cellphone = #{userCellphone},
+			user_zipno = #{userZipno},
+			user_address = #{userAddress},
+			user_address_2 = #{userAddress2},
+			date_modified = now(),
+			user_id_modified = #{userIdModified}
+
+		WHERE USER_ID = #{userId}
+
+	</update>
+
+	<update id="deleteUser">
+
+		UPDATE user
+		SET
+			user_password = null,
+			date_deleted = now(),
+			user_id_deleted = #{userIdDeleted}
+
+		WHERE USER_ID = #{userId}
+
+	</update>
+	
+</mapper>

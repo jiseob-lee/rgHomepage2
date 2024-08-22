@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jee
+		http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/lang
+		http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util.xsd">
+<!-- 
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd">
+-->
+
+	<!--
+	<bean id="dbDataSourceMySQL" class="org.springframework.jndi.JndiObjectFactoryBean">
+    	<property name="jndiName" value="java:comp/env/jdbc/MySQLDB"/>
+	</bean>
+	-->
+	
+	<!--
+	<bean id="dbDataSourceOracle" class="org.springframework.jndi.JndiObjectFactoryBean">
+    	<property name="jndiName" value="java:comp/env/jdbc/myoracle"/>
+	</bean>
+	-->
+
+	<!--
+	<bean id="dbDataSourceMySQLlocal" class="org.springframework.jndi.JndiObjectFactoryBean">
+    	<property name="jndiName" value="MySQLDB"/>
+	</bean>
+		
+	<bean id="dbDataSourceMySQL" class="org.springframework.jndi.JndiObjectFactoryBean">
+    	<property name="jndiName" value="MySQLDB"/>
+	</bean>
+	-->
+	
+	<!--
+	<bean id="dbDataSourceMySQLlocal" class="org.springframework.jndi.JndiObjectFactoryBean">
+    	<property name="jndiName" value="java:comp/env/jdbc/MySQLDBlocal"/>
+	</bean>
+	-->
+	
+	
+	
+	<bean id="dbDataSourceMySQL" class="org.springframework.jndi.JndiObjectFactoryBean">
+    	<property name="jndiName" value="java:comp/env/jdbc/MySQLDB"/>
+	</bean>
+	
+	<!--
+	<bean id="dbDataSourceMySQL" class="org.springframework.jndi.JndiObjectFactoryBean">
+    	<property name="jndiName" value="java:/MySQLDB"/>
+	</bean>
+	-->
+	
+	
+	<!--
+	<bean id="dbDataSourceMSSQLlocal" class="org.springframework.jndi.JndiObjectFactoryBean">
+    	<property name="jndiName" value="java:comp/env/jdbc/MSSQLDBlocal"/>
+	</bean>
+	-->
+	
+	<!--
+	<bean id="dbDataSourceMySQL" class="org.springframework.jndi.JndiObjectFactoryBean">
+    	<property name="jndiName" value="java:jboss/datasources/MySQLDB"/>
+	</bean>
+	
+	<bean id="dbDataSourceMySQLlocal" class="org.springframework.jndi.JndiObjectFactoryBean">
+    	<property name="jndiName" value="java:jboss/datasources/MySQLDBlocal"/>
+	</bean>
+	-->
+	
+	<!-- <jee:jndi-lookup id="datasource-oracle" jndi-name="#{config.jndiWrite}" resource-ref="true" /> -->
+	<!--
+	<jee:jndi-lookup id="datasource-mysql" jndi-name="java:comp/env/jdbc/MySQLDB" resource-ref="true" />
+
+    <bean id="dbDataSourceMySQL" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="datasource-mysql" />
+        <property name="logFormatter">
+            <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+                <property name="loggingType" value="MULTI_LINE" />
+                <property name="sqlPrefix" value="SQL:::" />
+            </bean>
+        </property>
+    </bean>
+    -->
+	
+</beans>

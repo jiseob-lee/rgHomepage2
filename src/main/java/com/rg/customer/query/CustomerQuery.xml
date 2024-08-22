@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rg.customer.CustomerMapper">
+
+	<select id="getCustomerList" resultType="com.rg.customer.dto.CustomerDTO">
+	
+		SELECT
+			customer_idx as customerIdx,
+			customer_name as customerName,
+			image_file as imageFile,
+			image_width as imageWidth,
+			image_height as imageHeight,
+			url,
+			order_no as orderNo
+		
+		FROM
+			customer
+			
+		ORDER BY
+			order_no desc
+	
+	</select>
+
+
+	<insert id="insertCustomer" parameterType="com.rg.customer.dto.CustomerDTO" useGeneratedKeys="true" keyProperty="customerIdx">
+		INSERT INTO customer
+		(
+			customer_name,
+			image_file,
+			image_width,
+			image_height,
+			url,
+			order_no
+		)
+		VALUES
+		(
+			#{customerName},
+			#{imageFile},
+			#{imageWidth},
+			#{imageHeight},
+			#{url},
+			#{orderNo}
+		)
+	</insert>
+
+
+	<delete id="deleteCustomer" parameterType="com.rg.customer.dto.CustomerDTO">
+	
+		DELETE FROM
+			customer
+			
+		WHERE
+			customer_idx not in
+			
+			<foreach collection="customerIdxs" item="customerIdx" open="(" close=")" separator=", ">
+				#{customerIdx}
+			</foreach>
+
+	</delete>
+
+
+	<update id="updateCustomer">
+	
+		UPDATE
+			customer
+		
+		SET
+			customer_name = #{customerName},
+			url = #{url},
+			order_no = #{orderNo}
+			
+		WHERE
+			customer_idx = #{customerIdx}
+
+	</update>
+
+</mapper>

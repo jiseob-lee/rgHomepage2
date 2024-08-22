@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee;http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" 
+         id="WebApp_ID"
+         version="4.0">
+         
+	<display-name>rg-aws</display-name>
+  	
+  	<absolute-ordering />
+    
+
+	
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!--
+	<filter>
+	  <filter-name>CorsFilter</filter-name>
+	  <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+	  <init-param>
+	    <param-name>cors.allowed.origins</param-name>
+	    <param-value>http://localhost</param-value>
+	  </init-param>
+	  <init-param>
+	    <param-name>cors.allowed.methods</param-name>
+	    <param-value>GET,POST,HEAD,OPTIONS,PUT</param-value>
+	  </init-param>
+	  <init-param>
+	    <param-name>cors.allowed.headers</param-name>
+	    <param-value>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers</param-value>
+	  </init-param>
+	  <init-param>
+	    <param-name>cors.exposed.headers</param-name>
+	    <param-value>Access-Control-Allow-Origin,Access-Control-Allow-Credentials</param-value>
+	  </init-param>
+	</filter>
+	<filter-mapping>
+	  <filter-name>CorsFilter</filter-name>
+	  <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	-->
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:spring/context-*.xml</param-value>
+	</context-param>
+    
+    
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/springmvc/dispatcher-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+		<multipart-config>
+	        <max-file-size>5000000000</max-file-size>
+	        <max-request-size>5000000000</max-request-size>
+	        <file-size-threshold>0</file-size-threshold>
+	    </multipart-config>
+	</servlet>
+    
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+    
+    <servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!-- redis -->
+
+	<filter>
+		<filter-name>springSessionRepositoryFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSessionRepositoryFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<!-- <dispatcher>REQUEST</dispatcher> -->
+		<!-- <dispatcher>ERROR</dispatcher> -->
+	</filter-mapping>
+
+	
+	
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+
+    
+		
+	<!--
+	<filter>
+		<filter-name>requestHostFilter</filter-name>
+		<filter-class>com.rg.util.filter.RequestHostFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>requestHostFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	-->
+	
+	<!--
+	<servlet>
+		<servlet-name>default</servlet-name>
+		<servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>0</param-value>
+		</init-param>
+		<init-param>
+			<param-name>listings</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+
+    
+	<servlet>
+		<servlet-name>jsp</servlet-name>
+		<servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+		<init-param>
+			<param-name>fork</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<init-param>
+			<param-name>xpoweredBy</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<load-on-startup>3</load-on-startup>
+	</servlet>
+
+	
+	<servlet-mapping>
+		<servlet-name>jsp</servlet-name>
+		<url-pattern>*.jsp</url-pattern>
+	</servlet-mapping>
+	-->
+
+
+	<!--
+	<servlet>
+		<servlet-name>xeniServlet</servlet-name>
+		<servlet-class>com.nexacro17.xeni.services.GridExportImportServlet</servlet-class>
+	</servlet>
+    
+	<servlet-mapping>
+		<servlet-name>xeniServlet</servlet-name>
+		<url-pattern>/xeni.do</url-pattern>
+	</servlet-mapping>
+	-->
+
+    
+    
+    
+	<listener>
+		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+	</listener>
+
+    <!--
+	<listener>
+		<listener-class>com.rg.util.SessionConfig</listener-class>
+	</listener>
+	-->
+	
+	<!--
+	<listener>
+		<listener-class>
+			org.springframework.web.context.request.RequestContextListener
+		</listener-class>
+	</listener>
+	-->
+	
+	<welcome-file-list>
+		<welcome-file>index.do</welcome-file>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+
+	<session-config>
+		<!-- <session-timeout>1200</session-timeout> -->
+		<session-timeout>600</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+			<!-- <secure>true</secure> -->
+        </cookie-config>
+	</session-config>
+
+	
+	<distributable />
+	
+
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/common/error.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/common/error.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/common/error.jsp</location>
+	</error-page>
+	
+	
+    <security-constraint>
+        <web-resource-collection>
+	        <web-resource-name></web-resource-name>
+	        <url-pattern>/*</url-pattern>
+	        <http-method>GET</http-method>
+	        <http-method>POST</http-method>
+	        <http-method>DELETE</http-method>
+	        <http-method>PUT</http-method>
+	        <http-method>OPTIONS</http-method>
+        </web-resource-collection>
+    </security-constraint>
+    
+    
+    <!--
+    <context-param>
+    	<param-name>export-path</param-name>
+    	<param-value>/excel</param-value>
+    </context-param>
+    
+    <context-param>
+    	<param-name>import-path</param-name>
+    	<param-value>/excel</param-value>
+    </context-param>
+    
+    <context-param>
+    	<param-name>monitor-enabled</param-name>
+    	<param-value>true</param-value>
+    </context-param>
+    
+    <context-param>
+    	<param-name>monitor-cycle-time</param-name>
+    	<param-value>30</param-value>
+    </context-param>
+    
+    <context-param>
+    	<param-name>file-storage-time</param-name>
+    	<param-value>10</param-value>
+    </context-param>
+    -->
+
+	<resource-ref>
+	    <res-ref-name>MySQLDB</res-ref-name>
+	    <res-type>javax.sql.DataSource</res-type>
+	    <res-auth>Container</res-auth>
+	</resource-ref>
+
+	<resource-ref>
+	    <res-ref-name>MySQLDBlocal</res-ref-name>
+	    <res-type>javax.sql.DataSource</res-type>
+	    <res-auth>Container</res-auth>
+	</resource-ref>
+
+</web-app>

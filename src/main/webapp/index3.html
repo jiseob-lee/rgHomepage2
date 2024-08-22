@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko" data-critters-container>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>이지섭의 홈페이지입니다.</title>
+  <base href="/">
+
+  <!-- <meta name="viewport" content="width=900" /> -->
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <link rel="stylesheet" href="/assets/css/backgroundPartialFill.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="/assets/css/backgroundPartialFill.css"></noscript>
+  <link rel="stylesheet" href="/assets/css/board_20200907.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="/assets/css/board_20200907.css"></noscript>
+  
+  <!--
+  <style type="text/css" media="screen, print">
+    @font-face {
+      font-family: "Bitstream Vera Serif Bold";
+      src: url("http://developer.mozilla.org/@api/deki/files/2934/=VeraSeBd.ttf");
+    }
+    
+    body { 
+      font: 14px/120% "Bitstream Vera Serif Bold", serif
+    }
+  </style>
+  -->
+  
+  <style type="text/css">
+  @font-face {
+	font-family: 'NotoKrR';
+	font-style: normal;
+	font-weight: 300;
+	src: url('/assets/notosanskr_webfont/notokr-regular.eot');
+	src: url('/assets/notosanskr_webfont/notokr-regular.eot?#iefix') format('embedded-opentype'),
+		 url('/assets/notosanskr_webfont/notokr-regular.woff2') format('woff2'),
+		 url('/assets/notosanskr_webfont/notokr-regular.woff') format('woff');
+  }
+  
+  html, body {color:#000033; font:14px/120% 'Calibri','NotoKrR','dotum','Gulim',sans-serif,Arial,Helvetica,Clean,AppleGothic; min-width:900px; font-weight:100;}
+  /*
+  body {
+    font-family: NotoKrR, 새굴림, 궁서체, 바탕체, 궁서체, Sans-serif, Arial !important;
+    font-size: 11pt !important;
+    font-weight: normal !important;
+  }
+  */
+  </style>
+  
+<link rel="stylesheet" href="styles.ef46db3751d8e999.css"></head>
+<body>
+  <app-root></app-root>
+<script src="runtime.19920c3b94d137c7.js" type="module"></script><script src="polyfills.f10ebc1546c34cdb.js" type="module"></script><script src="main.ccbcde53349ae802.js" type="module"></script></body>
+</html>

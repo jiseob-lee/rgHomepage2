@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                              http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                              http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                              http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<util:properties id="application" location="classpath:application.properties" />
+
+	<mvc:annotation-driven/>
+
+	<context:component-scan base-package="com.rg, com.rg2" />
+	
+	<!--
+	<context:component-scan base-package="com.rg">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	-->
+
+	<!--
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>classpath:/message/message-common</value>
+			</list>
+		</property>
+		<property name="cacheSeconds">
+			<value>120</value>
+		</property>
+	</bean>
+	-->
+	
+	
+	<bean id="messageSource" class="com.rg.messageBundle.controller.SerializableResourceBundleMessageSource">
+		<property name="basename">
+			<value>classpath:/messages/message-common</value>
+		</property>
+		<property name="cacheSeconds">
+			<value>120</value>
+		</property>
+	</bean>
+	
+	
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" >
+		<property name="cookieName" value="lang"/>
+		<property name="cookieMaxAge" value="100000"/>
+		<property name="cookiePath" value="/"/>
+		<!-- <property name="cookieDomain" value=".jisblee.me"/> -->
+		<property name="defaultLocale" value="fr"/> 
+	</bean>
+    
+    
+    <bean id="webexpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+    
+    
+    <!--
+    <bean class="com.rg.util.controller.EnvironmentController">
+		<property name="localeResolver" ref="localeResolver" />
+	</bean>
+    -->
+
+	<!--
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" >
+		<property name="defaultLocale" value="fr" />
+	</bean>
+	-->
+	
+	<!--
+	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+		<property name="paramName" value="lang" />
+	</bean>
+	-->
+
+	<!--
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="localeChangeInterceptor"/>
+			</list>
+		</property>
+	</bean>
+	-->
+	
+	<!--
+	<interceptors>
+         <interceptor>
+                  <mapping path="/**" /> 
+                  <beans:ref bean="localeChangeInterceptor" />
+         </interceptor>
+	</interceptors>
+	-->
+	
+	<!--
+	<mvc:interceptors>
+	    
+	    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang" />
+		</bean>
+		
+		<bean id="authInterceptor" class="com.rg.configuration.AuthInterceptor" />
+		
+		<mvc:interceptor>
+			<mvc:mapping path="/**/*" />
+			<bean id="authInterceptor" class="com.rg.configuration.AuthInterceptor" />
+		</mvc:interceptor>
+		
+    </mvc:interceptors>
+    -->
+    
+	<!-- MultipartResolver 설정 -->
+	<!--
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		-->
+	<!--
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+		<property name="maxUploadSize" value="50000000000" />
+		<property name="maxInMemorySize" value="10000000" />
+	</bean>
+	-->
+
+</beans>

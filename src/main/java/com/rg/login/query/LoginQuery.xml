@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rg.login.LoginMapper">
+<!--
+	<update id="updateSample">
+
+			UPDATE SAMPLE
+			SET ID=#{id}
+				, NAME=#{name}
+				, DESCRIPTION=#{description}
+				, USE_YN=#{useYn}
+				  WHERE ID=#{id}
+
+	</update>
+
+	<delete id="deleteSample">
+
+			DELETE FROM SAMPLE
+			WHERE ID=#{id}
+
+	</delete>
+-->
+
+	<select id="loginProcess" resultType="string">
+	<![CDATA[
+		/* loginProcess */
+		
+		SELECT
+			USER_ID
+		FROM
+			user
+		WHERE
+			USER_ID = #{userId}
+			AND USER_PASSWORD = #{userPassword}
+			AND USER_PASSWORD IS NOT NULL
+	]]>
+	</select>
+
+	<select id="getUserName" resultType="string">
+		
+		SELECT
+			USER_NAME_KO
+		FROM
+			user
+		WHERE
+			USER_ID = #{userId, jdbcType=VARCHAR}
+
+	</select>
+	
+</mapper>

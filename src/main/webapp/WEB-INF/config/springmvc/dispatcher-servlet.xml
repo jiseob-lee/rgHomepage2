@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:util="http://www.springframework.org/schema/util"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:mvc="http://www.springframework.org/schema/mvc"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+        xsi:schemaLocation=
+        		"
+        		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                "
+>
+
+    
+    <context:component-scan base-package="com.rg, com.rg2">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+    </context:component-scan>
+
+	<mvc:default-servlet-handler/>
+	
+	<mvc:annotation-driven/>
+	
+
+	<!-- 컨트롤러에서 넘어온 데이터(JSON 같은)를 messageConverter로 사용할 수 있는 방법 2 -->
+    
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <util:list list-class="java.util.ArrayList">
+                <ref bean="mappingJackson2HttpMessageConverter"/>
+            </util:list>
+        </property>
+    </bean>
+    
+    <bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/html;charset=UTF-8</value>
+                <value>application/json;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+    
+	<!-- 출처: http://devjackie.tistory.com/entry/spring-32-이상에서-사용할-수-있는-messageConverter-방법 [devJackie] -->
+	
+    <!--
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="webBindingInitializer">
+            <bean class="egovframework.example.cmmn.web.EgovBindingInitializer"/>
+        </property>
+    </bean>
+    -->
+    
+    <!--
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
+    -->
+    
+    <!--
+    <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"> 
+        <property name="interceptors">
+            <list>
+                <ref bean="localeChangeInterceptor" />
+            </list>
+        </property>
+    </bean>
+    -->
+	
+	
+	<bean id="messageSource" class="com.rg.messageBundle.controller.SerializableResourceBundleMessageSource">
+		<property name="basename">
+			<value>classpath:/message/message-common</value>
+		</property>
+		<property name="cacheSeconds">
+			<value>120</value>
+		</property>
+	</bean>
+	
+    <!--
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>classpath:/message/message-common</value>
+			</list>
+		</property>
+		<property name="cacheSeconds">
+			<value>120</value>
+		</property>
+	</bean>
+	-->
+	
+    <!-- 쿠키를 이용한 Locale 이용시 <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/> -->
+    
+    <mvc:interceptors>
+	    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+	        <property name="paramName" value="lang" />
+	    </bean>
+	    <!-- <bean id="authInterceptor" class="com.rg.configuration.AuthInterceptor" /> -->
+	    
+	    <!--
+        <mvc:interceptor>
+            
+            <mvc:mapping path="/rg/**/*.do" />
+            
+            <mvc:exclude-mapping path="/login.do" />
+            <mvc:exclude-mapping path="/logout.do" />
+            <mvc:exclude-mapping path="/getEmptyRequest.do" />
+            <mvc:exclude-mapping path="/getEnvironment.do" />
+            <mvc:exclude-mapping path="/**/getEnvironment.do" />
+            <mvc:exclude-mapping path="/rg/getLoginUserInfo.do" />
+            
+            <bean class="com.rg.login.controller.AuthenticInterceptor" />
+        </mvc:interceptor>
+		-->
+    </mvc:interceptors>
+	
+
+	<!--
+	allowed-origins="http://jisblee.me:4000, http://www.jisblee.me:4000, http://jisblee.me, http://www.jisblee.me, https://www.jisblee.me, https://jisblee.me"
+	-->
+	<mvc:cors>
+	
+		<mvc:mapping path="/**"
+			allowed-origins="http://jisblee.me:4000, http://www.jisblee.me:4000, http://jisblee.me, http://www.jisblee.me, https://www.jisblee.me, https://jisblee.me, http://test.jisblee.me, http://localhost:4200, https://api.tosspayments.com, http://localhost:8080"
+			allowed-methods="GET, PUT, POST, OPTIONS"
+			allowed-headers="X-CSRF-HEADER, X-CSRF-PARAM, X-CSRF-TOKEN, Accept, Content-Type, Cache-Control, Access-Control-Allow-Origin, Pragma, Expires, withCredentials, Cookie"
+			exposed-headers=""
+			allow-credentials="true"
+			max-age="123" />
+
+		<!--
+		<mvc:mapping path="/resources/**"
+			allowed-origins="http://domain1.com" />
+		-->
+		
+	</mvc:cors>
+
+
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="defaultErrorView" value="cmmn/error"/>
+        <property name="exceptionMappings">
+            <props>
+            	<!--
+                <prop key="org.springframework.dao.DataAccessException">cmmn/dataAccessFailure</prop>
+                <prop key="org.springframework.transaction.TransactionException">cmmn/transactionFailure</prop>
+                <prop key="egovframework.rte.fdl.cmmn.exception.EgovBizException">cmmn/egovError</prop>
+                <prop key="org.springframework.security.AccessDeniedException">cmmn/egovError</prop>
+                -->
+                <prop key="org.springframework.dao.DataAccessException">cmmn/error</prop>
+                <prop key="org.springframework.transaction.TransactionException">cmmn/error</prop>
+                <prop key="org.springframework.security.AccessDeniedException">cmmn/error</prop>
+            </props>
+        </property>
+    </bean>
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
+	
+	<!--
+	<bean id="xmlViewer" class="org.springframework.web.servlet.view.xml.MarshallingView">
+		<constructor-arg>
+			<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller" p:classesToBeBound="com.rg.nexacro.dto.NexacroListDTO"/>
+		</constructor-arg>
+	</bean>
+	-->
+
+	<!--
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
+	    p:viewClass="org.springframework.web.servlet.view.JstlView"
+	    p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
+	-->
+    <!-- For Pagination Tag -->
+    <!-- <bean id="imageRenderer" class="egovframework.example.cmmn.web.EgovImgPaginationRenderer"/> -->
+
+	<!--
+    <bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
+        <property name="rendererType">
+            <map>
+                <entry key="image" value-ref="imageRenderer"/>
+            </map>
+        </property>
+    </bean>
+    -->
+	<!-- /For Pagination Tag -->
+
+    <!-- <mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/> -->
+</beans>

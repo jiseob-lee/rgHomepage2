@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rg.attachment.AttachmentMapper">
+
+	<select id="getAttachmentList" resultType="com.rg.attachment.dto.AttachmentDTO">
+	
+		SELECT
+
+			b.attachment_idx    as attachmentIdx,
+			b.board_idx         as boardIdx,
+			b.board_article_idx as boardArticleIdx,
+			b.server_file_name  as serverFileName,
+			b.attachment_name   as attachmentName,
+			b.attachment_ext    as attachmentExt,
+			b.attachment_order  as attachmentOrder,
+			DATE_FORMAT(b.date_created, '%Y-%m-%d') as dateCreated,
+			b.user_id_created   as userIdCreated,
+			(select user_name_ko from user where user_id = b.user_id_created) as userNameCreated,
+			DATE_FORMAT(b.date_modified, '%Y-%m-%d') as dateModified,
+			b.user_id_modified  as userIdModified,
+			(select user_name_ko from user where user_id = b.user_id_modified) as userNameModified,
+			b.flag_deleted      as flagDeleted,
+			b.file_exists       as fileExists,
+			b.attachment_size   as attachmentSize
+		
+		FROM attachment b, board_article c
+		
+		WHERE
+
+			b.flag_deleted = '0'
+			
+			<if test="boardIdx != null and boardIdx != '' and boardIdx != 0">
+				AND b.board_idx = #{boardIdx}
+			</if>
+
+			<if test="boardArticleIdx != null and boardArticleIdx != ''">
+				AND b.board_article_idx = #{boardArticleIdx}
+			</if>
+
+            AND b.board_article_idx = c.board_article_idx
+			
+			<if test="openYn != null and (openYn = 'y' or openYn = 'Y')">
+				AND c.open_yn = 'y'
+			</if>
+			
+		ORDER BY
+
+			<if test="boardArticleIdx != null and boardArticleIdx != ''">
+			b.attachment_order,
+			</if>
+
+			b.date_created desc
+			
+		<if test="(boardArticleIdx == null or boardArticleIdx == '') and boardArticleIdx != 0">
+		LIMIT #{listLimit} OFFSET #{listOffset}
+		</if>
+
+	</select>
+
+
+	<select id="getAttachmentListTotalCount" resultType="integer">
+	
+		SELECT
+
+			count(*)
+		
+		FROM attachment
+		
+		WHERE
+			1 = 1
+			<if test="boardIdx != null and boardIdx != '' and boardIdx != 0">
+				AND board_idx = #{boardIdx}
+			</if>
+			<if test="boardArticleIdx != null and boardArticleIdx != '' and boardArticleIdx != 0">
+				AND board_article_idx = #{boardArticleIdx}
+			</if>
+			AND flag_deleted = '0'
+
+	</select>
+
+
+	<insert id="insertAttachment" useGeneratedKeys="true" keyProperty="attachmentIdx" parameterType="com.rg.attachment.dto.AttachmentDTO">
+		INSERT INTO attachment
+		(
+			board_idx,
+			board_article_idx,
+			server_file_name,
+			attachment_name,
+			attachment_ext,
+			attachment_order,
+			date_created,
+			user_id_created,
+			flag_deleted,
+			file_exists,
+			attachment_size
+		)
+		VALUES
+		(
+			#{boardIdx},
+			#{boardArticleIdx},
+			#{serverFileName},
+			#{attachmentName},
+			#{attachmentExt},
+			#{attachmentOrder},
+			now(),
+			#{userIdCreated},
+			'0',
+			'1',
+			#{attachmentSize}
+		)
+	</insert>
+
+
+	<update id="deleteAttachment">
+	
+		UPDATE 
+			attachment
+			
+		SET
+			date_modified = now(),
+			user_id_modified = #{userIdModified},
+			flag_deleted = '1'
+			
+		WHERE
+			attachment_idx = #{attachmentIdx}
+			
+	</update>
+
+
+	<select id="getAttachmentDTOInfo" resultType="com.rg.attachment.dto.AttachmentDTO">
+	
+		SELECT
+
+			attachment_idx    as attachmentIdx,
+			board_idx         as boardIdx,
+			board_article_idx as boardArticleIdx,
+			server_file_name  as serverFileName,
+			attachment_name   as attachmentName,
+			attachment_ext    as attachmentExt,
+			attachment_order  as attachmentOrder,
+			DATE_FORMAT(date_created, '%Y-%m-%d') as dateCreated,
+			user_id_created   as userIdCreated,
+			DATE_FORMAT(date_modified, '%Y-%m-%d') as dateModified,
+			user_id_modified  as userIdModified,
+			flag_deleted      as flagDeleted,
+			file_exists       as fileExists,
+			attachment_size   as attachmentSize
+		
+		FROM attachment
+		
+		WHERE
+			attachment_idx = #{attachmentIdx}
+
+	</select>
+
+
+	<update id="updateFileExists">
+	
+		UPDATE 
+			attachment
+			
+		SET
+			file_exists = '1'
+			
+		WHERE
+			attachment_idx in
+			
+			<foreach item="attchmentIndex" index="index" collection="list" open="(" separator="," close=")">
+				#{attchmentIndex}
+			</foreach>
+			
+	</update>
+
+
+	<update id="updateFileNotExists">
+	
+		UPDATE 
+			attachment
+			
+		SET
+			file_exists = '0'
+			
+		WHERE
+			attachment_idx in
+			
+			<foreach item="attchmentIndex" index="index" collection="list" open="(" separator="," close=")">
+				#{attchmentIndex}
+			</foreach>
+			
+	</update>
+
+
+	<update id="updateFileMapping" parameterType="com.rg.attachment.dto.AttachmentDTO">
+	
+		update attachment
+		set 
+			board_idx = #{boardIdx},
+			board_article_idx = #{boardArticleIdx},
+			attachment_order = #{attachmentOrder}
+		where 
+			attachment_idx = #{attachmentIdx}
+
+	</update>
+
+
+	<select id="getMaxAttachmentOrder" parameterType="com.rg.attachment.dto.AttachmentDTO" resultType="integer">
+
+		select 
+			IFNULL(max(b.attachment_order) + 1, 1) 
+
+		from 
+			attachment b
+
+		where 
+			b.board_idx = #{boardIdx} 
+			and b.board_article_idx = #{boardArticleIdx}
+
+	</select>
+
+</mapper>

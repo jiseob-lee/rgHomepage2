@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rg.manageBoard.StatisticsMapper">
+
+	<select id="getStatisticsIpCount" resultType="com.rg.statistics.dto.IpCountDTO">
+		SELECT 
+			DATE(TIME) AS date, 
+			COUNT(DISTINCT REMOTE_ADDR) AS ipCount,
+			COUNT(*) AS totalCount 
+		
+		FROM 
+			access_log
+		
+		GROUP BY 
+			DATE(TIME)
+		
+		ORDER BY 
+			DATE(TIME) DESC
+	</select>
+
+
+	<select id="getStatisticsArticleSubjects" resultType="com.rg.statistics.dto.ArticleCountDTO">
+		select
+			c.article_idx as articleIdx, 
+			c.subject, 
+			count(*) articleCount,
+			COUNT(IF(c.language = 'ko', 1, null)) as countKo,
+			COUNT(IF(c.language = 'en', 1, null)) as countEn,
+			SUM(IF(referer is null or referer = '', 0, 1)) as refererCount
+		from 
+		(
+			select 
+				a.time log_date, 
+				a.hash, 
+                case substring(a.hash, -2)
+                when 'ko' then CAST(TRIM(SUBSTRING_INDEX(substring(a.hash, 1, length(a.hash) - 3), '/', -1)) AS UNSIGNED)
+                when 'en' then CAST(TRIM(SUBSTRING_INDEX(substring(a.hash, 1, length(a.hash) - 3), '/', -1)) AS UNSIGNED)
+                else CAST(TRIM(SUBSTRING_INDEX(a.hash, '/', -1)) AS UNSIGNED)
+                end as article_idx,
+				b.subject,
+				a.language,
+				a.referer
+			from 
+                access_log a 
+                left join board_article b
+                on	 
+                case SUBSTRING_INDEX(a.hash, '/', -1)
+                when 'ko' then CAST(TRIM(SUBSTRING_INDEX(substring(a.hash, 1, length(a.hash) - 3), '/', -1)) AS UNSIGNED)
+                when 'en' then CAST(TRIM(SUBSTRING_INDEX(substring(a.hash, 1, length(a.hash) - 3), '/', -1)) AS UNSIGNED)
+                when 'favicon.ico' then 0
+                else CAST(TRIM(SUBSTRING_INDEX(a.hash, '/', -1)) AS UNSIGNED)
+                end = b.board_article_idx
+			where a.hash is not NULL
+			and SUBSTRING(a.hash, 1, 1) = '/'
+			and b.delete_yn = 'N'
+			and DATE(a.time) between #{fromDate} and #{toDate}
+		) c
+		group by article_idx, subject
+		order by articleCount desc, max(log_date) desc
+	</select>
+
+	<select id="getStatisticsLog" resultType="com.rg.statistics.dto.LogDTO">
+        select 
+            a.log_index as logIndex,
+            a.user_agent as userAgent,
+            a.remote_addr as ip,
+            a.time logTime, 
+            a.hash as path, 
+            case SUBSTRING_INDEX(a.hash, '/', -1)
+                when 'ko' then CAST(TRIM(SUBSTRING_INDEX(substring(a.hash, 1, length(a.hash) - 3), '/', -1)) AS UNSIGNED)
+                when 'en' then CAST(TRIM(SUBSTRING_INDEX(substring(a.hash, 1, length(a.hash) - 3), '/', -1)) AS UNSIGNED)
+                when 'favicon.ico' then 0
+                else CAST(TRIM(SUBSTRING_INDEX(a.hash, '/', -1)) AS UNSIGNED)
+            end as articleIdx,
+            b.subject,
+            a.language,
+            a.referer,
+            a.country,
+            a.city,
+            a.subdivision
+        
+        from 
+            access_log a  
+            left join board_article b
+        
+            on  
+            case SUBSTRING_INDEX(a.hash, '/', -1)
+                when 'ko' then CAST(TRIM(SUBSTRING_INDEX(substring(a.hash, 1, length(a.hash) - 3), '/', -1)) AS UNSIGNED)
+                when 'en' then CAST(TRIM(SUBSTRING_INDEX(substring(a.hash, 1, length(a.hash) - 3), '/', -1)) AS UNSIGNED)
+                when 'favicon.ico' then 0
+                else CAST(TRIM(SUBSTRING_INDEX(a.hash, '/', -1)) AS UNSIGNED)
+            end
+            = b.board_article_idx
+
+        where a.hash is not NULL
+        and SUBSTRING(a.hash, 1, 1) = '/'
+        and b.delete_yn = 'N'
+        and DATE(a.time) = #{date}
+        
+        order by a.log_index desc
+	</select>
+
+</mapper>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회사연혁</title>
+<style type="text/css">
+table.history {
+  margin: 10px;
+}
+table.history tr {
+  text-align: left;
+}
+table.history td {
+  padding: 7px;
+  
+}
+table.history td.year {
+  padding: 10px;
+  font-weight: bold;
+  font-size: 21px;
+  border: solid 1px;
+}
+table.history td.nbsp {
+  padding: 2px;
+  font-size: 8px;
+}
+</style>
+</head>
+<body>
+
+<div class="subMenuTitle">
+{{menuTitle}}
+</div>
+
+<div class="breadcrumb">
+<a style="text-decoration: none;" href="/">HOME</a> &gt; <a style="text-decoration: none;" href="{{mainMenuUrl}}">{{mainMenuTitle}}</a> &gt; {{menuTitle}}
+</div>
+
+<hr class="subHr" />
+
+<div ng-repeat="(key, value) in count">
+<table class="history" style="margin-top: 20px;">
+  <tr ng-repeat="l in lists | filter: {year : value}">
+    <td class="year" style="background-color:#69c4e2;color:white;" ng-if="$index == 0" rowspan="{{year[value + '년']}}">{{l.year}}년</td>
+    <td><b style="color:#06C;">{{l.title}}</b> {{l.description}}</td>
+  </tr>
+</table>
+</div>
+
+<!--
+<table class="history" style="margin-top: 20px;">
+  <tr>
+    <td rowspan="6" class="year" style="background-color:#69c4e2;color:white;">2017년</td>
+    <td><b style="color:#06C;">한약진흥재단</b> 한의약 임상연구 데이터 및 공유시스템 구축전략 컨설팅</td>
+  </tr>
+  <tr>
+    <td><b style="color:#06C;">S/W 기술연구소 인정</b></td>
+  </tr>
+  <tr>
+    <td><b style="color:#06C;">한국정보화진흥원</b> 건강위험군 예측 알고리즘 개발</td>
+  </tr>
+  <tr>
+    <td><b style="color:#06C;">중앙대학교 병원 산학 협력단</b> VR 기반 유산소 스포츠 재활 서비스 개발</td>
+  </tr>
+  <tr>
+    <td><b style="color:#06C;">영남대학교 의료원</b> 활동기반 원가분석시스템 구축</td>
+  </tr>
+  <tr>
+    <td><b style="color:#06C;">국군의무사령부</b> 국방의료 빅데이터 분석체계 구축 연구</td>
+  </tr>
+  <tr>
+    <td class="nbsp">&nbsp;</td>
+  </tr>
+  <tr>
+    <td rowspan="4" class="year" style="background-color:#69c4e2;color:white;">2016년</td>
+    <td><b style="color:#06C;">벤처기업 확인</b></td>
+  </tr>
+  <tr>
+    <td><b style="color:#06C;">한국과학기술원(KAIST)</b> 장학정보시스템 구축</td>
+  </tr>
+  <tr>
+    <td><b style="color:#06C;">경북대학교 병원</b> 활동기반 원가분석시스템 <b>(본원과 칠곡병원)</b></td>
+  </tr>
+  <tr>
+    <td><b style="color:#06C;">부산대학교 병원</b> 활동기반 원가분석시스템 <b>(본원과 양산병원)</b></td>
+  </tr>
+  <tr>
+    <td class="nbsp">&nbsp;</td>
+  </tr>
+  <tr>
+    <td rowspan="5" class="year" style="background-color:#69c4e2;color:white;">2015년</td>
+    <td><b style="color:#06C;">한국과학기술원(KAIST)</b> 등록정보시스템 구축</td>
+  </tr>
+  <tr>
+    <td><b style="color:#06C;">사회보장정보원</b> 지역보건의요정보시스템 성과분석 연구</td>
+  </tr>
+  <tr>
+    <td><b style="color:#06C;">충북대학교 병원</b> 차세대 경영정보시스템 구축</td>
+  </tr>
+  <tr>
+    <td><b style="color:#06C;">(의료)길의료재단</b> 오라클 ERP 업그레이드 및 재구축</td>
+  </tr>
+  <tr>
+    <td><b style="color:#06C;">(주)휴먼베이스 설립</b></td>
+  </tr>
+</table>
+-->
+
+</body>
+</html>

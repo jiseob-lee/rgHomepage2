@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd"
+        >
+-->
+<b:beans xmlns="http://www.springframework.org/schema/security"
+		 xmlns:b="http://www.springframework.org/schema/beans"
+         xmlns:p="http://www.springframework.org/schema/p"		 
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <http auto-config="true" >
+    
+        <intercept-url pattern="/" access="permitAll" />
+        <intercept-url pattern="/staff/login.do" access="permitAll" />
+        <intercept-url pattern="/staff/**" access="hasRole('USER')" />
+        <intercept-url pattern="/dba**" access="hasRole('ADMIN') and hasRole('DBA')" />
+        
+        <form-login
+          login-page='/staff/login.do'
+          default-target-url="/staff/index.do"
+          authentication-failure-url="/staff/login.do?error=true"
+          username-parameter="username"
+          password-parameter="password"
+          always-use-default-target="true"
+          />
+ 
+        <logout 
+        	logout-success-url="/staff/login.do" 
+        	delete-cookies="JSESSIONID" 
+        	/>
+        
+        <session-management>
+            <concurrency-control max-sessions="1" error-if-maximum-exceeded="false" expired-url="/staff/login_duplicate.jsp"/>
+        </session-management>
+
+    </http>
+
+	<authentication-manager>
+		<authentication-provider ref="customAuthenticationProvider" />
+	</authentication-manager>
+
+	<b:bean id="customAuthenticationProvider" class="com.rg.login.controller.CustomAuthenticationProvider" />
+	
+</b:beans>

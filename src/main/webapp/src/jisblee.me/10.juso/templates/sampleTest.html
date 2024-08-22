@@ -1,0 +1,2173 @@
+<html>
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+<title>주소 입력 샘플</title>
+<style type="text/css">
+input[type=button],button{cursor:pointer;outline:0;padding: 3px 10px;}
+.mapCoord_wrap{width: 300px; padding-top: 40px;}
+.mapCoordinate {margin-bottom:20px; padding: 0 15px}
+.mapCoordinate p {padding:7px 0;}
+.mapCoordinate span {width:85px; text-align:right; display: inline-block;}
+.mapCoordinate div {width:100%; text-align: right; padding: 0 14px 0 0;}
+.mapCoordinate > input[type="text"]{ width:170px; margin-bottom:5px; padding-left: 10px}
+.mapCoordinate > input[type="text"]:hover{border:1px solid #2694d9; background-color: #fefefb;}
+.mapCoordinate > input[type="text"]:ACTIVE{font-weight: bold; border:1px solid #2694d9;}
+.mapCoordinate > div > input[type="button"]{ background-color: #3869a0; border-radius: 3px; border: 1px solid #345b88; color: #fff; height: 28px;}
+</style>
+
+<!--
+<link type="text/css" rel="stylesheet" href="https://business.juso.go.kr/juso_support_center/css/addrlink/common.css" />
+<link type="text/css" rel="stylesheet" href="https://business.juso.go.kr/juso_support_center/css/addrlink/map/addrlinkMap.css" />
+<link type="text/css" rel="stylesheet" href="https://business.juso.go.kr/juso_support_center/css/addrlink/map/style.css" />
+<link type="text/css" rel="stylesheet" href="https://business.juso.go.kr/juso_support_center/css/addrlink/map/ol.css" />
+<link type="text/css" rel="stylesheet" href="https://business.juso.go.kr/juso_support_center/css/addrlink/map/ol-ctrl.css" />
+<link type="text/css" rel="stylesheet" href="https://business.juso.go.kr/juso_support_center/css/addrlink/map/OverlayScrollbars.min.css" />
+-->
+
+<!--
+<script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/addrlink/map/jusoro_map_api.min.js?confmKey=U01TX0FVVEgyMDIzMDcyNjIyMTMzMjExMzk2NTU=&skinType="></script>
+-->
+
+<!--
+<script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/rnic-search.js"></script>
+<script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/addrlink/map/ol.js"></script>
+<script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/addrlink/map/OverlayScrollbars.min.js"></script>
+<script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/addrlink/map/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/addrlink/map/view-map.min.js"></script>
+<script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/addrlink/map/search-map.min.js"></script>
+-->
+
+<script type="text/javascript">
+//특수문자, 특정문자열(sql예약어) 제거
+function checkSearchedWordNew(obj){
+	obj.value = obj.value+" ";
+	//특수문자 제거
+	if(obj.value.length >0){
+		var expText = /[%=><]/ ;
+		if(expText.test(obj.value) == true){
+			obj.value = obj.value.split(expText).join(""); 
+		}
+		//체크 문자열
+		var sqlArray = new Array( //sql 예약어
+			"OR", "SELECT", "INSERT", "DELETE", "UPDATE", "CREATE", "DROP", "EXEC", "UNION",  "FETCH", "DECLARE", "TRUNCATE"
+		);
+		
+		var regex;
+		var regex_plus ;
+		for(var i=0; i<sqlArray.length; i++){
+			regex = new RegExp("\\s" + sqlArray[i] + "\\s","gi") ;
+			if (regex.test(obj.value)) {
+				obj.value =obj.value.replace(regex, "");
+				toast("\"" + sqlArray[i]+"\"와(과) 같은 특정문자로 검색할 수 없습니다.");
+			}
+			regex_plus = new RegExp( "\\+" + sqlArray[i] + "\\+","gi") ;
+			if (regex_plus.test(obj.value)) {
+				obj.value =obj.value.replace(regex_plus, "");
+				toast("\"" + sqlArray[i]+"\"와(과) 같은 특정문자로 검색할 수 없습니다.");
+			}
+		}
+	}
+	return obj.value = obj.value;
+}
+
+var prettifyXml = function(sourceXml)
+{
+    var xmlDoc = new DOMParser().parseFromString(sourceXml, 'application/xml');
+    var xsltDoc = new DOMParser().parseFromString([
+        // describes how we want to modify the XML - indent everything
+        '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
+        '  <xsl:strip-space elements="*"/>',
+        '  <xsl:template match="para[content-style][not(text())]">', // change to just text() to strip space in text nodes
+        '    <xsl:value-of select="normalize-space(.)"/>',
+        '  </xsl:template>',
+        '  <xsl:template match="node()|@*">',
+        '    <xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>',
+        '  </xsl:template>',
+        '  <xsl:output indent="yes"/>',
+        '</xsl:stylesheet>',
+    ].join('\n'), 'application/xml');
+
+    var xsltProcessor = new XSLTProcessor();    
+    xsltProcessor.importStylesheet(xsltDoc);
+    var resultDoc = xsltProcessor.transformToDocument(xmlDoc);
+    var resultXml = new XMLSerializer().serializeToString(resultDoc);
+    return resultXml;
+};
+
+var API_URL = "https://business.juso.go.kr";
+var GIS_SERVER_URL = "https://m1.juso.go.kr";
+function searchUrlJuso(searchType){
+	var frm = document.AKCFrm;
+	
+	if(searchType != '1' && searchType != '2'){
+		if(searchType == undefined || searchType == '') frm.searchType.value ='';
+		
+		frm.keyword.value = checkSearchedWordNew(frm.keyword); 	// 특수문자 및 sql예약어 제거
+		$("#keyword").val(validateJuso($("#keyword").val())); 	// 공백 및 특수문자 제거
+		if(!checkValidate1(frm.keyword, "검색어")) return;
+		else if(!checkValidate2(frm.keyword.value)) return;
+		$("#keyword").val(regExpCheckJuso($("#keyword").val()));
+	}else if(searchType == '1'){
+		frm.encryptYn.value = 'Y';
+	}
+	
+	
+	$.ajax({
+		 url :API_URL+"/addrlink/addrMapData.do"
+		,type:"post"
+		,data:$("#AKCFrm").serialize()
+		,dataType:"jsonp"
+		,crossDomain:true
+		,success:function(xmlStr){
+			console.log("xmlStr", xmlStr);
+			console.log("xmlStr.returnXml", xmlStr.returnXml);
+
+			$("#xmlContents").text(prettifyXml(xmlStr.returnXml));
+			
+			/*
+			if(navigator.appName.indexOf("Microsoft") > -1){
+				var xmlData = new ActiveXObject("Microsoft.XMLDOM");
+				xmlData.loadXML(xmlStr.returnXml)
+			}else{
+				var xmlData = xmlStr.returnXml;
+			}
+			$(".searchResult").html("");
+			var errCode = $(xmlData).find("errorCode").text();
+			var errDesc = $(xmlData).find("errorMessage").text();
+			
+			var totalCount = $(xmlData).find("totalCount").text();
+			var currentPage = $(xmlData).find("currentPage").text();
+			
+			if( parseInt(totalCount) > 1000 && currentPage == "1" )
+				toast("검색 결과가 너무 많습니다(1,000건 이상)\n검색어 예를 참조하여 검색하시기 바랍니다.");
+			
+			if(errCode != "0"){
+				alert(errDesc);
+			}else{
+				if(xmlStr != null){
+					makeList(xmlData, searchType);
+				}
+			}
+			*/
+		}
+	    ,error: function(xhr,status, error){
+	    	toast("검색에 실패하였습니다 \n 다시 검색하시기 바랍니다.");
+	    }
+	});
+	
+	$("#keyword").focus();		
+
+}
+
+
+function makeList(xmlStr, searchType){
+	
+	var num = 0; 
+	var htmlStr = "";
+		htmlStr += '<p class="text-guide">도로명주소 검색 결과 <strong>('+ $(xmlStr).find("totalCount").text()+'건)</strong></p>';
+		
+		htmlStr += '<table class="data-col" style="margin-top:3px;">';
+		htmlStr += '	<caption>검색 결과</caption>';
+		htmlStr += '	<tbody>';
+		
+		if( $(xmlStr).find("totalCount").text() == "0" ){
+			if(searchType == '1'){
+				searchUrlRoadIntrvl('1');
+			}else if(searchType == '2'){
+				htmlStr +=' ';
+				htmlStr += '<tr>';
+				htmlStr += '	<td><p class="textBox_searchInfo">검색된 내용이 없습니다.</p></td>';
+				htmlStr += '</tr>';
+				htmlStr +='';
+			}else{
+				var keyword_str = $("#keyword").val();
+				htmlStr +=' ';
+				htmlStr += '<tr>';
+				htmlStr += '	<td class="subj">';
+				htmlStr += '		<div>';
+				htmlStr += '			<p class="textBox_searchInfo">검색된 내용이 없습니다.</p>';
+				htmlStr += '			<div class="inbox2 detail_Infosearch">';
+				htmlStr += '				<h3>기초번호 위치찾기</h3>';
+				htmlStr += '				<div class="textBox">도로명주소가 부여되지 않은 기초번호로 위치를 조회할 수 있습니다.</div>';
+				htmlStr += '				<div style="color:#000; font-size:12px; padding:5px 0;">예시) 마포구 성암로 300</div>';
+				htmlStr += '				<a href="#" onclick="javascript:$(\'#currentPage\').val(1); goTabMove(\'intrvl\'); $(\'#roadintrvl_keyword\').val(\''+keyword_str+'\'); searchUrlRoadIntrvl();" id="" class="detailSearchInfoBtn" title="기초번호 조회"> 위치찾기 </a>';
+				htmlStr += '			</div>';
+				htmlStr += '		</div>';
+				htmlStr += '	</td>';
+				htmlStr += '</tr>';
+				htmlStr +='';
+			}
+			
+		}else{
+        
+			var currentPage = parseInt($(xmlStr).find("currentPage").text());
+			var countPerPage = parseInt($(xmlStr).find("countPerPage").text());
+			var listNum = (currentPage*countPerPage)-(--countPerPage);
+			num = 0; 
+			$(xmlStr).find("juso").each(function(){
+				num++;
+				
+				var resultType = $("input[name='resultType']").val(); 
+	
+				htmlStr += '<tr>';
+				if( resultType == "1" ){
+	
+					htmlStr += '	<td id="roadAddrTd'+num+'" class="subj">';
+					htmlStr += '		<a tabindex="4" href="javascript:setMaping(\''+num+'\')" style="color:inherit;">';
+					htmlStr += '			<div>';
+					htmlStr += '				<div id="roadAddrDiv'+num+'" class="subj_title"><b>'+$(this).find('roadAddr').text()+'</b>';
+					if($(this).find('hstryYn').text() == '1'){
+						htmlStr += '				<span class="reportBtn" title="검색 창에 입력한 키워드가 주소변동이력에 존재하는 경우, 현재 기준의 주소정보 표출">이력</span>';
+					}
+					htmlStr += '				</div>';
+					htmlStr += '			</div>';
+					htmlStr += '		</a>';
+					htmlStr += '		<div id="detListDivX'+num+'" style="display:none;" class="juso-detail">';
+					htmlStr += '			<span id="jibunAddrDiv'+num+'" style="display:none;">'+$(this).find('jibunAddr').text()+'</span>';
+					htmlStr +='				<div id="roadAddrPart1Div'+num+'" style="display:none;">'+$(this).find('roadAddrPart1').text()+'</div>';
+					htmlStr +='				<div id="roadAddrPart2Div'+num+'" style="display:none;">'+$(this).find('roadAddrPart2').text()+'</div>';
+					htmlStr +='				<div id="engAddrDiv'+num+'" style="display:none;">'+$(this).find('engAddr').text()+'</div>';
+					htmlStr += '		</div>';
+					htmlStr += '	</td>';
+					
+				}else{
+					
+					htmlStr += '	<td id="roadAddrTd'+num+'" class="subj" style="padding:10px 6px;">';
+					htmlStr += '		<a tabindex="4" href="javascript:setMaping(\''+num+'\')" style="color:inherit;">';
+					htmlStr += '			<div>';
+					htmlStr += '				<div id="roadAddrDiv'+num+'" class="subj_title"><b>'+$(this).find('roadAddr').text()+'</b>';
+					if($(this).find('hstryYn').text() == '1'){
+						htmlStr += '				<span class="reportBtn" title="검색 창에 입력한 키워드가 주소변동이력에 존재하는 경우, 현재 기준의 주소정보 표출">이력</span>';
+					}
+					htmlStr += '				</div>';
+					htmlStr +='				<span class="jusoNum">지번</span>&nbsp;<span id="jibunAddrDiv'+num+'">'+$(this).find('jibunAddr').text()+'</span>';
+					htmlStr += '			</div>';
+					htmlStr += '		</a>';
+					htmlStr += '		<div id="detListDivX'+num+'" style="display:none;" class="juso-detail">';
+					htmlStr +='				<div id="roadAddrPart1Div'+num+'" style="display:none;">'+$(this).find('roadAddrPart1').text()+'</div>';
+					htmlStr +='				<div id="roadAddrPart2Div'+num+'" style="display:none;">'+$(this).find('roadAddrPart2').text()+'</div>';
+					htmlStr +='				<div id="engAddrDiv'+num+'" style="display:none;">'+$(this).find('engAddr').text()+'</div>';
+					htmlStr += '		</div>';
+					htmlStr += '	</td>';
+					
+				}
+				htmlStr +='	<input type="hidden" id="zipNoHid'+num+'" value="'+$(this).find('zipNo').text()+'">';
+				htmlStr +='	<input type="hidden" id="admCdHid'+num+'" value="'+$(this).find('admCd').text()+'">';
+				htmlStr +='	<input type="hidden" id="rnMgtSnHid'+num+'" value="'+$(this).find('rnMgtSn').text()+'">';
+				htmlStr +='	<input type="hidden" id="bdMgtSnHid'+num+'" value="'+$(this).find('bdMgtSn').text()+'">';
+				htmlStr +='	<input type="hidden" id="detBdNmListHid'+num+'" value="'+$(this).find('detBdNmList').text()+'"> ';
+				htmlStr +='	<input type="hidden" id="bdNmHid'+num+'" value="'+$(this).find('bdNm').text()+'"> ';
+				htmlStr +='	<input type="hidden" id="bdKdcdHid'+num+'" value="'+$(this).find('bdKdcd').text()+'"> ';
+				htmlStr +='	<input type="hidden" id="siNmHid'+num+'" value="'+$(this).find('siNm').text()+'">';
+				htmlStr +='	<input type="hidden" id="sggNmHid'+num+'" value="'+$(this).find('sggNm').text()+'"> ';
+				htmlStr +='	<input type="hidden" id="emdNmHid'+num+'" value="'+$(this).find('emdNm').text()+'"> ';
+				htmlStr +='	<input type="hidden" id="liNmHid'+num+'" value="'+$(this).find('liNm').text()+'"> ';
+				htmlStr +='	<input type="hidden" id="rnHid'+num+'" value="'+$(this).find('rn').text()+'"> ';
+				htmlStr +='	<input type="hidden" id="udrtYnHid'+num+'" value="'+$(this).find('udrtYn').text()+'">  ';
+				htmlStr +='	<input type="hidden" id="buldMnnmHid'+num+'" value="'+$(this).find('buldMnnm').text()+'">  ';
+				htmlStr +='	<input type="hidden" id="buldSlnoHid'+num+'" value="'+$(this).find('buldSlno').text()+'">  ';
+				htmlStr +='	<input type="hidden" id="mtYnHid'+num+'" value="'+$(this).find('mtYn').text()+'">  ';
+				htmlStr +='	<input type="hidden" id="lnbrMnnmHid'+num+'" value="'+$(this).find('lnbrMnnm').text()+'">   ';
+				htmlStr +='	<input type="hidden" id="lnbrSlnoHid'+num+'" value="'+$(this).find('lnbrSlno').text()+'">  ';
+				htmlStr +='	<input type="hidden" id="emdNoHid'+num+'" value="'+$(this).find('emdNo').text()+'">  ';
+				htmlStr +='	<input type="hidden" id="entXHid'+num+'" value="'+$(this).find('entX').text()+'">  ';
+				htmlStr +='	<input type="hidden" id="entYHid'+num+'" value="'+$(this).find('entY').text()+'">  ';
+				htmlStr +='	<input type="hidden" name="txtNum" id="txtNum'+num+'" value="'+num+'">  ';
+				htmlStr +='	<input type="hidden" name="cenXHid" id="cenXHid'+num+'" value="'+$(this).find('cenX').text()+'">  ';
+				htmlStr +='	<input type="hidden" name="cenYHid" id="cenYHid'+num+'" value="'+$(this).find('cenY').text()+'">  ';
+				htmlStr +='	<input type="hidden" id="eqbManSnHid'+num+'" value="'+$(this).find('eqbManSn').text()+'">  ';
+				htmlStr +='	<input type="hidden" id="hemdNmHid'+num+'" value="'+$(this).find('hemdNm').text()+'">  ';
+				htmlStr +='	<input type="hidden" id="relJibunHid'+num+'" value="'+$(this).find('relJibun').text()+'">  ';
+				htmlStr +='	<input type="hidden" id="adrDcCountHid'+num+'" value="'+$(this).find('adrDcCount').text()+'">  ';
+				htmlStr +='</tr> ';				
+			});
+		}
+		
+		htmlStr += '	</tbody>';
+		htmlStr += "</table>";
+		htmlStr += '<div class="paginate" id="pageApi"></div>';
+	
+	
+	$(".searchResult").addClass("result");
+	$(".searchResult").html(htmlStr);
+	
+	if(num != 0 && (searchType == '1' || searchType == '2' || searchType == '3')){
+		setMaping('1');
+	}
+	
+	var browerName = navigator.appName;
+	var browerAgent = navigator.userAgent.toLowerCase();
+	if(browerName === 'Microsoft Internet Explorer' || browerAgent.indexOf('trident') > -1) {
+		$("#searchContentBox").css("min-height","425px");  // 로고 위치 지정
+	}else{
+		$("#searchContentBox").css("min-height","430px");  // 로고 위치 지정
+	}
+	
+	pageMake(xmlStr, searchType, '');
+	
+}
+// xml타입 페이지 처리 (주소정보 리스트 makeList(xmlData); 다음에서 호출) 
+function pageMake(xmlStr, searchType, callType){
+	var total = $(xmlStr).find("totalCount").text(); 	// 총건수
+	var pageNum =  $(xmlStr).find("currentPage").text();// 현재페이지
+	var paggingStr = "";
+	if(total < 1){
+		if(searchType == '2' || searchType == '3'){
+			initInfoLayer();
+			initMarkerLayer("all");
+			initToolTip("all");
+			$(".tabInfo").hide();
+			$("#mapBuldRoadInfo").hide();
+			$(".searchInfoMiniTooltop").hide();
+			
+			toast("검색된 내용이 없습니다.");
+		}
+	}else{
+		var PAGEBLOCK= 5;
+		var pageSize= 5;
+		var totalPages = Math.floor((total-1)/pageSize) + 1;
+		var firstPage = Math.floor((pageNum-1)/PAGEBLOCK) * PAGEBLOCK + 1;		
+		if( firstPage <= 0 ) firstPage = 1;		
+		var lastPage = firstPage-1 + PAGEBLOCK;
+		if( lastPage > totalPages ) lastPage = totalPages;		
+		var nextPage = lastPage+1 ;
+		var prePage = firstPage-5 ;
+		var callUrlFunction = '';
+		if(callType == 'roadIntrvl'){
+			callUrlFunction = 'searchUrlRoadIntrvl();';
+		}else{
+			callUrlFunction = 'searchUrlJuso();';
+		}
+		
+		if( firstPage > PAGEBLOCK ){
+			paggingStr +=  "<a class='skip prev10' href='javascript: $(\"#currentPage\").val(1); "+callUrlFunction+"'>처음으로</a>  ";
+			paggingStr +=  "<a class='skip prev' href='javascript: $(\"#currentPage\").val("+prePage+"); "+callUrlFunction+"'>이전으로</a>  ";
+		}
+		for( i=firstPage; i<=lastPage; i++ ){
+			if( pageNum == i )
+				paggingStr += "<strong>" + i + "</strong>  ";
+			else
+				paggingStr += "<a href='javascript:$(\"#currentPage\").val("+i+"); "+callUrlFunction+"'>" + i + "</a>  ";
+		}		
+		if( lastPage < totalPages ){
+			paggingStr +=  "<a class='skip next' href='javascript: $(\"#currentPage\").val("+nextPage+"); "+callUrlFunction+"'>다음으로</a>";
+		}		
+		$("#pageApi").html(paggingStr);
+		
+		if(!$(".totSearch").hasClass("os-host-scrollbar-vertical-hidden")){
+			$(".totSearch").overlayScrollbars({ overflowBehavior:{x:"none", y:"scroll"} });
+		}
+	}
+	
+	if(searchType == '1' || searchType == '2'){
+		if($("#searchWrap").is(":visible")){
+			if(!$("#divOcBox").children("img").hasClass("open")){
+				$("#divOcBox").children("img").addClass("open");
+				$(".searchWrap").addClass("close"); 
+				$(".mapAddrWrap").addClass("left");
+			}
+		}
+		$("#keyword").val("");
+	}else if(searchType == '3'){
+		if($("#searchWrap").is(":visible")){
+			$("#divOcBox").children("img").removeClass("open");
+			$(".searchWrap").removeClass("close"); 
+			$(".mapAddrWrap").removeClass("left");
+			
+			$("#keyword").focus();
+		}
+	}
+}
+
+// 기초번호 검색(별도의 검색input 추가)
+function searchUrlRoadIntrvl(searchType){
+	var frm = document.AKCFrm;
+	
+	if(searchType != '1' && searchType != '2'){
+		if(searchType == undefined || searchType == '') frm.searchType.value ='';
+		
+		frm.roadintrvl_keyword.value = checkSearchedWordNew(frm.roadintrvl_keyword); 	// 특수문자 및 sql예약어 제거
+		$("#roadintrvl_keyword").val(validateJuso($("#roadintrvl_keyword").val())); 	// 공백 및 특수문자 제거
+		if(!checkValidate1(frm.roadintrvl_keyword, "검색어")) return;
+		else if(!checkValidate2(frm.roadintrvl_keyword.value)) return;
+		$("#roadintrvl_keyword").val(regExpCheckJuso($("#roadintrvl_keyword").val()));
+	}else if(searchType == '1'){
+		frm.encryptYn.value = 'N';
+	}
+	
+	
+	$.ajax({
+		 url :API_URL+"/addrlink/addrMapRoadIntrvlData.do"
+		,type:"post"
+		,data:$("#AKCFrm").serialize()
+		,dataType:"jsonp"
+		,crossDomain:true
+		,success:function(xmlStr){
+			if(navigator.appName.indexOf("Microsoft") > -1){
+				var xmlData = new ActiveXObject("Microsoft.XMLDOM");
+				xmlData.loadXML(xmlStr.returnXml)
+			}else{
+				var xmlData = xmlStr.returnXml;
+			}
+			$(".searchResult").html("");
+			var errCode = $(xmlData).find("errorCode").text();
+			var errDesc = $(xmlData).find("errorMessage").text();
+			
+			var totalCount = $(xmlData).find("totalCount").text();
+			var currentPage = $(xmlData).find("currentPage").text();
+			
+			if( parseInt(totalCount) > 1000 && currentPage == "1" )
+				toast("검색 결과가 너무 많습니다(1,000건 이상)\n검색어 예를 참조하여 검색하시기 바랍니다.");
+			
+			if(errCode != "0"){
+				alert(errDesc);
+			}else{
+				if(xmlStr != null){
+					makeRoadIntrvlList(xmlData, searchType);
+				}
+			}
+		}
+	    ,error: function(xhr,status, error){
+	    	toast("검색에 실패하였습니다 \n 다시 검색하시기 바랍니다.");
+	    }
+	});
+	
+	$("#keyword").focus();		
+
+}
+
+function makeRoadIntrvlList(xmlStr, searchType){
+	
+	var num = 0;
+	var htmlStr = "";
+		htmlStr += '<p class="text-guide">기초번호 검색 결과 <strong>('+ $(xmlStr).find("totalCount").text()+'건)</strong></p>';
+		
+		htmlStr += '<table class="data-col" style="margin-top:3px;">';
+		htmlStr += '	<caption>검색 결과</caption>';
+		htmlStr += '	<tbody>';
+		
+		if( $(xmlStr).find("totalCount").text() == "0" ){
+			htmlStr +=' ';
+			htmlStr += '<tr>';
+			htmlStr += '	<td><p class="textBox_searchInfo" style="margin:5px;">검색된 내용이 없습니다.</p>';
+			htmlStr += '	</td>';
+			htmlStr += '</tr>';
+			htmlStr +='';
+			
+		}else{
+			if(searchType == '1' && !$(".roadintrvl-search-wrap").is(':visible')){
+				var str ='<ul><li><a href="javascript:goTabMove(\'addr\');">도로명주소</a></li>';
+				str += '<li><a href="javascript:goTabMove(\'intrvl\');"><b>기초번호</b><span class="bgColor2"></span></a></li></ul>';
+				
+				$(".search-wrap").hide();
+				$(".searchResult").hide();
+				$(".roadintrvl-search-wrap").show();
+				$(".roadintrvlSearchResult").show();
+				
+				$(".mapSubTab").html(str);
+			}
+			
+			var currentPage = parseInt($(xmlStr).find("currentPage").text());
+			var countPerPage = parseInt($(xmlStr).find("countPerPage").text());
+			var listNum = (currentPage*countPerPage)-(--countPerPage);
+			num = 0;
+			$(xmlStr).find("juso").each(function(){
+				num++;
+				
+				htmlStr += '<tr>';
+				htmlStr += '	<td id="roadAddrTd'+num+'" class="subj" style="padding:10px 6px;">';
+				htmlStr += '		<a tabindex="4" href="javascript:setRoadIntrvl(\''+num+'\');" style="color:inherit;">';
+				htmlStr += '			<div>';
+				htmlStr += '				<div id="roadAddrDiv'+num+'" class="subj_title" style="margin:5px 0;"><b>'+ $(this).find('ctpKorNm').text() +' '+ $(this).find('sigKorNm').text() +' '+ $(this).find('rnNm').text() +' '+ $(this).find('intrvlBsiMn').text() + ($(this).find('intrvlBsiSl').text() == '0' ? '' : '-'+$(this).find('intrvlBsiSl').text()) +'</b>';
+				htmlStr += '				</div>';
+				htmlStr += '			</div>';
+				htmlStr += '		</a>';
+				htmlStr += '	</td>';
+				htmlStr +='	<input type="hidden" id="sigCdHid'+num+'" value="'+$(this).find('sigCd').text()+'">';
+				htmlStr +='	<input type="hidden" id="ctpKorNmHid'+num+'" value="'+$(this).find('ctpKorNm').text()+'">';
+				htmlStr +='	<input type="hidden" id="sigKorNmHid'+num+'" value="'+$(this).find('sigKorNm').text()+'">';
+				htmlStr +='	<input type="hidden" id="rnCdHid'+num+'" value="'+$(this).find('rnCd').text()+'">';
+				htmlStr +='	<input type="hidden" id="rnNmHid'+num+'" value="'+$(this).find('rnNm').text()+'">';
+				htmlStr +='	<input type="hidden" id="intrvlBsiMnHid'+num+'" value="'+$(this).find('intrvlBsiMn').text()+'">';
+				htmlStr +='	<input type="hidden" id="intrvlBsiSlHid'+num+'" value="'+$(this).find('intrvlBsiSl').text()+'">';
+				htmlStr +='	<input type="hidden" id="pointXHid'+num+'" value="'+$(this).find('pointX').text()+'">';
+				htmlStr +='	<input type="hidden" id="pointYHid'+num+'" value="'+$(this).find('pointY').text()+'">';
+				htmlStr +='	<input type="hidden" id="mainRdsManNoHid'+num+'" value="'+$(this).find('mainRdsManNo').text()+'">';
+				htmlStr +='	<input type="hidden" id="rdsManNoListHid'+num+'" value="'+$(this).find('rdsManNoList').text()+'">';
+				htmlStr +='</tr> ';				
+			});
+		}
+		
+		htmlStr += '	</tbody>';
+		htmlStr += "</table>";
+		htmlStr += '<div class="paginate" id="pageApi"></div>';
+	
+	$(".roadintrvlSearchResult").addClass("result");
+	$(".roadintrvlSearchResult").html(htmlStr);
+	if(num != 0 && (searchType == '1' || searchType == '3')){
+		setRoadIntrvl(1);
+	}else{
+		// 좌표정보 검색 시, 결과없는 경우 위치이동
+		if(searchType == '1'){
+			initInfoLayer();
+			initMarkerLayer("all");
+			initToolTip("all");
+			$(".tabInfo").hide();
+			$("#mapBuldRoadInfo").hide();
+			$(".searchInfoMiniTooltop").hide();
+			
+			var frm = document.AKCFrm;
+			addLocMarker(frm.pointX.value, frm.pointY.value, 'N');
+			var xy = [frm.pointX.value, frm.pointY.value];
+			map.getView().setCenter([parseFloat(xy[0]), parseFloat(xy[1])]);
+			map.getView().setZoom(12);
+		}
+	}
+	
+	var browerName = navigator.appName;
+	var browerAgent = navigator.userAgent.toLowerCase();
+	if(browerName === 'Microsoft Internet Explorer' || browerAgent.indexOf('trident') > -1) {
+		$("#searchContentBox").css("min-height","425px");  // 로고 위치 지정
+	}else{
+		$("#searchContentBox").css("min-height","430px");  // 로고 위치 지정
+	}
+	pageMake(xmlStr, searchType, 'roadIntrvl');
+	
+}
+
+var v_sigCd;
+var v_rnCd;
+var v_rdsManNoList;
+function setRoadIntrvl(idx){
+	var sigCd = $("#sigCdHid"+idx).val();
+	var ctpKorNm = $("#ctpKorNmHid"+idx).val();
+	var sigKorNm = $("#sigKorNmHid"+idx).val();
+	var rnCd = $("#rnCdHid"+idx).val();
+	var rnNm = $("#rnNmHid"+idx).val();
+	var intrvlBsiMn = $("#intrvlBsiMnHid"+idx).val();
+	var intrvlBsiSl = $("#intrvlBsiSlHid"+idx).val();
+	var pointX = $("#pointXHid"+idx).val();
+	var pointY = $("#pointYHid"+idx).val();
+	var mainRdsManNo = $("#mainRdsManNoHid"+idx).val();
+	var rdsManNoList = $("#rdsManNoListHid"+idx).val();
+	var roadAddr = rnNm + ' ' + intrvlBsiMn + (intrvlBsiSl == 0 ? '' : '-'+intrvlBsiSl);
+	
+	mapCtrl("init");
+	ctrl_source.clear();
+	search_source.clear();
+	road_search_source.clear();
+	initMarkerLayer("all");
+	initToolTip("all");
+	$(".tabInfo").hide();
+	$("#mapBuldRoadInfo").hide();
+	
+	// 주소정보
+	createSearchInfoMiniTooltopRoadIntrvl(pointX, pointY, roadAddr);
+	$(".searchInfoMiniTooltop").show();
+	// 기초번호 라인
+	if(rdsManNoList.length != 0 && (bsis_line_source.getFeatures().length == 0 || v_sigCd!=sigCd || v_rnCd!=rnCd || v_rdsManNoList!=rdsManNoList)){
+		v_sigCd = sigCd;
+		v_rnCd = rnCd;
+		v_rdsManNoList = rdsManNoList;
+		mapBsiInfoSearch(sigCd, rnCd, rdsManNoList, mainRdsManNo);
+	}
+	// 기초번호 위치표기
+	map.getView().setCenter([parseFloat(pointX), parseFloat(pointY)]);
+	map.getView().setZoom(12);
+	addLocMarkerNew(pointX, pointY, 'N');
+}
+
+// 사용자 페이지에서 호출 정의
+window.addEventListener('message', function(e){
+	if(e.data.functionName == 'callJusoroMapApi'){
+		var frm = document.AKCFrm;
+		if(e.data.params[4] != undefined){
+			goTabMove('addr');
+			// 코드정보
+			frm.searchType.value = '2';
+			frm.admCd.value = e.data.params[0];
+			frm.rnMgtSn.value = e.data.params[1];
+			frm.udrtYn.value = e.data.params[2];
+			frm.buldMnnm.value = e.data.params[3];
+			frm.buldSlno.value = e.data.params[4];
+			
+			$('#currentPage').val(1); 
+			searchUrlJuso('2');
+		}else if(e.data.params[1] != undefined){
+			goTabMove('addr');
+			// 좌표정보
+			frm.searchType.value = '1';
+			frm.pointX.value = e.data.params[0];
+			frm.pointY.value = e.data.params[1];
+			
+			$('#currentPage').val(1); 
+			searchUrlJuso('1');
+		}else if(typeof e.data.params[0] == "object" && e.data.params[0].length > 0 &&
+				 typeof e.data.params[0][0][0] == "string" && typeof e.data.params[0][0][1] == "string" && typeof e.data.params[0][0][2] == "string"){
+			$(".tabInfo").hide();
+			$("#mapBuldRoadInfo").hide();
+			$(".searchInfoMiniTooltop").hide();
+			
+			goTabMove('addr');
+			// n개 마커
+			viewMapMultiPoint(e.data.params[0]);
+		}else if(e.data.params[0] != undefined && typeof e.data.params[0] == "string"){
+			goTabMove('addr');
+			// 검색어
+			frm.searchType.value = '3';
+			frm.keyword.value = e.data.params[0];
+			
+			$('#currentPage').val(1); 
+			searchUrlJuso('3');
+		}
+	}
+});
+
+
+function setMaping(idx){
+	var browerName = navigator.appName;
+	var browerAgent = navigator.userAgent.toLowerCase();
+	if(browerName === 'Microsoft Internet Explorer' || browerAgent.indexOf('trident') > -1) {
+		$("#searchContentBox").css("min-height","425px");  // 로고 위치 지정
+	}else{
+		$("#searchContentBox").css("min-height","430px");  // 로고 위치 지정
+	}
+	// 도로정보 호출 여부
+	$("#searchUrlRoadYn").val("N");
+	
+	var roadAddr = $("#roadAddrDiv"+idx).children("b").text();
+	var addrPart1 = $("#roadAddrPart1Div"+idx).text();
+	var addrPart2 = $("#roadAddrPart2Div"+idx).text();
+	var engAddr = $("#engAddrDiv"+idx).text();
+	var jibunAddr = $("#jibunAddrDiv"+idx).text();
+	var zipNo = $("#zipNoHid"+idx).val();
+	
+	var admCd = $("#admCdHid"+idx).val();
+	var rnMgtSn = $("#rnMgtSnHid"+idx).val();
+	var bdMgtSn = $("#bdMgtSnHid"+idx).val();
+	var detBdNmList = $("#detBdNmListHid"+idx).val();
+	var bdNm = $("#bdNmHid"+idx).val();
+	var bdKdcd = $("#bdKdcdHid"+idx).val();
+	var siNm = $("#siNmHid"+idx).val();
+	var sggNm = $("#sggNmHid"+idx).val();
+	var emdNm = $("#emdNmHid"+idx).val();
+	var liNm = $("#liNmHid"+idx).val();
+	var rn = $("#rnHid"+idx).val();
+	var udrtYn = $("#udrtYnHid"+idx).val();
+	var buldMnnm = $("#buldMnnmHid"+idx).val();
+	var buldSlno = $("#buldSlnoHid"+idx).val();
+	var mtYn = $("#mtYnHid"+idx).val();
+	var lnbrMnnm = $("#lnbrMnnmHid"+idx).val();
+	var lnbrSlno = $("#lnbrSlnoHid"+idx).val();
+	var emdNo = $("#emdNoHid"+idx).val();
+	var entX = $("#entXHid"+idx).val();
+	var entY = $("#entYHid"+idx).val();
+	var cenX = $("#cenXHid"+idx).val();
+	var cenY = $("#cenYHid"+idx).val();
+	var eqbManSn = $("#eqbManSnHid"+idx).val();
+	var hemdNm = $("#hemdNmHid"+idx).val();
+	var relJibun = $("#relJibunHid"+idx).val();
+	var adrDcCount = $("#adrDcCountHid"+idx).val();
+	
+	$("#rtRoadAddr").val(roadAddr);
+	$("#rtAddrPart1").val(addrPart1);
+	$("#rtAddrPart2").val(addrPart2);
+	$("#rtEngAddr").val(engAddr);
+	$("#rtJibunAddr").val(jibunAddr);
+	$("#rtZipNo").val(zipNo);
+	$("#rtAdmCd").val(admCd);
+	$("#rtRnMgtSn").val(rnMgtSn);
+	$("#rtBdMgtSn").val(bdMgtSn);
+	$("#rtEqbManSn").val(eqbManSn);
+	$("#rtCenX").val(cenX);
+	$("#rtCenY").val(cenY);
+	$("#rtEntX").val(entX);
+	$("#rtEntY").val(entY);
+	$("#rtDetBdNmList").val(detBdNmList);
+	$("#rtBdNm").val(bdNm);
+	$("#rtBdKdcd").val(bdKdcd);
+	$("#rtSiNm").val(siNm);
+	$("#rtSggNm").val(sggNm);
+	$("#rtEmdNm").val(emdNm);
+	$("#rtLiNm").val(liNm);
+	$("#rtRn").val(rn);
+	$("#rtUdrtYn").val(udrtYn);
+	$("#rtBuldMnnm").val(buldMnnm);
+	$("#rtBuldSlno").val(buldSlno);
+	$("#rtMtYn").val(mtYn);
+	$("#rtLnbrMnnm").val(lnbrMnnm);
+	$("#rtLnbrSlno").val(lnbrSlno);
+	$("#rtEmdNo").val(emdNo);
+
+	if(cenX == "" || cenY == "" || entX == "" || entY == ""){
+		toast("비공개 또는 공개제한 건물이 포함된 주소정보는 위치 및 상세정보를 제공하지 않습니다.");
+	}else{
+		// 위치이동
+		moveAndSelectLocationMap(cenX, cenY, entX, entY, eqbManSn, bdMgtSn, rnMgtSn);
+		// 주소정보창 초기화
+		searchInfoTabToggle($("#buldInfoTab"), 'buldInfo');
+		toggleLanguage('kor');
+		$(".popMiniBar").removeClass("dtlOpen");
+		$(".popMiniBar").children("div").children("img").removeClass("open");
+		$(".tabInfo .popAddrDtl").hide();
+		$(".tabInfo .popAddrDtl [name^=div_]").hide();
+		// 상세주소 닫기
+		if($(".bdInfo .popBtnDtl").hasClass("active")){
+			$(".bdInfo .popBtnDtl").removeClass("active"); 
+			$(".bdInfo .popBtnDtl").find("span").text("보기");
+			$(".popAddrOpt").hide();
+			$('.addrFullName').css('display','none');
+		 	$('.popWarning01').css('display','none');
+		}
+		
+		// 주소정보
+		$(".tabInfo").show();
+		createSearchInfoTooltop(entX, entY, '');
+		createSearchInfoMiniTooltop(entX, entY, roadAddr);
+		$("#mapBuldRoadInfo .bdInfo .popBtnDtl").on("click", function(){
+			if($(this).hasClass("active")){
+				$(this).removeClass("active"); 
+				$(".bdInfo .popBtnDtl").find("span").text("보기");
+				$(".popAddrOpt").hide();
+			}
+			else{
+				var admCd = $("#rtAdmCd").val();
+				var rnMgtSn = $("#rtRnMgtSn").val();
+				var udrtYn = $("#rtUdrtYn").val();
+				var buldMnnm = $("#rtBuldMnnm").val();
+				var buldSlno = $("#rtBuldSlno").val();
+				
+				// 상세주소(동) 가져오기
+				$.ajax({
+					 url :API_URL+"/addrlink/addrDetailApiJsonp.do"
+					,type:"post"
+					,data:{ "confmKey": "U01TX0FVVEgyMDIzMDcyNjIyMTMzMjExMzk2NTU=", "admCd": admCd, "rnMgtSn": rnMgtSn, "udrtYn": udrtYn, "buldMnnm": buldMnnm, "buldSlno": buldSlno, "searchType": "dong", "resultType": "json", "callback":"callbackAddrDong" }
+					,dataType:"jsonp"
+					,success:function(data){
+						callbackAddrDong(data);
+					}
+				    ,error: function(xhr,status, error){
+				    }
+				});
+				
+			}
+		});
+		
+		if($(".popMiniBar").hasClass("dtlOpen")){
+			$(".popMiniBar").removeClass("dtlOpen");
+			$(".popMiniBar").children("div").children("img").removeClass("open");
+			$(".tabInfo .popAddrDtl").css('display','none');
+			
+			// 상세주소 닫기
+			if($(".bdInfo .popBtnDtl").hasClass("active")){
+				$(".bdInfo .popBtnDtl").removeClass("active"); 
+				$(".bdInfo .popBtnDtl").find("span").text("보기");
+				$(".popAddrOpt").hide();
+				$('.addrFullName').css('display','none');
+			 	$('.popWarning01').css('display','none');
+			}
+		}
+			
+		$(".buldInfo .post").text(zipNo);
+		$(".addrKor .newaddr_nm_result").text(roadAddr);
+		$(".addrEng .engAddr_nm_result").text(engAddr);
+		$(".buldInfo .popAddrDtl .oldaddr_nm_result").text(siNm +' '+sggNm +' '+emdNm +(liNm!='' ? ' '+liNm:'') +' '+(mtYn=='1' ? '산':'')+lnbrMnnm+(lnbrSlno!='0' ? '-'+lnbrSlno:''));
+		if(relJibun != ""){
+			$(".buldInfo .popAddrDtl .oldaddr_nm_sub_result").show();
+			if(relJibun.length < 100){
+				$(".buldInfo .popAddrDtl .oldaddr_nm_sub_result").html('<span class="addrJuso">관련지번</span>&nbsp;' + relJibun);
+			}else{
+				$(".buldInfo .popAddrDtl .oldaddr_nm_sub_result").html('<span class="addrJuso">관련지번</span>&nbsp;' + relJibun.substring(0, 80) + '...<a href="#this" class="info-more" onclick="javascript:fullText(\'relJibun\', \''+ relJibun +'\');">더보기</a>');
+			}
+		}
+		if(hemdNm != ""){
+			$("div[name='div_juminCenter_nm_result']").show();
+			$(".buldInfo .popAddrDtl .juminCenter_nm_result").text(hemdNm);
+		}
+		if(bdNm != ""){
+			$(".buldInfo .popAddrDtl .bldnm_result").text(bdNm);
+		}else{
+			$(".buldInfo .popAddrDtl .bldnm_result").text("-");
+		}
+		if(adrDcCount != "0"){
+			$(".popBtnDtl.adrDcYn").show();
+		}else{
+			$(".popBtnDtl.adrDcYn").hide();
+		}
+		
+		if($(".popupBodyWrap .buldInfo").is(':visible') && !$(".popupBodyWrap .buldInfo").hasClass("os-host-scrollbar-vertical-hidden")){
+			$(".popupBodyWrap .buldInfo").overlayScrollbars({ overflowBehavior:{x:"none", y:"scroll"} });
+		}
+		$(".popupBody .buldInfo .buldInfoInner").overlayScrollbars({ overflowBehavior:{x:"none", y:"scroll"} });
+	}
+	
+	$("#keyword").focus();
+	
+}
+
+function fullText(type, fulText){
+	if(type == 'relJibun'){
+		$(".buldInfo .popAddrDtl .oldaddr_nm_sub_result").html('<span class="addrJuso">관련지번</span>&nbsp;' + fulText);
+	}
+}
+
+
+var detailAddrDongArry = [];
+var detailAddrArry = [];
+
+function getDetailAddrDong(){
+	var dong_arry = [];
+	var dong_html = '<option value="">\"동\" 선택</option>';
+	
+	for(var i=0; i < detailAddrDongArry.length; i++){
+		if(dong_arry.indexOf(detailAddrDongArry[i].dongNm) == -1){
+			dong_arry.push(detailAddrDongArry[i].dongNm);
+			if(detailAddrDongArry[i].dongNm != ''){
+				dong_html += '<option value="'+detailAddrDongArry[i].dongNm+'">' + detailAddrDongArry[i].dongNm + '</option>';
+			}else{
+				dong_html += '<option value="none">\"동\" 표기 없음</option>';
+			}
+		}
+	}
+	if(dong_arry.length == 0) dong_html = '<option value="none">\"동\" 표기 없음</option>';
+	$("select[name='detailAddrDong']").html(dong_html);
+	
+	if(dong_arry.length == 0){
+		getDetailAddrFloor('none');
+	}
+}
+
+function getDetailAddrFloor(val){
+	// 상세주소(층/호) 가져오기
+	$.ajax({
+		 url :API_URL+"/addrlink/addrDetailApiJsonp.do"
+		,type:"post"
+		,data:{ "confmKey": "U01TX0FVVEgyMDIzMDcyNjIyMTMzMjExMzk2NTU=", "admCd": $("#rtAdmCd").val(), "rnMgtSn": $("#rtRnMgtSn").val(), "udrtYn": $("#rtUdrtYn").val(), "buldMnnm": $("#rtBuldMnnm").val(), "buldSlno": $("#rtBuldSlno").val(), "searchType": "floorho", "dongNm": val, "resultType": "json", "callback":"callbackAddrFloor" }
+		,dataType:"jsonp"
+		,success:function(data){
+			callbackAddrFloor(data, val);
+		}
+	    ,error: function(xhr,status, error){
+	    }
+	});
+}
+
+function callbackAddrFloor(data, val){
+	var floor_arry = [];
+	var floor_html = '<option value="">\"층\" 선택</option>';
+	var under_floor_arry = [];
+	var under_floor_html = '';
+	
+	if(data.results != undefined){
+		detailAddrArry = data.results.juso;
+		
+		for(var i=0; i < detailAddrArry.length; i++){
+			if(detailAddrArry[i].floorNm != '' && detailAddrArry[i].floorNm.indexOf("지하") > -1 && under_floor_arry.indexOf(detailAddrArry[i].floorNm) == -1){
+				//지하
+				if((val == '' || val == 'none') || (val != '' && detailAddrArry[i].dongNm == val)){
+					under_floor_arry.push(detailAddrArry[i].floorNm);
+					if(val != '') under_floor_html += '<option value="'+detailAddrArry[i].floorNm+'">' + detailAddrArry[i].floorNm + '</option>';
+				}
+			}else if(detailAddrArry[i].floorNm.indexOf("지하") == -1 && floor_arry.indexOf(detailAddrArry[i].floorNm) == -1){
+				//지상
+				if((val == '' || val == 'none') || (val != '' && detailAddrArry[i].dongNm == val)){
+					floor_arry.push(detailAddrArry[i].floorNm);
+					if(val != '') {
+						if(detailAddrArry[i].floorNm != ''){
+							floor_html += '<option value="'+detailAddrArry[i].floorNm+'">' + detailAddrArry[i].floorNm + '</option>';
+						}else{
+							floor_html += '<option value="none">\"층\" 표기 없음</option>';
+						}
+					}
+				}
+			}
+		}
+		
+		if(floor_arry.length == 0 && under_floor_arry.length == 0 ) floor_html = '<option value="none">\"층\" 표기 없음</option>';
+		if(floor_arry.length == 0 && under_floor_arry.length != 0 ) floor_html += '<option value="none">\"층\" 표기 없음</option>';
+		if(under_floor_arry.length != 0) floor_html += under_floor_html;
+		if(val!=''){
+			$("select[name='detailAddrFloor']").html(floor_html);
+		}else{
+			$("select[name='detailAddrFloor']").html('<option value="">\"층\" 선택</option>');
+		}
+		$("select[name='detailAddrDong']").val(val);
+		
+		if(val != '' && (floor_arry.length != 0 || under_floor_arry.length != 0)){
+			$("select[name='detailAddrHo']").html('<option value="">\"호\" 선택</option>');
+		}else if((val == '' || val=='none')){
+			getDetailAddrHo('floor', val);
+		}else if(val != '' && (floor_arry.length == 0 && under_floor_arry.length == 0)){
+			getDetailAddrHo('dong', val);
+		}
+	}
+}
+
+function getDetailAddrHo(gubun, val){
+	var ho_arry = [];
+	var ho_html = '<option value="">\"호\" 선택</option>';
+	// 층 선택하기전에 선택한 동 정보
+	var dong_selected = ($("#detailAddrDong option:selected").val() == "none" ? "" : $("#detailAddrDong option:selected").val());
+	var floor_selected = (val == "none" ? "" : val);
+	
+	for(var i=0; i < detailAddrArry.length; i++){
+		if(gubun == 'floor'){
+			if(ho_arry.indexOf(detailAddrArry[i].hoNm) == -1){
+				if((val == '') || ((val != '' || val == 'none') && detailAddrArry[i].dongNm == dong_selected && detailAddrArry[i].floorNm == floor_selected)){
+					ho_arry.push(detailAddrArry[i].hoNm);
+					if(val != ''){
+						if(detailAddrArry[i].hoNm != ''){
+							ho_html += '<option value="'+detailAddrArry[i].hoNm+'">' + detailAddrArry[i].hoNm + '</option>';
+						}else{
+							ho_html += '<option value="none">\"호\" 표기 없음</option>';
+						}
+					}
+				}
+			}
+		}else if(gubun == 'dong'){
+			if(ho_arry.indexOf(detailAddrArry[i].hoNm) == -1){
+				if(val != '' && detailAddrArry[i].dongNm == val){
+					ho_arry.push(detailAddrArry[i].hoNm);
+					if(val != ''){
+						if(detailAddrArry[i].hoNm != ''){
+							ho_html += '<option value="'+detailAddrArry[i].hoNm+'">' + detailAddrArry[i].hoNm + '</option>';
+						}else{
+							ho_html += '<option value="none">\"호\" 표기 없음</option>';
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	if(ho_arry.length == 0) ho_html = '<option value="none">\"호\" 표기 없음</option>';
+	if(val != ''){
+		$("select[name='detailAddrHo']").html(ho_html);
+	}else if(val == ''){
+		$("select[name='detailAddrHo']").html('<option value="">\"호\" 선택</option>');
+	}else if(val == 'none' && ho_arry.length == 0){
+		$("select[name='detailAddrHo']").html('<option value="none">\"호\" 표기 없음</option>');
+	}else if(val == 'none' && ho_arry.length != 0){
+		$("select[name='detailAddrHo']").html('<option value="">\"호\" 선택</option>');
+	}
+	
+	$("select[name='detailAddrFloor']").val(val);
+	
+}
+
+function getDetailAddr(val){
+	var rtAddrPart1 = $.trim($("#rtAddrPart1").val());
+	var rtAddrPart2 = $.trim($("#rtAddrPart2").val());
+	var dongNm = $.trim($("#detailAddrDong").val());
+	if(dongNm == 'none') dongNm ='';
+	var floorNm = $.trim($("#detailAddrFloor").val());
+	if(floorNm == 'none') floorNm ='';
+	$("select[name='detailAddrHo']").val(val);
+	var hoNm = $.trim($("#detailAddrHo").val());
+	if(hoNm == 'none') hoNm ='';
+	
+	var rtAddrDetail = '';
+	// 호정보에 층정보 체크
+	if( hoNm.substring(0,hoNm.indexOf("호")).length >= 3 && (hoNm.substring(0,hoNm.length-3) == floorNm.substring(0,floorNm.length-1) )){
+		$("span[name='fullDetailjusoGuide']").css('display','');
+		if(dongNm!=''){
+			rtAddrDetail = dongNm + (hoNm!='' ? ' '+ hoNm : '');
+		}else{
+			rtAddrDetail = hoNm;
+		}
+	}else{
+		$("span[name='fullDetailjusoGuide']").css('display','none');
+		if(dongNm!=''){
+			rtAddrDetail = dongNm + (floorNm!='' ? ' '+ floorNm : '') + (hoNm!='' ? ' '+ hoNm : '');
+		}else{
+			rtAddrDetail = (floorNm!='' ? floorNm : '') + (hoNm!='' ? ' '+ hoNm : '');
+		}
+	}
+	
+	// 도로명주소 + 상세주소
+	var rtRoadFullAddr = rtAddrPart1;
+	if(rtAddrDetail != "" && rtAddrDetail != null){
+		rtRoadFullAddr += ", " + rtAddrDetail;
+	}
+	if(rtAddrPart2 != "" && rtAddrPart2 != null){
+		rtRoadFullAddr += "" + rtAddrPart2;
+	}
+	$("span[name='fullDetailjuso']").text(rtRoadFullAddr);
+	
+	// 클립보드 저장
+	$("span[name='clipBtn']").attr('onclick',"javascript:clip('"+rtRoadFullAddr+"');");
+	
+	$('.addrFullName').css('display','');
+ 	$('.popWarning01').css('display','');
+}
+
+
+function enterSearchUrl() {
+	var evtCode = (window.netscape) ? ev.which : event.keyCode;
+	if (evtCode == 13) {    
+		if(!($("#divOcBox").children("img").hasClass("open"))){
+			event.keyCode = 0;
+			$('#currentPage').val(1);
+			if($(".search-wrap").is(':visible')){
+				$(".search-wrap").show();
+				$(".searchResult").show();
+				$(".roadintrvl-search-wrap").hide();
+				$(".roadintrvlSearchResult").hide();
+				
+				searchUrlJuso(); 
+			}else if($(".roadintrvl-search-wrap").is(':visible')){
+				$(".search-wrap").hide();
+				$(".searchResult").hide();
+				$(".roadintrvl-search-wrap").show();
+				$(".roadintrvlSearchResult").show();
+				
+				searchUrlRoadIntrvl();
+			}
+		} 
+	}
+}
+
+// 도로정보
+function searchUrlRoad(){
+	if($("#searchUrlRoadYn").val() == "N"){
+		$.ajax({
+			 url :API_URL+"/addrlink/roadInfoData.do"
+			,type:"post"
+			,data:{"rnMgtSn":$("#rtRnMgtSn").val()}
+			,dataType:"jsonp"
+			,crossDomain:true
+			,success:function(xmlStr){
+				callbackRoadInfo(xmlStr);
+			}
+		    ,error: function(xhr,status, error){
+		    }
+		});
+	}
+}
+
+function callbackRoadInfo(xmlStr){
+	if(navigator.appName.indexOf("Microsoft") > -1){
+		var xmlData = new ActiveXObject("Microsoft.XMLDOM");
+		xmlData.loadXML(xmlStr.returnXml)
+	}else{
+		var xmlData = xmlStr.returnXml;
+	}
+	
+	// 도로정보 호출 여부
+	$("#searchUrlRoadYn").val("Y");
+	
+	var rnMgtSn = $(xmlData).find("rnMgtSn").text();
+	var siNm = $(xmlData).find("siNm").text();
+	var sggNm = $(xmlData).find("sggNm").text();
+	var rdNm = $(xmlData).find("rdNm").text();
+	var scaleSe = $(xmlData).find("scaleSe").text();
+	var srtCn = $(xmlData).find("srtCn").text();
+	var endCn = $(xmlData).find("endCn").text();
+	var grantDe = $(xmlData).find("grantDe").text();
+	var noticeYmd = $(xmlData).find("noticeYmd").text();
+	var useYn = $(xmlData).find("useYn").text();
+	var disuseDe = $(xmlData).find("disuseDe").text();
+	var xid = $(xmlData).find("xid").text();
+	var roadLt = $(xmlData).find("roadLt").text();
+	var mainRn = $(xmlData).find("mainRn").text();
+	var effectDe = $(xmlData).find("effectDe").text();
+	
+	$("span[name='rdNm_result']").text(siNm + (sggNm!='' ? ' '+ sggNm:'') + ' ' + rdNm);
+	$("span[name='span_mapRoadInfoSearch']").attr("onclick", "javascript:mapRoadInfoSearch('"+rnMgtSn+"', '');");
+	$("span[name='span_getRdsManNo']").attr("onclick", "javascript:getRdsManNo('"+rnMgtSn.substr(0,5)+"', '"+rnMgtSn.substr(5,7)+"', '');");
+	$("span[name='strEndCn_result']").text(srtCn + ' → ' + endCn);
+	$("span[name='roadLt_result']").text(formatCommaStr(roadLt));
+	$("span[name='noticeYmd_result']").text((noticeYmd!='' ? noticeYmd.substr(0,4)+'.'+noticeYmd.substr(4,2)+'.'+noticeYmd.substr(6,2):'-') + ' / ' + (effectDe!='' ? effectDe.substr(0,4)+'.'+effectDe.substr(4,2)+'.'+effectDe.substr(6,2):'-'));
+	if(grantDe != ''){
+		$("span[name='grantDe_result']").text(grantDe);
+	}else{
+		$("span[name='grantDe_result']").text('-');
+	}
+}
+
+function includeLink(linkPath){
+	var outerLink = document.createElement("link");
+	outerLink.type = "text/css";
+	outerLink.rel = "stylesheet";
+	outerLink.href =linkPath;
+	document.body.appendChild(outerLink);
+}
+function includeJs(jsPath){
+	var outerJs = document.createElement("script");
+	outerJs.type = "text/javascript";
+	outerJs.src =jsPath;
+	document.body.appendChild(outerJs);
+}
+function chkConfmKey(){
+	var confmKey='U01TX0FVVEgyMDIzMDcyNjIyMTMzMjExMzk2NTU=';
+	var scripts = document.getElementsByTagName('script');
+	var myScript;
+	var myScriptIndex = -1;
+	for(var x=0; x < scripts.length; x++ ){
+		if(scripts[x].src.indexOf('jusoro_map_api.min.js?') != -1){
+			myScriptIndex = x;
+			myScript = scripts[x];
+		}
+	}
+	
+	if(myScriptIndex == -1){
+		alert('지도API 호출형식이 잘못되었습니다. 활용가이드를 참고하시기 바랍니다.');
+		return '';
+	}else{
+		var frm = document.AKCFrm;
+		var param=[];
+		var temp = myScript.src.replace(/^[^\?]+\?/, '').replace(/#.+$/, '').split('&');
+		var regex = /^[0-9]+$/g;
+		
+		for(var x=0; x < temp.length; x++){
+			var params = temp[x];
+			if(typeof params != "undefined"){
+				param[0] = params.substr(0, params.indexOf('='));
+				param[1] = params.substr(params.indexOf('=')+1);
+				if(param[1] == null || param[1] == 'null') param[1]='';
+				
+				if(param[0] == 'confmKey'){
+					confmKey = "U01TX0FVVEgyMDIzMDcyNjIyMTMzMjExMzk2NTU=";
+					frm.confmKey.value = "U01TX0FVVEgyMDIzMDcyNjIyMTMzMjExMzk2NTU=";
+				}else if(param[0] == 'resultType' && param[1] != ''){
+					frm.resultType.value = param[1];
+				}else if(param[0] == 'skinType' && param[1] != ''){
+					frm.skinType.value = param[1];
+				}else if(param[0] == 'countPerPage' && regex.test(param[1])){
+					var tempVal = param[1];
+					if(tempVal > 20) tempVal = 20;
+					if(tempVal < 5) tempVal = 5;
+					frm.countPerPage.value = tempVal;
+				}
+			}
+		}
+	}
+	
+	return confmKey;
+}
+
+function getParameter(){
+	var scripts = document.getElementsByTagName('script');
+	var myScript;
+	var myScriptIndex = -1;
+	for(var x=0; x < scripts.length; x++ ){
+		if(scripts[x].src.indexOf('jusoro_map_api.min.js?') != -1){
+			myScriptIndex = x;
+			myScript = scripts[x];
+		}
+	}
+	
+	var temp;
+	var param=[];
+	var frm = document.AKCFrm;
+	if(myScriptIndex == -1){
+		alert('지도API 호출형식이 잘못되었습니다. 활용가이드를 참고하시기 바랍니다.');
+		return;
+	}else{
+		temp = myScript.src.replace(/^[^\?]+\?/, '').replace(/#.+$/, '').split('&');
+		for(var x=0; x < temp.length; x++){
+			var params = temp[x];
+			if(typeof params != "undefined"){
+				param[0] = params.substr(0, params.indexOf('='));
+				param[1] = params.substr(params.indexOf('=')+1);
+				if(param[1] == null || param[1] == 'null') param[1]='';
+				
+				if(param[0] == 'searchType' && param[1] != ''){
+					frm.searchType.value = param[1];
+				}else if(param[0] == 'pointX' && param[1] != ''){
+					frm.pointX.value = param[1];
+				}else if(param[0] == 'pointY' && param[1] != ''){
+					frm.pointY.value = param[1];
+				}else if(param[0] == 'admCd' && param[1] != ''){
+					frm.admCd.value = param[1];
+				}else if(param[0] == 'rnMgtSn' && param[1] != ''){
+					frm.rnMgtSn.value = param[1];
+				}else if(param[0] == 'udrtYn' && param[1] != ''){
+					frm.udrtYn.value = param[1];
+				}else if(param[0] == 'buldMnnm' && param[1] != ''){
+					frm.buldMnnm.value = param[1];
+				}else if(param[0] == 'buldSlno' && param[1] != ''){
+					frm.buldSlno.value = param[1];
+				}else if(param[0] == 'keyword' && param[1] != ''){
+					frm.keyword.value = decodeURIComponent(param[1]);
+				}
+			}
+		}
+		
+		if((frm.searchType.value == '1' && frm.pointX.value != '' && frm.pointY.value != '') ||
+			(frm.searchType.value == '2' && frm.admCd.value != '' && frm.rnMgtSn.value != '' && frm.udrtYn.value != '' && frm.buldMnnm.value != '' && frm.buldSlno.value != '') ||
+			(frm.searchType.value == '3' && frm.keyword.value != '')
+		){
+			$('#currentPage').val(1); 
+			searchUrlJuso(frm.searchType.value);
+		}
+	}
+}
+
+if(document.readyState != 'loading'){
+	init();
+}else{
+	document.addEventListener("DOMContentLoaded", function(){
+		init();
+	});
+}
+
+var chkConfmYn ='N';
+var chkResult ='';
+function init(){
+	/*
+	includeLink(API_URL+'/juso_support_center/css/addrlink/common.css');
+	includeLink(API_URL+'/juso_support_center/css/addrlink/map/addrlinkMap.css');
+	includeLink(API_URL+'/juso_support_center/css/addrlink/map/style.css');
+	includeLink(API_URL+'/juso_support_center/css/addrlink/map/ol.css');
+	includeLink(API_URL+'/juso_support_center/css/addrlink/map/ol-ctrl.css');
+	includeLink(API_URL+'/juso_support_center/css/addrlink/map/OverlayScrollbars.min.css');
+	includeJs(API_URL+'/juso_support_center/js/jquery-1.12.4.min.js');
+	includeJs(API_URL+'/juso_support_center/js/rnic-search.js');
+	includeJs(API_URL+'/juso_support_center/js/addrlink/map/ol.js');
+	*/
+	
+	// 검색용 Form
+	var mapWrap = document.getElementById('mapWrap');
+	var AKCFrm = document.createElement('form');
+	AKCFrm.setAttribute('id', 'AKCFrm');
+	AKCFrm.setAttribute('name', 'AKCFrm');
+	AKCFrm.setAttribute('method', 'post');
+	
+	var AKCFrmHtml ="";
+	AKCFrmHtml += '<input type="text" name="" id="" style="display:none;"/>';
+	AKCFrmHtml += '<input type="hidden" name="iframe"  value="" />';
+	AKCFrmHtml += '<input type="hidden" name="returnUrl"  value="" />';
+	AKCFrmHtml += '<input type="hidden" name="reqstUrl"   value="" />';
+	AKCFrmHtml += '<input type="hidden" name="confmKey" value="U01TX0FVVEgyMDIzMDcyNjIyMTMzMjExMzk2NTU=" />';
+	AKCFrmHtml += '<input type="hidden" name="encodingType"   value="UTF-8" />';
+	AKCFrmHtml += '<input type="hidden" name="cssUrl" value="" />';
+	AKCFrmHtml += '<input type="hidden" name="resultType" value="2" />';
+	AKCFrmHtml += '<input type="hidden" name="skinType" value="3" />';
+	AKCFrmHtml += '<input type="hidden" name="currentPage" id="currentPage" value="1" />';
+	AKCFrmHtml += '<input type="hidden" name="countPerPage" value="5" />';
+	AKCFrmHtml += '<input type="hidden" name="rtRoadAddr"  id="rtRoadAddr"  />';
+	AKCFrmHtml += '<input type="hidden" name="rtAddrPart1" id="rtAddrPart1" />';
+	AKCFrmHtml += '<input type="hidden" name="rtAddrPart2" id="rtAddrPart2" />';
+	AKCFrmHtml += '<input type="hidden" name="rtEngAddr"   id="rtEngAddr"   />';
+	AKCFrmHtml += '<input type="hidden" name="rtJibunAddr" id="rtJibunAddr" />';
+	AKCFrmHtml += '<input type="hidden" name="rtZipNo" id="rtZipNo" />';
+	AKCFrmHtml += '<input type="hidden" name="rtAdmCd" id="rtAdmCd" />';
+	AKCFrmHtml += '<input type="hidden" name="rtRnMgtSn" id="rtRnMgtSn" />';
+	AKCFrmHtml += '<input type="hidden" name="rtBdMgtSn" id="rtBdMgtSn" />';
+	AKCFrmHtml += '<input type="hidden" name="rtEqbManSn" id="rtEqbManSn" />';
+	AKCFrmHtml += '<input type="hidden" name="rtCenX" id="rtCenX" />';
+	AKCFrmHtml += '<input type="hidden" name="rtCenY" id="rtCenY" />';
+	AKCFrmHtml += '<input type="hidden" name="rtEntX" id="rtEntX" />';
+	AKCFrmHtml += '<input type="hidden" name="rtEntY" id="rtEntY" />';
+	AKCFrmHtml += '<input type="hidden" name="rtDetBdNmList" id="rtDetBdNmList" />';
+	AKCFrmHtml += '<input type="hidden" name="rtBdNm" id="rtBdNm" />';
+	AKCFrmHtml += '<input type="hidden" name="rtBdKdcd" id="rtBdKdcd" />';
+	AKCFrmHtml += '<input type="hidden" name="rtSiNm" id="rtSiNm" />';
+	AKCFrmHtml += '<input type="hidden" name="rtSggNm" id="rtSggNm" />';
+	AKCFrmHtml += '<input type="hidden" name="rtEmdNm" id="rtEmdNm" />';
+	AKCFrmHtml += '<input type="hidden" name="rtLiNm" id="rtLiNm" />';
+	AKCFrmHtml += '<input type="hidden" name="rtRn" id="rtRn" />';
+	AKCFrmHtml += '<input type="hidden" name="rtUdrtYn" id="rtUdrtYn" />';
+	AKCFrmHtml += '<input type="hidden" name="rtBuldMnnm" id="rtBuldMnnm" />';
+	AKCFrmHtml += '<input type="hidden" name="rtBuldSlno" id="rtBuldSlno" />';
+	AKCFrmHtml += '<input type="hidden" name="rtMtYn" id="rtMtYn" />';
+	AKCFrmHtml += '<input type="hidden" name="rtLnbrMnnm" id="rtLnbrMnnm" />';
+	AKCFrmHtml += '<input type="hidden" name="rtLnbrSlno" id="rtLnbrSlno" />';
+	AKCFrmHtml += '<input type="hidden" name="rtEmdNo" id="rtEmdNo" />';
+	AKCFrmHtml += '<input type="hidden" name ="dsgubuntext"   id="dsgubuntext" />';
+	AKCFrmHtml += '<input type="hidden" name ="dscity1text"   id="dscity1text" />';
+	AKCFrmHtml += '<input type="hidden" name ="dscounty1text" id="dscounty1text" />';
+	AKCFrmHtml += '<input type="hidden" name ="dsemd1text"    id="dsemd1text" />';
+	AKCFrmHtml += '<input type="hidden" name ="dsri1text"     id="dsri1text" />';
+	AKCFrmHtml += '<input type="hidden" name ="dsrd_nm1text"  id="dsrd_nm1text" />';
+	AKCFrmHtml += '<input type="hidden" name ="dssan1text"    id="dssan1text" />';
+	AKCFrmHtml += '<input type="hidden" name ="hstryYn" 	   id="hstryYn" 	value="" />';
+	AKCFrmHtml += '<input type="hidden" name ="firstSort" 	   id="firstSort" 	value="" />';
+	AKCFrmHtml += '<input type="hidden" name ="addInfoYn"     id="addInfoYn" 	value="Y" />';
+	AKCFrmHtml += '<input type="hidden" name ="searchType"    id="searchType" value="" />';
+	AKCFrmHtml += '<input type="hidden" name ="searchUrlRoadYn"    id="searchUrlRoadYn" value="N" />';
+	AKCFrmHtml += '<input type="hidden" name="admCd" id="admCd" />';
+	AKCFrmHtml += '<input type="hidden" name="rnMgtSn" id="rnMgtSn" />';
+	AKCFrmHtml += '<input type="hidden" name="udrtYn" id="udrtYn" />';
+	AKCFrmHtml += '<input type="hidden" name="buldMnnm" id="buldMnnm" />';
+	AKCFrmHtml += '<input type="hidden" name="buldSlno" id="buldSlno" />';
+	AKCFrmHtml += '<input type="hidden" name="pointX" id="pointX" />';
+	AKCFrmHtml += '<input type="hidden" name="pointY" id="pointY" />';
+	AKCFrmHtml += '<input type="hidden" name="encryptYn" id="encryptYn" />';
+	
+	AKCFrmHtml += '<div id="toast" class="jusoPcToast"></div>';
+	AKCFrmHtml += '<div class="mapContainer"><div class="mapBox"><div id="map" class="map"></div></div></div>';
+	AKCFrmHtml += '<div id="searchWrap" class="searchWrap close"></div>';
+	AKCFrmHtml += '<div id="mapAreaWrap" class="mapAddrWrap left"></div>';
+	AKCFrmHtml += '<div id="controllWrap"></div>';
+	AKCFrmHtml += '<div id="legendWrap" class="popupWrap legend"></div>';
+	AKCFrmHtml += '<div id="addrDetail1Wrap" class="addrDetail1Wrap"></div>';
+	AKCFrmHtml += '<div id="addrDetail2Wrap" class="addrDetail2Wrap"></div>';
+	
+	AKCFrm.innerHTML = AKCFrmHtml + AKCFrm.innerHTML;
+	mapWrap.appendChild(AKCFrm);
+}
+
+function goTabMove(type){
+	var str='';
+	if(type =='addr'){
+		//도로명주소 검색
+		str ='<ul><li><a href="javascript:goTabMove(\'addr\');"><b>도로명주소</b><span class="bgColor1"></span></a></li>';
+		str += '<li><a href="javascript:goTabMove(\'intrvl\');">기초번호</a></li></ul>';
+		
+		$(".search-wrap").show();
+		$(".searchResult").show();
+		$(".roadintrvl-search-wrap").hide();
+		$(".roadintrvlSearchResult").hide();
+		
+		$("input[name='keyword']").val("");
+		$(".searchResult").html("");
+		$("input[name='keyword']").focus();
+		
+	}else if(type =='intrvl'){
+		//기초번호 검색
+		str ='<ul><li><a href="javascript:goTabMove(\'addr\');">도로명주소</a></li>';
+		str += '<li><a href="javascript:goTabMove(\'intrvl\');"><b>기초번호</b><span class="bgColor2"></span></a></li></ul>';
+		
+		$(".search-wrap").hide();
+		$(".searchResult").hide();
+		$(".roadintrvl-search-wrap").show();
+		$(".roadintrvlSearchResult").show();
+		
+		$("input[name='roadintrvl_keyword']").val("");
+		$(".roadintrvlSearchResult").html("");
+		$("input[name='roadintrvl_keyword']").focus();
+	}
+	$(".mapSubTab").html(str);
+	
+}
+
+window.onload = function(){
+	setTimeout(function(){
+		// 승인키 확인
+		var confmKey= chkConfmKey();
+		
+		$.ajax({
+			 url :API_URL+"/addrlink/chkApiConfmKey.do"
+			,type:"post"
+			,data:{ "confmKey": "U01TX0FVVEgyMDIzMDcyNjIyMTMzMjExMzk2NTU=", "cntcInfo": "MAPAPI", "callback": "callbackOnLoad" }
+			,dataType:"jsonp"
+			,success:function(data){
+				callbackOnLoad(data);
+			}
+		    ,error: function(xhr,status, error){
+		    	toast("오류발생");
+		    }
+		});
+	}, 300);
+}
+
+function callbackOnLoad(data){
+	chkResult = data.returnXml;
+	var index=-1;
+	if(chkResult.indexOf('<confmYn>')!=-1){
+		chkConfmYn = chkResult.substr(chkResult.indexOf('<confmYn>')+'<confmYn>'.length, 1); 
+	}
+	
+	if(chkConfmYn == 'Y'){
+		var addStyleHtml = '';
+		var addStyle = document.createElement("style");
+		addStyle.type = "text/css";
+		if(document.AKCFrm.skinType.value == "1"){
+			addStyleHtml = '.searchInfoMiniTooltop{display: block;} .searchWrap{display: none;} .mapAddrWrap{display: none;} .addrDetail1Wrap{display: none;} .addrDetail1Wrap .tabInfo{width:100%;margin:0;} .searchInfoTooltip .addrDetail2Wrap .addrInfo{display: none;} .zoomLevel{display: none;} .zoomTip span{display: none;} .controll ul{display: none;}';
+		}else if(document.AKCFrm.skinType.value == "2"){
+			addStyleHtml = '.searchInfoMiniTooltop{display: none;} .searchWrap{display: none;} .addrDetail1Wrap{display: block;} .addrDetail1Wrap .tabInfo{width:100%;margin:0;} .searchInfoTooltip .addrDetail2Wrap .addrInfo{display: none;}';
+		}else if(document.AKCFrm.skinType.value == "4"){
+			addStyleHtml += '.searchInfoMiniTooltop{display: none;} .searchWrap{display: block;} .addrDetail1Wrap{display: none;} .addrDetail1Wrap .tabInfo{width:100%;margin:0;} .searchInfoTooltip .addrDetail2Wrap .addrInfo{display: block !important;}';
+		}else {
+			addStyleHtml += '.searchInfoMiniTooltop{display: none;} .searchWrap{display: block;} .addrDetail1Wrap{width:100%;margin:0;display: block;}  .searchInfoTooltip .addrDetail2Wrap .addrInfo{display: none;}';
+		}
+		addStyle.innerHTML = addStyleHtml;
+		document.body.appendChild(addStyle);
+		
+		// mapScale
+		var addMapWrap = document.getElementById("map");
+		var addDiv = document.createElement("div");
+		addDiv.setAttribute('id', 'mapScale');
+		addDiv.setAttribute('class', 'mapScale');
+		addDiv.innerHTML = '<span class="mapScaleMeter">500m</span>';
+		addMapWrap.parentNode.insertBefore(addDiv, addMapWrap.nextSibling);
+		
+		/*
+		includeJs(API_URL+'/juso_support_center/js/addrlink/map/OverlayScrollbars.min.js');
+		includeJs(API_URL+'/juso_support_center/js/addrlink/map/jquery-ui.min.js');
+		includeJs(API_URL+'/juso_support_center/js/addrlink/map/view-map.min.js');
+		includeJs(API_URL+'/juso_support_center/js/addrlink/map/search-map.min.js');
+		*/
+		
+		// 지도
+		document.getElementById("map").src = GIS_SERVER_URL + "/OpenLayers/Map/tilemapView.html";
+		
+		// 검색영역
+		var addSearchWrapHtml = '';
+		var addSearchWrap = document.getElementById("searchWrap");
+		addSearchWrapHtml += '<div class="totSearch searchBox">';
+		addSearchWrapHtml += '	<div class="pop-address-search pop-address-search-line" style="min-width: 350px;">';
+		addSearchWrapHtml += '		<div class="pop-address-search-inner">';
+		addSearchWrapHtml += '			<div id="searchContentBox" style="min-height: 430px;">';
+		if(typeof img_logo != "undefined" && img_logo != ''){
+    			addSearchWrapHtml += '		<div class="logo" style="background: url('+img_logo+') 50% 0 no-repeat;display: block;" >&nbsp;</div>';
+    	}else{
+    			addSearchWrapHtml += '		<div class="logo" style="display: block;" >&nbsp;</div>';
+    	}
+		addSearchWrapHtml += '				<div class="mapSubTab"><ul>';
+		addSearchWrapHtml += '					<li><a href="javascript:goTabMove(\'addr\');"><b>도로명주소</b><span class="bgColor1"></span></a></li>';
+		addSearchWrapHtml += '					<li><a href="javascript:goTabMove(\'intrvl\');">기초번호</a></li>';
+		addSearchWrapHtml += '				</ul></div>';
+		addSearchWrapHtml += '				<div class="search-wrap">';
+		addSearchWrapHtml += '					<fieldset>';
+		addSearchWrapHtml += '						<legend>도로명주소 검색</legend>';
+		addSearchWrapHtml += '						<span class="wrap bgborder_color1" style="width: calc(100% - 32px); margin: 0 0 0 15px;">';
+		addSearchWrapHtml += '							<input type="text" class="popSearchInput" title="검색어 -예시 : 도로명(반포대로 58), 건물명(독립기념관), 지번(삼성동 25)" name="keyword" id="keyword" value="" onkeydown="enterSearchUrl();" tabindex="1"/>';
+		addSearchWrapHtml += '							<input type="button" title="검색"  tabindex="2" onclick="javascript:$(\'#currentPage\').val(1); searchUrlJuso();" style=" cursor: pointer;"/>';
+		addSearchWrapHtml += '						</span>';
+		addSearchWrapHtml += '						<div class="juso_info" style="width: 100%; margin: 7px 0 0 15px;">';
+		addSearchWrapHtml += '							<div class="juso_info_w">';
+		addSearchWrapHtml += '								<input tabindex="3" type="checkbox" id="ckHstryYn" name="ckHstryYn" title="변동된 주소정보 포함" style="cursor: pointer;" />';
+		addSearchWrapHtml += '								<label for="ckHstryYn" >변동된 주소정보 포함</label>';
+		addSearchWrapHtml += '							</div>';
+		addSearchWrapHtml += '							<p class="search-sampletxt text_color1">예시 : 도로명(반포대로 58), 지번(삼성동 25)</p>';
+		addSearchWrapHtml += '						</div>';
+		addSearchWrapHtml += '					</fieldset>';
+		addSearchWrapHtml += '				</div>';
+		addSearchWrapHtml += '				<div class="searchResult" style="margin: 15px 15px 5px 15px;"></div>';
+		addSearchWrapHtml += '				<div class="roadintrvl-search-wrap" style="display:none;">';
+		addSearchWrapHtml += '					<fieldset>';
+		addSearchWrapHtml += '						<legend>기초번호 검색</legend>';
+		addSearchWrapHtml += '						<span class="wrap bgborder_color2" style="width: calc(100% - 32px); margin: 0 0 0 15px;">';
+		addSearchWrapHtml += '							<input type="text" class="popSearchInput" title="검색어 -예시 : 도로명(반포대로 58)" name="roadintrvl_keyword" id="roadintrvl_keyword" value="" onkeydown="enterSearchUrl();" tabindex="1"/>';
+		addSearchWrapHtml += '							<input type="button" title="검색"  tabindex="2" onclick="javascript:$(\'#currentPage\').val(1); searchUrlRoadIntrvl();" style=" cursor: pointer;"/>';
+		addSearchWrapHtml += '						</span>';
+		addSearchWrapHtml += '						<div class="juso_info" style="width: 100%; margin: 7px 0 0 15px;">';
+		addSearchWrapHtml += '							<p class="search-sampletxt text_color2">예시 : 도로명(반포대로 58)</p>';
+		addSearchWrapHtml += '						</div>';
+		addSearchWrapHtml += '					</fieldset>';
+		addSearchWrapHtml += '				</div>';
+		addSearchWrapHtml += '				<div class="roadintrvlSearchResult" style="margin: 15px 15px 5px 15px;display:none;"></div>';
+		addSearchWrapHtml += '			</div>';
+		addSearchWrapHtml += '		</div>';
+		addSearchWrapHtml += '	</div>';
+		addSearchWrapHtml += '</div>';
+		addSearchWrapHtml += '<div id="divOcBox" class="ocBox"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_nav_arrow.png" alt="arrow" class="open" /></div>';
+		addSearchWrap.innerHTML = addSearchWrapHtml;
+		
+		// 맵지역 영역
+		var addMapAreaWrapHtml = '';
+		var addMapAreaWrap = document.getElementById("mapAreaWrap");
+		addMapAreaWrapHtml += '<input type="hidden" id="gpsEmdCd" name="gpsEmdCd"/>';
+		addMapAreaWrapHtml += '<span class="ctprvnNm">서울특별시</span>';
+		addMapAreaWrapHtml += '<span class="division">></span>';
+		addMapAreaWrapHtml += '<span class="sigNm">중구</span>';
+		addMapAreaWrapHtml += '<span class="division">></span>';
+		addMapAreaWrapHtml += '<span class="emdNm">태평로2가</span>';
+		addMapAreaWrap.innerHTML = addMapAreaWrapHtml;
+		
+		// 컨트롤러 영역
+		var addControllWrapHtml = '';
+		var addControllWrap = document.getElementById("controllWrap");
+		addControllWrapHtml += '<div class="controll">';
+		addControllWrapHtml += '	<div class="zoomIconBox">';
+		addControllWrapHtml += '		<div class="zoomIcon" data-index="1" style="padding: 9px 0;" onclick="javascript:map_zoomCont(\'in\');"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_controll_8.png" alt="icon" class="mConIcon"></div>';
+		addControllWrapHtml += '		<div class="zoomLevel" data-step="1">';
+		addControllWrapHtml += '			<div class="zoomLevelStep step14" onclick="javascript:map_setZoomLvl(14);"><div></div></div>';
+		addControllWrapHtml += '			<div class="zoomLevelStep step13" onclick="javascript:map_setZoomLvl(13);"><div></div></div>';
+		addControllWrapHtml += '			<div class="zoomLevelStep step12" onclick="javascript:map_setZoomLvl(12);"><div></div></div>';
+		addControllWrapHtml += '			<div class="zoomLevelStep step11" onclick="javascript:map_setZoomLvl(11);"><div></div></div>';
+		addControllWrapHtml += '			<div class="zoomLevelStep step10" data-text="읍면동" onclick="javascript:map_setZoomLvl(10);"><div></div></div>';
+		addControllWrapHtml += '			<div class="zoomLevelStep step9" onclick="javascript:map_setZoomLvl(9);"><div></div></div>';
+		addControllWrapHtml += '			<div class="zoomLevelStep step8" onclick="javascript:map_setZoomLvl(8);"><div></div></div>';
+		addControllWrapHtml += '			<div class="zoomLevelStep step7" data-text="시군구" onclick="javascript:map_setZoomLvl(7);"><div></div></div>';
+		addControllWrapHtml += '			<div class="zoomLevelStep step6" onclick="javascript:map_setZoomLvl(6);"><div></div></div>';
+		addControllWrapHtml += '			<div class="zoomLevelStep step5" onclick="javascript:map_setZoomLvl(5);"><div></div></div>';
+		addControllWrapHtml += '			<div class="zoomLevelStep step4" data-text="시도" onclick="javascript:map_setZoomLvl(4);"><div></div></div>';
+		addControllWrapHtml += '			<div class="zoomLevelStep step3" onclick="javascript:map_setZoomLvl(3);"><div></div></div>';
+		addControllWrapHtml += '			<div class="zoomLevelStep step2" onclick="javascript:map_setZoomLvl(2);"><div></div></div>';
+		addControllWrapHtml += '			<div class="zoomLevelStep step1" data-text="국가" onclick="javascript:map_setZoomLvl(1);"><div></div></div>';
+		addControllWrapHtml += '			<div class="zoomBtn"></div>';
+		addControllWrapHtml += '		</div>';
+		addControllWrapHtml += '		<div class="zoomIcon" data-index="-1" style="padding: 15px 0;" onclick="javascript:map_zoomCont(\'out\');"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_controll_9.png" alt="icon" class="mConIcon"></div>';
+		addControllWrapHtml += '	</div>';
+		addControllWrapHtml += '	<ul>';
+		addControllWrapHtml += '		<li data-text="초기화" class="mt10" style="padding: 9px 0;line-height: 0;" onclick="javascript:mapAllInit();"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_controll_1.png" alt="icon"></li>';
+		addControllWrapHtml += '		<li data-text="거리" id="map_ctrl_dist" style="padding: 9px 0;line-height: 0;" onclick="javascript:mapCtrl(\'dist\');" class="ctrl_btn"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_controll_2.png" alt="icon"></li>';
+		addControllWrapHtml += '		<li data-text="면적" id="map_ctrl_area" style="padding: 9px 0;line-height: 0;" onclick="javascript:mapCtrl(\'area\');" class="ctrl_btn"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_controll_3.png" alt="icon"></li>';
+		addControllWrapHtml += '		<li data-text="범례" id="map_ctrl_legend" class="mt10" style="padding: 9px 0;line-height: 0;" onclick="javascript:ctrlLayerOpen(\'legend\', this);"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_controll_6.png" alt="icon"></li>';
+		addControllWrapHtml += '		<li data-text="레이어" id="map_ctrl_layers" data-pop="conSubMenuBox" class="mapLayers"></li>';
+		addControllWrapHtml += '	</ul>';
+		addControllWrapHtml += '</div>';
+		addControllWrapHtml += '<div class="controllTip"><span></span></div>';
+		addControllWrapHtml += '<div class="zoomTip zoomTip1"><span>국가</span></div>';
+		addControllWrapHtml += '<div class="zoomTip zoomTip2"><span>시도</span></div>';
+		addControllWrapHtml += '<div class="zoomTip zoomTip3"><span>시군구</span></div>';
+		addControllWrapHtml += '<div class="zoomTip zoomTip4"><span>읍면동</span></div>';
+		addControllWrapHtml += '<div class="zoomTip zoomTip5"><span>1단계 확대</span></div>';
+		addControllWrapHtml += '<div class="zoomTip zoomTip6"><span>1단계 축소</span></div>';
+		addControllWrapHtml += '';
+		addControllWrapHtml += '<div class="conSubMenuBox">';
+		addControllWrapHtml += '	<div class="conSubPos">';
+		addControllWrapHtml += '		<div class="conSubMenu conMenu1">';
+		addControllWrapHtml += '			<div class="conTitle mapFacBtn"><span>민원행정기관</span></div>';
+		addControllWrapHtml += '			<ul class="mapFacUl">';
+		addControllWrapHtml += '				<li class="facPoBtn" onclick="javascript:viewFacilitiesList(\'Po\', \'\');">';
+		addControllWrapHtml += '					<div class="inline conSubImg"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_con_sub1.png" alt="submenu"></div>';
+		addControllWrapHtml += '					<div class="inline conSubTxt"><span>경찰서</span></div>';
+		addControllWrapHtml += '				</li>';
+		addControllWrapHtml += '				<li class="facScBtn" onclick="javascript:viewFacilitiesList(\'Sc\', \'\');">';
+		addControllWrapHtml += '					<div class="inline conSubImg"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_con_sub2.png" alt="submenu"></div>';
+		addControllWrapHtml += '					<div class="inline conSubTxt"><span>학교</span></div>';
+		addControllWrapHtml += '				</li>';
+		addControllWrapHtml += '				<li class="facEPoBtn" onclick="javascript:viewFacilitiesList(\'EPo\', \'\');">';
+		addControllWrapHtml += '					<div class="inline conSubImg"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_con_sub3.png" alt="submenu"></div>';
+		addControllWrapHtml += '					<div class="inline conSubTxt"><span>우체국</span></div>';
+		addControllWrapHtml += '				</li>';
+		addControllWrapHtml += '				<li class="facGovBtn" onclick="javascript:viewFacilitiesList(\'Gov\', \'\');">';
+		addControllWrapHtml += '					<div class="inline conSubImg"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_con_sub4.png" alt="submenu"></div>';
+		addControllWrapHtml += '					<div class="inline conSubTxt"><span>관공서</span></div>';
+		addControllWrapHtml += '				</li>';
+		addControllWrapHtml += '				<li class="facHcBtn" onclick="javascript:viewFacilitiesList(\'Hc\', \'\');">';
+		addControllWrapHtml += '					<div class="inline conSubImg"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_con_sub5.png" alt="submenu"></div>';
+		addControllWrapHtml += '					<div class="inline conSubTxt"><span>보건소</span></div>';
+		addControllWrapHtml += '				</li>';
+		addControllWrapHtml += '				<li class="facLawBtn" onclick="javascript:viewFacilitiesList(\'Law\', \'\');">';
+		addControllWrapHtml += '					<div class="inline conSubImg"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_con_sub6.png" alt="submenu"></div>';
+		addControllWrapHtml += '					<div class="inline conSubTxt"><span>법원/병무</span></div>';
+		addControllWrapHtml += '				</li>';
+		addControllWrapHtml += '				<li class="facTaxBtn" onclick="javascript:viewFacilitiesList(\'Tax\', \'\');">';
+		addControllWrapHtml += '					<div class="inline conSubImg"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_con_sub7.png" alt="submenu"></div>';
+		addControllWrapHtml += '					<div class="inline conSubTxt"><span>관세/국세</span></div>';
+		addControllWrapHtml += '				</li>';
+		addControllWrapHtml += '			</ul>';
+		addControllWrapHtml += '		</div>';
+		addControllWrapHtml += '		<div class="conSubMenu conMenu2">';
+		addControllWrapHtml += '			<div class="conTitle mapEmdBtn" onclick="javascript:mapLayerView(\'EMD\');"><span>행정구역</span></div>';
+		addControllWrapHtml += '		</div>';
+		addControllWrapHtml += '		<div class="conSubMenu conMenu3">';
+		addControllWrapHtml += '			<div class="conTitle mapBasBtn" onclick="javascript:mapLayerView(\'BAS\');"><span>기초구역</span></div>';
+		addControllWrapHtml += '		</div>';
+		addControllWrapHtml += '	</div>';
+		addControllWrapHtml += '</div>';
+		addControllWrap.innerHTML = addControllWrapHtml;
+		
+		// 지도범례 영역
+		var addLegendWrapHtml = '';
+		var addLegendWrap = document.getElementById("legendWrap");
+		addLegendWrapHtml += '<div class="popupTitle" style="cursor:auto;">';
+		addLegendWrapHtml += '	<span>지도 범례</span>';
+		addLegendWrapHtml += '	<div class="popClose"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_close.png" alt="닫기"></div>';
+		addLegendWrapHtml += '</div>';
+		addLegendWrapHtml += '<div class="popupBody">';
+		addLegendWrapHtml += '	<ul class="legList">';
+		addLegendWrapHtml += '		<li><div class="inline"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_legend1.png" alt="아파트"></div><span>아파트</span></li>';
+		addLegendWrapHtml += '		<li><div class="inline"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_legend2.png" alt="관공서"></div><span>관공서</span></li>';
+		addLegendWrapHtml += '		<li><div class="inline"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_legend3.png" alt="경찰서"></div><span>경찰서</span></li>';
+		addLegendWrapHtml += '		<li><div class="inline"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_legend4.png" alt="소방서"></div><span>소방서</span></li>';
+		addLegendWrapHtml += '		<li><div class="inline"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_legend5.png" alt="우체국"></div><span>우체국</span></li>';
+		addLegendWrapHtml += '		<li><div class="inline"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_legend6.png" alt="교육시설"></div><span>교육시설</span></li>';
+		addLegendWrapHtml += '		<li><div class="inline"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_legend7.png" alt="의료시설"></div><span>의료시설</span></li>';
+		addLegendWrapHtml += '		<li><div class="inline"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_legend8.png" alt="쇼핑시설"></div><span>쇼핑시설</span></li>';
+		addLegendWrapHtml += '		<li><div class="inline"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_legend9.png" alt="금융시설"></div><span>금융시설</span></li>';
+		addLegendWrapHtml += '		<li><div class="inline"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_legend10.png" alt="숙박시설"></div><span>숙박시설</span></li>';
+		addLegendWrapHtml += '		<li><div class="inline"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_legend11.png" alt="도서관"></div><span>도서관</span></li>';
+		addLegendWrapHtml += '		<li><div class="inline"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_legend12.png" alt="공항"></div><span>공항</span></li>';
+		addLegendWrapHtml += '		<li><div class="inline"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_legend13.png" alt="주차장"></div><span>주차장</span></li>';
+		addLegendWrapHtml += '		<li><div class="inline"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_legend14.png" alt="주유소"></div><span>주유소</span></li>';
+		addLegendWrapHtml += '	</ul>';
+		addLegendWrapHtml += '</div>';
+		addLegendWrap.innerHTML = addLegendWrapHtml;
+		
+		// 주소상세정보 영역
+		var addAddrDetailWrapHtml = '';
+		var addAddrDetailWrap = document.getElementById("addrDetail1Wrap");
+		addAddrDetailWrapHtml += '<div class="popupWrap tabInfo">';
+		addAddrDetailWrapHtml += '<div class="popMiniBar" style="cursor:pointer;">';
+		addAddrDetailWrapHtml += '	<div><img src="'+API_URL+'/juso_support_center/img_addrlink/btn-fold-open_w.png" alt="arrow" class=""></div>';
+		addAddrDetailWrapHtml += '</div>';
+		addAddrDetailWrapHtml += '<div id="addrDetailWrap" class="addrDetailWrap">';
+		addAddrDetailWrapHtml += '<div class="popupBody">';
+		addAddrDetailWrapHtml += '	<div class="popupBodyWrap">';
+		addAddrDetailWrapHtml += '	<div class="buttonWrap">';
+		addAddrDetailWrapHtml += '		<img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_close_black.png" class="tabInfoClose"  alt="닫기" style="top: 26px; position: absolute; right: 7px; padding: 10px; z-index: 9; cursor:pointer;"/>';
+		addAddrDetailWrapHtml += '	</div>';
+		addAddrDetailWrapHtml += '	<div class="popTabBox">';
+		addAddrDetailWrapHtml += '		<ul>';
+		addAddrDetailWrapHtml += '			<li id="buldInfoTab" class="buldInfoTab active" onclick="javascript:searchInfoTabToggle(this, \'buldInfo\');">건물정보</li>';
+		addAddrDetailWrapHtml += '			<li class="roadInfoTab" onclick="javascript:searchInfoTabToggle(this, \'roadInfo\'); searchUrlRoad();">도로정보</li>';
+		addAddrDetailWrapHtml += '		</ul>';
+		addAddrDetailWrapHtml += '	</div>';
+		addAddrDetailWrapHtml += '	';
+		addAddrDetailWrapHtml += '	<div class="popTab popTab1 buldInfo" style="overflow-y:scroll;max-height:400px;">';
+		addAddrDetailWrapHtml += '		<div>';
+		addAddrDetailWrapHtml += '			<div class="popAddr toggle addrKor" >';
+		addAddrDetailWrapHtml += '				<div><span class="post"></span><span class="newaddr_nm_result"></span></div>';
+		addAddrDetailWrapHtml += '				<div style="width: 75px;"><span onclick="toggleLanguage(\'eng\');">영문</span><span onclick="clip($(\'#addrDetailWrap .newaddr_nm_result\').text());">복사</span></div>';
+		addAddrDetailWrapHtml += '			</div>';
+		addAddrDetailWrapHtml += '			<div class="popAddr toggle addrEng" style="display:none;" >';
+		addAddrDetailWrapHtml += '				<div><span class="post"></span><span class="engAddr_nm_result"></span></div>';
+		addAddrDetailWrapHtml += '				<div style="width: 75px;"><span onclick="toggleLanguage(\'kor\');">국문</span><span onclick="clip($(\'#addrDetailWrap .engAddr_nm_result\').text());">복사</span></div>';
+		addAddrDetailWrapHtml += '			</div>';
+		addAddrDetailWrapHtml += '		</div>';
+		addAddrDetailWrapHtml += '		<div class="popAddrDtl" style="display: none;">';
+		addAddrDetailWrapHtml += '			<div class="popAddrDtlSub">';
+		addAddrDetailWrapHtml += '				<span class="leftName">지번주소</span>';
+		addAddrDetailWrapHtml += '				<div class="popAddrDtlSubInfo">';
+		addAddrDetailWrapHtml += '					<span class="oldaddr_nm_result" style="display:block;"></span>';
+		addAddrDetailWrapHtml += '					<span name="div_oldaddr_nm_sub_result" class="oldaddr_nm_sub_result" style="padding-left:0px;"></span>';
+		addAddrDetailWrapHtml += '				</div>';
+		addAddrDetailWrapHtml += '			</div>';
+		addAddrDetailWrapHtml += '			<div name="div_juminCenter_nm_result" style="display: none;">';
+		addAddrDetailWrapHtml += '				<span class="leftName juminCenter">관할주민센터</span>';
+		addAddrDetailWrapHtml += '				<span class="juminCenter_nm_result"></span>';
+		addAddrDetailWrapHtml += '			</div>';
+		addAddrDetailWrapHtml += '			<div>';
+		addAddrDetailWrapHtml += '				<span class="leftName">건물명</span>';
+		addAddrDetailWrapHtml += '				<span class="bdInfo">';
+		addAddrDetailWrapHtml += '					<span class="bldnm_result" ></span>';
+		addAddrDetailWrapHtml += '					<span id="span_popBtnDtl" class="popBtnDtl adrDcYn" style="display:inline-block;">';
+		addAddrDetailWrapHtml += '						상세주소 (동, 층, 호)';
+		addAddrDetailWrapHtml += '						<span class="group_nm_result">보기</span>';
+		addAddrDetailWrapHtml += '						<img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_triangle.png" alt="triangle" />';
+		addAddrDetailWrapHtml += '					</span>';
+		addAddrDetailWrapHtml += '				</span>';
+		addAddrDetailWrapHtml += '			</div>';
+		addAddrDetailWrapHtml += '		</div>';
+		addAddrDetailWrapHtml += '		<div class="popAddrOpt">';
+		addAddrDetailWrapHtml += '			<legend class="blind">상세주소(동·층·호)를 선택하세요</legend>';
+		addAddrDetailWrapHtml += '			<div class="selectOpt">';
+		addAddrDetailWrapHtml += '				<select name="detailAddrDong" id="detailAddrDong" title="상세주소 동선택" class="select sel_dong" onchange="javascript:getDetailAddrFloor(this.value);">';
+		addAddrDetailWrapHtml += '					<option value="">"동" 선택</option>';
+		addAddrDetailWrapHtml += '				</select>';
+		addAddrDetailWrapHtml += '				<select name="detailAddrFloor" id="detailAddrFloor" title="상세주소 층선택" class="select sel_floor" onchange="javascript:getDetailAddrHo(\'floor\', this.value);">';
+		addAddrDetailWrapHtml += '					<option value="">"층" 선택</option>';
+		addAddrDetailWrapHtml += '				</select>';
+		addAddrDetailWrapHtml += '				<select name="detailAddrHo" id="detailAddrHo" title="상세주소 호선택" class="select sel_ho" onchange="javascript:getDetailAddr(this.value);">';
+		addAddrDetailWrapHtml += '					<option value="">"호" 선택</option>';
+		addAddrDetailWrapHtml += '				</select>';
+		addAddrDetailWrapHtml += '			</div>';
+		addAddrDetailWrapHtml += '			<div class="addrFullName" style="display:none;">';
+		addAddrDetailWrapHtml += '				<span name="fullDetailjuso"></span>';
+		addAddrDetailWrapHtml += '				<span name="clipBtn">복사</span>';
+		addAddrDetailWrapHtml += '			</div>';
+		addAddrDetailWrapHtml += '			<div class="popWarning01" style="display:none;">';
+		addAddrDetailWrapHtml += '				<span name="fullDetailjusoGuide" style="display:none;">※ 위 주소는 \'호\'에 \'층\'정보가 포함되어 있어, 층을 생략하여 표기할 수 있습니다.</span>';
+		addAddrDetailWrapHtml += '			</div>';
+		addAddrDetailWrapHtml += '		</div>';
+		addAddrDetailWrapHtml += '	</div>';
+		addAddrDetailWrapHtml += '	<div class="popTab popTab2 roadInfo" style="display: none;">';
+		addAddrDetailWrapHtml += '		<div class="popAddr toggle">';
+		addAddrDetailWrapHtml += '			<div><span name="rdNm_result"> - </span></div>';
+		// addAddrDetailWrapHtml += '			<div style="width: 160px;"><span name="span_mapRoadInfoSearch" title="도로구간 보기">도로구간 보기</span><span name="span_getRdsManNo" title="기초번호 보기">기초번호 보기</span></div>';
+		addAddrDetailWrapHtml += '			<div style="width: 160px;"></div>';
+		addAddrDetailWrapHtml += '		</div>';
+		addAddrDetailWrapHtml += '		<div class="popAddrDtl" style="display: none;">';
+		addAddrDetailWrapHtml += '			<div>';
+		addAddrDetailWrapHtml += '				<span class="leftName">기점/종점</span>';
+		addAddrDetailWrapHtml += '				<span name="strEndCn_result"> - </span>';
+		addAddrDetailWrapHtml += '			</div>';
+		addAddrDetailWrapHtml += '			<div>';
+		addAddrDetailWrapHtml += '				<span class="leftName">길이(m)</span>';
+		addAddrDetailWrapHtml += '				<span name="roadLt_result"> - </span>';
+		addAddrDetailWrapHtml += '			</div>';
+		addAddrDetailWrapHtml += '			<div>';
+		addAddrDetailWrapHtml += '				<span class="leftName">고시일/효력발생일</span>';
+		addAddrDetailWrapHtml += '				<span name="noticeYmd_result"> - </span>';
+		addAddrDetailWrapHtml += '			</div>';
+		addAddrDetailWrapHtml += '			<div>';
+		addAddrDetailWrapHtml += '				<span class="leftName">도로명 부여사유</span>';
+		addAddrDetailWrapHtml += '				<span name="grantDe_result"> - </span>';
+		addAddrDetailWrapHtml += '			</div>';
+		addAddrDetailWrapHtml += '		</div>';
+		addAddrDetailWrapHtml += '	</div>';
+		addAddrDetailWrapHtml += '	</div>';
+		addAddrDetailWrapHtml += '	</div>';
+		addAddrDetailWrapHtml += '</div>';
+		addAddrDetailWrapHtml += '</div>';
+		addAddrDetailWrap.innerHTML = addAddrDetailWrapHtml;
+		
+		// 주소상세정보2 영역
+		var addAddrDetail2WrapHtml = '';
+		var addAddrDetail2Wrap = document.getElementById("addrDetail2Wrap");
+		addAddrDetail2WrapHtml += '<div class="popupWrap addrInfo" style="border-right: 1px solid #c1c1c1;border-bottom: 1px solid #c1c1c1;display:none;">';
+		addAddrDetail2WrapHtml += '<div class="popupBox">';
+		addAddrDetail2WrapHtml += '	<div class="popupTitle">';
+		addAddrDetail2WrapHtml += '		<div class="popTopTitle"> <span>정보조회</span> </div>';
+		addAddrDetail2WrapHtml += '		<div class="popTopEvent">';
+		addAddrDetail2WrapHtml += '			<div class="popClose" onclick="javascript:removeSearchInfoTooltop();"><img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_close.png" alt="닫기" ></div>';
+		addAddrDetail2WrapHtml += '		</div>';
+		addAddrDetail2WrapHtml += '	</div>';
+		addAddrDetail2WrapHtml += '	<div class="popupBody" style="background:#fff; padding:10px;">';
+		addAddrDetail2WrapHtml += '		<div class="popTabBox">';
+		addAddrDetail2WrapHtml += '			<ul>';
+		addAddrDetail2WrapHtml += '				<li class="buldInfoTab active" onclick="javascript:searchInfoTabToggle(this, \'buldInfo\');">건물정보</li>';
+		addAddrDetail2WrapHtml += '				<li class="roadInfoTab" onclick="javascript:searchInfoTabToggle(this, \'roadInfo\'); searchUrlRoad();">도로정보</li>';
+		addAddrDetail2WrapHtml += '			</ul>';
+		addAddrDetail2WrapHtml += '		</div>';
+		addAddrDetail2WrapHtml += '		<div class="popTab popTab1 buldInfo">';
+		addAddrDetail2WrapHtml += '		<div class="buldInfoInner" style="overflow-y:scroll;max-height:400px;">';
+		addAddrDetail2WrapHtml += '			<div>';
+		addAddrDetail2WrapHtml += '				<div class="popAddr toggle addrKor" >';
+		addAddrDetail2WrapHtml += '					<div><span class="post"></span><span class="newaddr_nm_result"></span></div>';
+		addAddrDetail2WrapHtml += '					<div><span onclick="toggleLanguage(\'eng\');">영문</span><span onclick="clip($(\'#mapBuldRoadInfo .newaddr_nm_result\').text());">복사</span></div>';
+		addAddrDetail2WrapHtml += '				</div>';
+		addAddrDetail2WrapHtml += '				<div class="popAddr toggle addrEng" style="display:none;" >';
+		addAddrDetail2WrapHtml += '					<div><span class="post"></span><span class="engAddr_nm_result"></span></div>';
+		addAddrDetail2WrapHtml += '					<div><span onclick="toggleLanguage(\'kor\');">국문</span><span onclick="clip($(\'#mapBuldRoadInfo .engAddr_nm_result\').text());">복사</span></div>';
+		addAddrDetail2WrapHtml += '				</div>';
+		addAddrDetail2WrapHtml += '			</div>';
+		addAddrDetail2WrapHtml += '			<div class="popAddrDtl">';
+		addAddrDetail2WrapHtml += '				<div>';
+		addAddrDetail2WrapHtml += '					<span class="leftName">지번주소</span>';
+		addAddrDetail2WrapHtml += '					<span class="oldaddr_nm_result" style="line-height: 24px"></span>';
+		addAddrDetail2WrapHtml += '					<span name="div_oldaddr_nm_sub_result" class="oldaddr_nm_sub_result"></span>';
+		addAddrDetail2WrapHtml += '				</div>';
+		addAddrDetail2WrapHtml += '				<div name="div_juminCenter_nm_result" style="display: none;">';
+		addAddrDetail2WrapHtml += '					<span class="leftName juminCenter">관할주민센터</span>';
+		addAddrDetail2WrapHtml += '					<span class="juminCenter_nm_result" style="width:75%"></span>';
+		addAddrDetail2WrapHtml += '				</div>';
+		addAddrDetail2WrapHtml += '				<div>';
+		addAddrDetail2WrapHtml += '					<span class="leftName">건물명</span>';
+		addAddrDetail2WrapHtml += '					<span class="bdInfo">';
+		addAddrDetail2WrapHtml += '						<span class="bldnm_result" ></span>';
+		addAddrDetail2WrapHtml += '						<span class="popBtnDtl adrDcYn" style="display:inline-block;">';
+		addAddrDetail2WrapHtml += '							상세주소 (동, 층, 호)';
+		addAddrDetail2WrapHtml += '							<span class="group_nm_result">보기</span>';
+		addAddrDetail2WrapHtml += '							<img src="'+API_URL+'/juso_support_center/img_addrlink/map/icon/icon_triangle.png" alt="triangle" />';
+		addAddrDetail2WrapHtml += '						</span>';
+		addAddrDetail2WrapHtml += '					</span>';
+		addAddrDetail2WrapHtml += '				</div>';
+		addAddrDetail2WrapHtml += '			</div>';
+		addAddrDetail2WrapHtml += '			<div class="popAddrOpt">';
+		addAddrDetail2WrapHtml += '				<legend class="blind">상세주소(동·층·호)를 선택하세요</legend>';
+		addAddrDetail2WrapHtml += '				<div class="selectOpt">';
+		addAddrDetail2WrapHtml += '					<select name="detailAddrDong" id="detailAddrDong2" title="상세주소 동선택" class="select sel_dong" onchange="javascript:getDetailAddrFloor(this.value);">';
+		addAddrDetail2WrapHtml += '						<option value="">"동" 선택</option>';
+		addAddrDetail2WrapHtml += '					</select>';
+		addAddrDetail2WrapHtml += '					<select name="detailAddrFloor" id="detailAddrFloor2" title="상세주소 층선택" class="select sel_floor" onchange="javascript:getDetailAddrHo(\'floor\', this.value);">';
+		addAddrDetail2WrapHtml += '						<option value="">"층" 선택</option>';
+		addAddrDetail2WrapHtml += '					</select>';
+		addAddrDetail2WrapHtml += '					<select name="detailAddrHo" id="detailAddrHo2" title="상세주소 호선택" class="select sel_ho" onchange="javascript:getDetailAddr(this.value);">';
+		addAddrDetail2WrapHtml += '						<option value="">"호" 선택</option>';
+		addAddrDetail2WrapHtml += '					</select>';
+		addAddrDetail2WrapHtml += '				</div>';
+		addAddrDetail2WrapHtml += '				<div class="addrFullName" style="display:none;">';
+		addAddrDetail2WrapHtml += '					<span name="fullDetailjuso"></span>';
+		addAddrDetail2WrapHtml += '					<span name="clipBtn">복사</span>';
+		addAddrDetail2WrapHtml += '				</div>';
+		addAddrDetail2WrapHtml += '				<div class="popWarning01" style="display:none;">';
+		addAddrDetail2WrapHtml += '					<span name="fullDetailjusoGuide" style="display:none;">※ 위 주소는 \'호\'에 \'층\'정보가 포함되어 있어, 층을 생략하여 표기할 수 있습니다.</span>';
+		addAddrDetail2WrapHtml += '				</div>';
+		addAddrDetail2WrapHtml += '			</div>';
+		addAddrDetail2WrapHtml += '		</div>';
+		addAddrDetail2WrapHtml += '		</div>';
+		addAddrDetail2WrapHtml += '		<div class="popTab popTab2 roadInfo" style="display: none;">';
+		addAddrDetail2WrapHtml += '			<div class="popAddr toggle">';
+		addAddrDetail2WrapHtml += '				<div><span name="rdNm_result"> - </span></div>';
+		// addAddrDetail2WrapHtml += '				<div style="width: 160px;"><span name="span_mapRoadInfoSearch" title="도로구간 보기">도로구간 보기</span><span name="span_getRdsManNo" title="기초번호 보기">기초번호 보기</span></div>';
+		addAddrDetail2WrapHtml += '				<div style="width: 160px;"></div>';
+		addAddrDetail2WrapHtml += '			</div>';
+		addAddrDetail2WrapHtml += '			<div class="popAddrDtl">';
+		addAddrDetail2WrapHtml += '				<div>';
+		addAddrDetail2WrapHtml += '					<span class="leftName">기점/종점</span>';
+		addAddrDetail2WrapHtml += '					<span name="strEndCn_result"> - </span>';
+		addAddrDetail2WrapHtml += '				</div>';
+		addAddrDetail2WrapHtml += '				<div>';
+		addAddrDetail2WrapHtml += '					<span class="leftName">길이(m)</span>';
+		addAddrDetail2WrapHtml += '					<span name="roadLt_result"> - </span>';
+		addAddrDetail2WrapHtml += '				</div>';
+		addAddrDetail2WrapHtml += '				<div>';
+		addAddrDetail2WrapHtml += '					<span class="leftName">고시일/효력발생일</span>';
+		addAddrDetail2WrapHtml += '					<span name="noticeYmd_result"> - </span>';
+		addAddrDetail2WrapHtml += '				</div>';
+		addAddrDetail2WrapHtml += '				<div>';
+		addAddrDetail2WrapHtml += '					<span class="leftName">도로명 부여사유</span>';
+		addAddrDetail2WrapHtml += '					<span name="grantDe_result"> - </span>';
+		addAddrDetail2WrapHtml += '				</div>';
+		addAddrDetail2WrapHtml += '			</div>';
+		addAddrDetail2WrapHtml += '		</div>';
+		addAddrDetail2WrapHtml += '	</div>';
+		addAddrDetail2WrapHtml += '</div>';
+		addAddrDetail2WrapHtml += '</div>';
+		addAddrDetail2Wrap.innerHTML = addAddrDetail2WrapHtml;
+		
+		
+		// 검색영역 열고 닫기
+		$("#divOcBox").on("click", function(){
+			if($(this).children("img").hasClass("open")){
+				//열기
+				$(this).children("img").removeClass("open");
+				$(".searchWrap").removeClass("close"); 
+				$(".mapAddrWrap").removeClass("left");
+				
+				$("#keyword").focus();
+			}else{
+				$(this).children("img").addClass("open");
+				$(".searchWrap").addClass("close");
+				$(".mapAddrWrap").addClass("left");
+			}
+		});
+		
+		//변동된 주소정보 포함여부 클릭
+		$("#ckHstryYn").click(function(){
+			if($( "#ckHstryYn").is(":checked")){
+				$("#hstryYn").val('Y');
+			}else{
+				$("#hstryYn").val('N');
+			}
+			$("#keyword").focus();
+	 	});
+		
+		
+		//정보조회 창 드래그
+		$(".tabInfoClose").on("click",function(){
+			$('.tabInfo').hide(); 
+		});
+		
+		//팝업창 닫기
+		$(document).on("click", ".popClose", function(){
+			$(this).parents(".popupWrap").hide(); 
+			$(".mask").hide();
+			if($(this).parents(".popupWrap").hasClass("legend")){
+				if($("#map_ctrl_legend").hasClass("active"))
+					$("#map_ctrl_legend").removeClass("active");
+			}
+		});
+		
+		//컨트롤러 버튼에 마우스오버시 툴팁 show
+		$(".controll li").hover(function(){
+			var top   = $(this).offset().top + 2;
+			var text  = $(this).attr("data-text");
+			var index = $(this).index();
+
+			if(index >= 0){
+				$(".controllTip").children("span").text(text);
+				$(".controllTip").css("top", top);
+				$(".controllTip").show();
+			}
+		}, function() {
+			var index = $(this).index();
+			if(index >= 0){ $(".controllTip").hide(); }
+		});
+
+		//컨트롤러 버튼 클릭시 버튼 이미지 반전으로 변경 및 해당 버튼 Active 설정 토글
+		$(".controll li.ctrl_btn").on("click", function(){
+			var contents = $(this).attr("data-pop");
+			
+			if($(this).hasClass("active")){ 
+				$("."+contents).hide(); $(this).removeClass("active");
+				$(this).children("img").attr("src", API_URL+"/juso_support_center/img_addrlink/map/icon/icon_controll_"+($(this).index()+1)+".png")
+				return false; 
+			}
+
+			$(".controll li.ctrl_btn").each(function(index, item){
+				$(this).children("img").attr("src", API_URL+"/juso_support_center/img_addrlink/map/icon/icon_controll_"+(index+2)+".png")
+			});
+
+			$(".controll li.ctrl_btn").removeClass("active");
+
+			$(this).addClass("active");
+			$(this).children("img").attr("src", API_URL+"/juso_support_center/img_addrlink/map/icon/icon_controll_"+($(this).index()+1)+"_active.png");
+			$("."+contents).show();
+		});
+		
+		$(".controll li.mapLayers").on("click", function(){
+			if($(".conSubMenuBox").css("display") == "none"){
+				$(".conSubMenuBox").show();
+				$(this).addClass("active");
+			} else {
+				$(".conSubMenuBox").hide();
+				if(basLayerYn == "N" && emdLayerYn == "N" && hemdLayerYn == "N" && minwonLayerYn == ""){
+					$(this).removeClass("active");
+				}
+			}
+		});
+		//컨트롤러-레이어 메뉴 클릭시 하위 메뉴 출력
+		$(".conSubMenu .conTitle").on("click", function(){
+			if($(this).hasClass("mapFacBtn")){
+				if($(this).next("ul").css("display") == "none"){
+					$(this).next("ul").show();
+					$(this).addClass("active");
+				} else {
+					$(this).next("ul").hide();
+					if(minwonLayerYn == ""){
+						$(this).removeClass("active");
+					}
+				}
+			}
+			
+			if($(this).hasClass("mapEmdBtn")){
+				if($(this).hasClass("active")){
+					$(this).removeClass("active");
+				} else {
+					$(this).addClass("active");
+				}
+			}
+			
+			if($(this).hasClass("mapBasBtn")){
+				if($(this).hasClass("active")){
+					$(this).removeClass("active");
+				} else {
+					$(this).addClass("active");
+				}
+			}
+		});
+		
+		//컨트롤러-레이어 메뉴의 하위 메뉴 클릭시 active 설정 토글
+		$(".conSubMenu.conMenu2 li").on("click", function(){
+			if($(this).hasClass("active")){ $(this).removeClass("active"); return false; }
+			$(this).addClass("active");
+		});
+		//줌 컨트롤러에 마우스 오버시 툴팁 표시
+		$(".zoomIconBox").hover(function(){
+			$(".zoomTip").show();
+		}, function() {
+			$(".zoomTip").hide();
+		});
+		
+		$('#searchRdNm').bind('click', function(){
+		    $('.popWrap3').css({'display':'block','top':'21px','right':'121px'});
+	    });
+		$('#popupClose2').bind('click', function(){
+	    	$('.popWrap3').css('display','none');
+	    });
+		
+		$('.choIdx a').click(function(event){
+			$('.choIdx a').removeClass('on');
+			if($(this).hasClass('off')){
+				return;
+			}else{
+				$(this).addClass('on');
+				event.preventDefault();
+				var target =this.hash;
+				var $target=$(target);
+				var top = $(target).position().top-106;
+				if(prevPosition ==0){
+					$('#roadNameList2').scrollTop(top);
+					prevPosition = top;
+				}else{
+					$('#roadNameList2').scrollTop(prevPosition+top);
+					prevPosition = prevPosition + top;
+				}
+				
+				if($('#roadNameList2')[0].scrollHeight - $('#roadNameList2').scrollTop() == $('#roadNameList2').innerHeight()){
+					prevPosition = $('#roadNameList2').scrollTop();
+				}
+			}
+		});
+		$('#roadNameList2').children().css('display','none');
+		$('#roadNameList2').scroll(function(){prevPosition = this.scrollTop;});
+		
+		// 주소정보 상세
+		$(".popMiniBar").on("click", function(){
+			if($(this).hasClass("dtlOpen")){
+				$('.tabInfo .popAddrDtl').css('display','none');
+				$(this).removeClass("dtlOpen");
+				$(this).children("div").children("img").removeClass("open");
+				
+				// 상세주소 닫기
+				if($(".bdInfo .popBtnDtl").hasClass("active")){
+					$(".bdInfo .popBtnDtl").removeClass("active"); 
+					$(".bdInfo .popBtnDtl").find("span").text("보기");
+					$(".popAddrOpt").hide();
+					$('.addrFullName').css('display','none');
+				 	$('.popWarning01').css('display','none');
+				}
+			}else{
+				$('.tabInfo .popAddrDtl').css('display','block');
+				$(this).addClass("dtlOpen");
+				$(this).children("div").children("img").addClass("open");
+				
+				// 리스트 닫기
+				if($("#searchWrap").is(":visible")){
+					$("#divOcBox").children("img").addClass("open");
+					$(".searchWrap").addClass("close"); 
+					$(".mapAddrWrap").addClass("left");
+				}
+			}
+		});
+		
+		// 상세주소 동층호 보기
+		$(".bdInfo .popBtnDtl").on("click", function(){
+			if($(".bdInfo .popBtnDtl").hasClass("active")){
+				$(".bdInfo .popBtnDtl").removeClass("active"); 
+				$(".bdInfo .popBtnDtl").find("span").text("보기");
+				$(".popAddrOpt").hide();
+			}
+			else{
+				
+				var admCd = $("#rtAdmCd").val();
+				var rnMgtSn = $("#rtRnMgtSn").val();
+				var udrtYn = $("#rtUdrtYn").val();
+				var buldMnnm = $("#rtBuldMnnm").val();
+				var buldSlno = $("#rtBuldSlno").val();
+				
+				// 상세주소(동) 가져오기
+				$.ajax({
+					 url :API_URL+"/addrlink/addrDetailApiJsonp.do"
+					,type:"post"
+					,data:{ "confmKey": "U01TX0FVVEgyMDIzMDcyNjIyMTMzMjExMzk2NTU=", "admCd": admCd, "rnMgtSn": rnMgtSn, "udrtYn": udrtYn, "buldMnnm": buldMnnm, "buldSlno": buldSlno, "searchType": "dong", "resultType": "json", "callback":"callbackAddrDong" }
+					,dataType:"jsonp"
+					,success:function(data){
+						callbackAddrDong(data);
+					}
+				    ,error: function(xhr,status, error){
+				    }
+				});
+				
+			}
+		});
+		
+		getParameter();
+		
+	}else{
+		var message ='';
+		if(chkResult.indexOf('<errDesc>')!=-1){
+			message = '[<font color="red">error</font>] '+chkResult.substring(chkResult.indexOf('<errDesc>')+'<errDesc>'.length, chkResult.indexOf('</errDesc>'))+' 도로명주소 도움센터(1588-0061)로 문의하시기 바랍니다.'; 
+		}else{
+			message = '[<font color="red">error</font>] 알수없는 오류가 발생했습니다. 도로명주소 도움센터(1588-0061)로 문의하시기 바랍니다.';
+		}
+		
+		document.AKCFrm.innerHTML = message;
+	}
+}
+
+function callbackAddrDong(data){
+	if(data.results != undefined){
+		detailAddrDongArry = data.results.juso;
+		
+		// 상세주소(동) selectbox 생성
+		getDetailAddrDong();
+		
+		$(".bdInfo .popBtnDtl").addClass("active");
+		$(".bdInfo .popBtnDtl").find("span").text("닫기");
+		$(".popAddrDtl").show();
+		$(".popAddrOpt").show();
+		$("#detailAddrFloor").children('option:not(:first)').remove();
+		$("#detailAddrHo").children('option:not(:first)').remove();
+		$("#detailAddrFloor2").children('option:not(:first)').remove();
+		$("#detailAddrHo2").children('option:not(:first)').remove();
+	}
+}
+
+function popClose(){
+	window.close();
+}
+
+function ctrlLayerOpen(type, obj){
+	if(type == "saveMap"){
+		$(".popupWrap."+type).show();
+	} else if(type == "legend"){
+		if($(".popupWrap.legend").css("display") == "none"){
+			$(".popupWrap.legend").show();
+			if(typeof obj != "undefined") $(obj).addClass("active");
+		} else {
+			$(".popupWrap.legend").hide();
+			if(typeof obj != "undefined") $(obj).removeClass("active");
+		}
+	}
+}
+
+//복사 버튼 클릭시 토스트 메세지 띄워주는 함수
+function toast(string){
+	var removeToast;
+	var toast = document.getElementById("toast");
+	
+	(toast.classList.contains('reveal')) ? 
+			(clearTimeout(removeToast), removeToast =setTimeout(function () {
+				$('#toast').removeClass('reveal')	}, 3000)):
+			removeToast = setTimeout(function () {
+					$('#toast').removeClass('reveal')	}, 3000)
+				toast.classList.add('reveal'),
+				toast.innerText = string;
+}
+
+function toggleLanguage(language) {
+	if(language == 'eng'){
+		$('.addrKor').css('display','none');
+		$('.addrEng').css('display','');
+	}
+	else if(language == 'kor'){
+		$('.addrKor').css('display','');
+		$('.addrEng').css('display','none');	
+	}
+}
+</script>
+
+
+<!--
+includeLink(API_URL+'https://business.juso.go.kr/juso_support_center/css/addrlink/common.css');
+includeLink(API_URL+'https://business.juso.go.kr/juso_support_center/css/addrlink/map/addrlinkMap.css');
+includeLink(API_URL+'https://business.juso.go.kr/juso_support_center/css/addrlink/map/style.css');
+includeLink(API_URL+'https://business.juso.go.kr/juso_support_center/css/addrlink/map/ol.css');
+includeLink(API_URL+'https://business.juso.go.kr/juso_support_center/css/addrlink/map/ol-ctrl.css');
+includeLink(API_URL+'https://business.juso.go.kr/juso_support_center/css/addrlink/map/OverlayScrollbars.min.css');
+includeJs(API_URL+'https://business.juso.go.kr/juso_support_center/js/jquery-1.12.4.min.js');
+includeJs(API_URL+'https://business.juso.go.kr/juso_support_center/js/rnic-search.js');
+includeJs(API_URL+'https://business.juso.go.kr/juso_support_center/js/addrlink/map/ol.js');
+-->
+
+<script type="text/javascript">
+	// 검색요청  
+	// type1.좌표정보(GRS80, EPSG:5179)
+	function callJusoroMapApiType1(){
+		var frm = document.sampleForm;
+		window.postMessage({ functionName: 'callJusoroMapApi', params: [frm.pointX.value, frm.pointY.value] }, '*');
+	}
+	// type2.도로명주소 코드정보
+	function callJusoroMapApiType2(){
+		var frm = document.sampleForm;
+		window.postMessage({ functionName: 'callJusoroMapApi', params: [frm.admCd.value, frm.rnMgtSn.value, frm.udrtYn.value, frm.buldMnnm.value, frm.buldSlno.value] }, '*');
+	}
+	// type3.검색어
+	function callJusoroMapApiType3(){
+		var frm = document.sampleForm;
+		window.postMessage({ functionName: 'callJusoroMapApi', params: [frm.searchKeyword.value] }, '*');
+	}
+</script>
+</head>
+<body>
+	<form name="sampleForm" id="sampleForm" method="post">
+		<div class="mapCoord_wrap">
+			<div class="mapCoordinate" style="text-align: center;">
+				<h2>주소 입력 샘플</h2>
+			</div>
+			<div class="mapCoordinate">
+				<p><b>[주소검색] 좌표정보</b></p>
+				<span>X좌표:</span>&nbsp;<input type="text" id="pointX" name="pointX" value="945959.0381341814" /><br/>
+				<span>Y좌표:</span>&nbsp;<input type="text" id="pointY" name="pointY" value="1953851.7348996028" /><br/>
+				<div><input type="button" onclick="javascript:callJusoroMapApiType1();" value="검색" /></div>
+			</div>
+			<div class="mapCoordinate">
+				<p><b>[주소검색] 도로명주소 코드정보</b></p>
+				<span>행정구역코드:</span>&nbsp;<input type="text" id="admCd" name="admCd" value="1144012700" /><br/>
+				<span>도로명코드:</span>&nbsp;<input type="text" id="rnMgtSn" name="rnMgtSn" value="114403113012" /><br/>
+				<span>지하여부:</span>&nbsp;<input type="text" id="udrtYn" name="udrtYn" value="0" /><br/>
+				<span>건물본번:</span>&nbsp;<input type="text" id="buldMnnm" name="buldMnnm" value="301" /><br/>
+				<span>건물부번:</span>&nbsp;<input type="text" id="buldSlno" name="buldSlno" value="0" /><br/>
+				<div><input type="button" onclick="javascript:callJusoroMapApiType2();" value="검색" /></div>
+			</div>
+			<div class="mapCoordinate">
+				<p><b>[주소검색] 검색어</b></p>
+				<span>검색어:</span>&nbsp;<input type="text" id="searchKeyword" name="searchKeyword" value="한국지역정보개발원" /><br/>
+				<div><input type="button" onclick="javascript:callJusoroMapApiType3();" value="검색" /></div>
+			</div>
+		</div>
+	</form>
+
+	<!-- ※ id, class 속성의 삭제 또는 변경 시, 정상적으로 동작하지 않을 수 있으니 이에 주의하시기 바랍니다. -->
+	<!-- ※ 신규 속성을 추가하거나 style속성의 변경은 동작과 크게 상관이 없으니 적용 대상 페이지에 맞춰 수정하시기 바랍니다. -->
+	<!-- 지도영역 -->
+	<div id="mapWrap" class="mapWrap" style="position:absolute; left:500px; top:0px; width:calc(100% - 500px); height:100%; border-left: 1px solid #ddd;">
+		<pre id="xmlContents">
+		</pre>
+	</div>
+	<!-- 지도영역 -->
+
+</body>
+</html>

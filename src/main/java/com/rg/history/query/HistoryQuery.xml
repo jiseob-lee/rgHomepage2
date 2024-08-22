@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rg.history.HistoryMapper">
+
+	<select id="getHistoryList" resultType="com.rg.history.dto.HistoryDTO">
+	
+		SELECT
+			year,
+			title,
+			description,
+			order_no
+		
+		FROM
+			history
+		
+		<if test="year != null and year != ''">
+		WHERE
+			year = #{year}
+		</if>
+		
+		ORDER BY
+			year desc, order_no desc
+	
+	</select>
+
+
+	<insert id="insertHistory" parameterType="com.rg.history.dto.HistoryDTO">
+
+		INSERT INTO history
+		(
+			year,
+			title,
+			description,
+			order_no
+		)
+		VALUES
+		(
+			#{year},
+			#{title},
+			#{description},
+			#{orderNo}
+		)
+		
+	</insert>
+
+
+	<delete id="deleteHistory">
+	
+		DELETE FROM
+			history
+
+		WHERE
+			year = #{year}
+
+	</delete>
+
+
+</mapper>

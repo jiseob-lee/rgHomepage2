@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rg.board.BoardMapper">
+
+	<select id="getBoardList" resultType="com.rg.board.dto.BoardDTO">
+	
+		SELECT
+		
+			board_article_idx as boardArticleIdx,
+			board_idx         as boardIdx,
+			subject           as subject,
+			subject_eng       as subjectEng,
+			hit_count         as hitCount,
+			<if test="locale == null or locale == 'ko'">
+			DATE_FORMAT(date_created, '%Y-%m-%d')      as dateCreated,
+			</if>
+			<if test="locale != null and locale != 'ko'">
+			DATE_FORMAT(date_created, '%b %e %Y')      as dateCreated,
+			</if>
+			user_id_created   as userIdCreated,
+			(select user_name_ko from user where user_id = b.user_id_created) as userNameCreated,
+			
+			/* DATE_FORMAT(date_modified, '%Y-%m-%d')     as dateModified, */
+			
+			<if test="locale == null or locale == 'ko'">
+			DATE_FORMAT(date_modified, '%Y-%m-%d')      as dateModified,
+			</if>
+			<if test="locale != null and locale != 'ko'">
+			DATE_FORMAT(date_modified, '%b %e %Y')      as dateModified,
+			</if>
+			
+			user_id_modified  as userIdModified,
+			(select user_name_ko from user where user_id = b.user_id_modified) as userNameModified,
+			open_yn
+		
+		FROM 
+		
+			board_article b
+		
+		WHERE
+		
+			delete_yn = 'N'
+			
+			and board_article_idx != 0
+			
+			<if test='boardIdx != null and !boardIdx.equals("") and boardIdx != 0'>
+				AND board_idx = #{boardIdx}
+			</if>
+			
+			<if test='boardIdx == null or boardIdx.equals("") or boardIdx == 0'>
+				AND board_idx in (
+				select c.board_idx 
+				from board c
+				where exists (select d.board_article_idx from board_article d where d.board_idx = c.board_idx and d.delete_yn = 'N' and d.open_yn = 'Y')
+				)
+			</if>
+			
+			/* openYn : ${openYn} */
+			
+			<if test='openYn != null and (openYn.equals("y") or openYn.equals("Y"))'>
+				AND open_yn = 'y'
+			</if>
+			
+			/* openYn : ${openYn} */
+			
+			<if test="searchValue != '' and searchValue != null">
+				<choose>
+					<when test='searchKind eq "subject"'>
+						AND b.subject like concat('%', #{searchValue}, '%')
+					</when>
+					<when test='searchKind eq "content"'>
+						AND b.content like concat('%', #{searchValue}, '%')
+					</when>
+					<when test='searchKind eq "both"'>
+						AND ( b.subject like concat('%', #{searchValue}, '%')
+						OR b.content like concat('%', #{searchValue}, '%') )
+					</when>
+				</choose>
+			</if>
+			
+		ORDER BY
+		
+			date_created DESC
+			
+		LIMIT #{listLimit} OFFSET #{listOffset}
+	
+	</select>
+
+	<select id="getBoardListRg" resultType="com.rg.board.dto.BoardDTO">
+	
+		SELECT
+		
+			board_article_idx as boardArticleIdx,
+			board_idx         as boardIdx,
+			subject           as subject,
+			content           as content,
+			subject_eng       as subjectEng,
+			hit_count         as hitCount,
+			<if test="locale == null or locale == 'ko'">
+			DATE_FORMAT(date_created, '%Y-%m-%d')      as dateCreated,
+			</if>
+			<if test="locale != null and locale != 'ko'">
+			DATE_FORMAT(date_created, '%b %e %Y')      as dateCreated,
+			</if>
+			user_id_created   as userIdCreated,
+			(select user_name_ko from user where user_id = b.user_id_created) as userNameCreated,
+			DATE_FORMAT(date_modified, '%Y-%m-%d')     as dateModified,
+			user_id_modified  as userIdModified,
+			(select user_name_ko from user where user_id = b.user_id_modified) as userNameModified,
+			open_yn
+		
+		FROM 
+		
+			board_article b
+		
+		WHERE
+		
+			delete_yn = 'N'
+			
+			and board_article_idx != 0
+			
+			<if test='boardIdx != null and !boardIdx.equals("") and boardIdx != 0'>
+				AND board_idx = #{boardIdx}
+			</if>
+			
+			/* openYn : ${openYn} */
+			
+			<if test='openYn != null and (openYn.equals("y") or openYn.equals("Y"))'>
+				AND open_yn = 'y'
+			</if>
+			
+			/* openYn : ${openYn} */
+			
+			<if test="searchValue != '' and searchValue != null">
+				<choose>
+					<when test='searchKind eq "subject"'>
+						AND b.subject like concat('%', #{searchValue}, '%')
+					</when>
+					<when test='searchKind eq "content"'>
+						AND b.content like concat('%', #{searchValue}, '%')
+					</when>
+					<when test='searchKind eq "both"'>
+						AND ( b.subject like concat('%', #{searchValue}, '%')
+						OR b.content like concat('%', #{searchValue}, '%') )
+					</when>
+				</choose>
+			</if>
+			
+		ORDER BY
+		
+			date_created DESC
+			
+		LIMIT #{listLimit} OFFSET #{listOffset}
+	
+	</select>
+
+
+	<select id="getBoardListCount" resultType="integer">
+	
+		SELECT
+		
+			COUNT(*) AS CNT
+		
+		FROM
+		
+			board_article b
+		
+		WHERE
+			
+			delete_yn = 'N'
+			
+			and board_article_idx != 0
+			
+			<if test='boardIdx != null and !boardIdx.equals("") and boardIdx != 0'>
+				AND board_idx = #{boardIdx}
+			</if>
+			
+			<if test='boardIdx == null or boardIdx.equals("") or boardIdx == 0'>
+				AND board_idx in (
+				select c.board_idx 
+				from board c
+				where exists (select d.board_article_idx from board_article d where d.board_idx = c.board_idx and d.delete_yn = 'N' and d.open_yn = 'Y')
+				)
+			</if>
+			
+			
+			<if test='openYn != null and (openYn.equals("y") or openYn.equals("Y"))'>
+				AND open_yn = 'y'
+			</if>
+			
+			<if test="searchValue != '' and searchValue != null">
+				<choose>
+					<when test='searchKind eq "subject"'>
+						AND b.subject like concat('%', #{searchValue}, '%')
+					</when>
+					<when test='searchKind eq "content"'>
+						AND b.content like concat('%', #{searchValue}, '%')
+					</when>
+					<when test='searchKind eq "both"'>
+						AND ( b.subject like concat('%', #{searchValue}, '%')
+						OR b.content like concat('%', #{searchValue}, '%') )
+					</when>
+				</choose>
+			</if>
+			
+	</select>
+
+
+	<select id="getBoardListCountRg" resultType="integer">
+	
+		SELECT
+		
+			COUNT(*) AS CNT
+		
+		FROM
+		
+			board_article b
+		
+		WHERE
+			
+			delete_yn = 'N'
+			
+			and board_article_idx != 0
+			
+			<if test="boardIdx != null and boardIdx != '' and boardIdx != 0">
+				AND board_idx = #{boardIdx}
+			</if>
+			
+			<if test='openYn != null and (openYn.equals("y") or openYn.equals("Y"))'>
+				AND open_yn = 'y'
+			</if>
+			
+			<if test="searchValue != '' and searchValue != null">
+				<choose>
+					<when test='searchKind eq "subject"'>
+						AND b.subject like concat('%', #{searchValue}, '%')
+					</when>
+					<when test='searchKind eq "content"'>
+						AND b.content like concat('%', #{searchValue}, '%')
+					</when>
+					<when test='searchKind eq "both"'>
+						AND ( b.subject like concat('%', #{searchValue}, '%')
+						OR b.content like concat('%', #{searchValue}, '%') )
+					</when>
+				</choose>
+			</if>
+			
+	</select>
+
+
+	<select id="getBoardContent" resultType="com.rg.board.dto.BoardDTO">
+	
+		SELECT
+		
+			b.board_article_idx as boardArticleIdx,
+			b.board_idx         as boardIdx,
+			c.board_name        as boardName,
+			b.subject           as subject,
+			b.content           as content,
+			b.subject_eng       as subjectEng,
+			b.content_eng       as contentEng,
+			b.hit_count         as hitCount,
+			<if test="locale == null or locale == 'ko'">
+			DATE_FORMAT(b.date_created, '%Y-%m-%d')      as dateCreated,
+			</if>
+			<if test="locale != null and locale != 'ko'">
+			DATE_FORMAT(b.date_created, '%b %e %Y')      as dateCreated,
+			</if>
+			b.user_id_created   as userIdCreated,
+			(select user_name_ko from user where user_id = b.user_id_created) as userNameCreated,
+			<if test="locale == null or locale == 'ko'">
+			DATE_FORMAT(b.date_modified, '%Y-%m-%d')     as dateModified,
+			</if>
+			<if test="locale != null and locale != 'ko'">
+			DATE_FORMAT(b.date_modified, '%b %e %Y')     as dateModified,
+			</if>
+			b.user_id_modified  as userIdModified,
+			(select user_name_ko from user where user_id = b.user_id_modified) as userNameModified,
+			b.open_yn           as openYn
+		
+		FROM board_article b, board c
+		
+		WHERE
+			board_article_idx = #{boardArticleIdx}
+	
+			<if test='openYn != null and (openYn.equals("y") or openYn.equals("Y"))'>
+				AND open_yn = 'y'
+			</if>
+			
+			and b.board_idx = c.board_idx
+			
+	</select>
+
+	<insert id="insertBoardArticle" useGeneratedKeys="true" keyProperty="boardArticleIdx" parameterType="com.rg.board.dto.BoardDTO">
+		INSERT INTO board_article
+		(
+			board_idx,
+			subject,
+			content,
+			subject_eng,
+			content_eng,
+			date_created,
+			user_id_created,
+			open_yn
+		)
+		VALUES
+		(
+			#{boardIdx},
+			#{subject},
+			#{content},
+			#{subjectEng},
+			#{contentEng},
+			now(),
+			#{userIdCreated},
+			#{openYn}
+		)
+	</insert>
+
+
+	<update id="updateBoardArticle">
+	
+		UPDATE
+			board_article
+			
+		SET
+			subject = #{subject},
+			content = #{content},
+			subject_eng = #{subjectEng},
+			content_eng = #{contentEng},
+			date_modified = now(),
+			user_id_modified = #{userIdModified},
+			open_yn = #{openYn}
+			
+			<if test="boardIdx != null and boardIdx != ''">
+				, board_idx = #{boardIdx}
+			</if>
+			
+		WHERE
+			board_article_idx = #{boardArticleIdx}
+
+	</update>
+
+
+	<update id="increaseHitCount">
+	
+		UPDATE
+			board_article
+			
+		SET
+			hit_count = hit_count + 1
+			
+		WHERE
+			board_article_idx = #{boardArticleIdx}
+
+	</update>
+
+
+	<update id="deleteBoardArticle">
+	
+		UPDATE 
+			board_article
+			
+		SET
+			date_modified = now(),
+			user_id_modified = #{userIdModified},
+			delete_yn = 'Y'
+			
+		WHERE
+			board_article_idx = #{boardArticleIdx}
+			
+	</update>
+
+
+	<update id="updateAttachmentBoardArticleIdx">
+	
+		UPDATE 
+
+			attachment
+			
+		SET
+			<if test="boardIdx != null and boardIdx != ''">
+				board_idx = #{boardIdx},
+			</if>
+			
+			board_article_idx = #{boardArticleIdx},
+			
+			attachment_order = CASE
+
+				<foreach collection="attachmentIdxs" item="attachmentIdx" index="index">
+
+				WHEN attachment_idx = #{attachmentIdx} THEN (#{index} + 1) 
+
+				</foreach>
+			
+				END
+
+		WHERE attachment_idx IN
+
+			<foreach collection="attachmentIdxs" item="attachmentIdx" open="(" close=")" separator=", ">
+
+			#{attachmentIdx}
+
+			</foreach>
+			
+			AND flag_deleted = '0'
+			
+	</update>
+
+</mapper>

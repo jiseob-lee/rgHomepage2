@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<!--
+	<bean id="oneService" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="oneJobService" />   
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<bean id="oneTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="oneService" />
+		<property name="cronExpression" value="0 0 1 * * ?" />
+	</bean>
+	-->
+
+	<!--
+	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+                
+				<ref bean="oneTrigger" />
+                <ref bean="twoTrigger" />
+                <ref bean="threeTrigger" />
+                
+			</list>
+		</property>
+	</bean>
+	-->
+
+	<bean name="redisFlushJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"><!-- Quartz 2.x 버전 -->
+		<property name="jobClass">
+			<value>com.rg.login.controller.RedisFlush</value>
+		</property>
+		<property name="applicationContextJobDataKey" value="applicationContext" />
+	</bean>
+	
+	<bean id="redisFlushTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"><!-- Quartz 2.x 버전 -->
+
+		<property name="jobDetail">
+			<ref bean="redisFlushJob"/>
+		</property>
+		<property name="cronExpression">
+			<!-- 매  5분마다 실행 --> 
+			<!-- <value>0 0/5 * * * ?</value> -->
+			<!-- 매일 새벽 3시 0분 마다 실행  -->
+			<value>0 0 3 * * ?</value>
+			<!-- <value>0 32 0/1 * * ?</value> -->
+			
+			<!-- <value>0 10 2,4 * * ?</value> -->
+			
+			<!-- <value>0 10 14 * * ?</value> -->
+
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!-- <ref bean="redisFlushTrigger"/> -->
+				<!--
+                <ref local="jusoSearchTrigger"/>
+                -->
+
+			</list>
+		</property>
+	</bean>
+	
+</beans>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dbDataSourceMySQL" />
+        <property name="configLocation" value="classpath:/spring/sql-mapper-config.xml" />
+        <property name="mapperLocations" value="classpath:/com/rg/**/*.xml" />
+    </bean>
+
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+
+	<!--
+    <bean id="sqlSessionFactory2" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dbDataSourceOracle" />
+        <property name="configLocation" value="classpath:/spring/sql-mapper-config.xml" />
+        <property name="mapperLocations" value="classpath:/com/rg/**/*.xml" />
+    </bean>
+
+    <bean id="sqlSessionTemplate2" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory2"/>
+    </bean>
+    -->
+
+	<!--
+    <bean id="sqlSessionFactory3" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dbDataSourceMySQLlocal" />
+        <property name="configLocation" value="classpath:/spring/sql-mapper-config.xml" />
+        <property name="mapperLocations" value="classpath:/com/rg/**/*.xml" />
+    </bean>
+
+    <bean id="sqlSessionTemplate3" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory3"/>
+    </bean>
+    
+
+    <bean id="sqlSessionFactory4" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dbDataSourceMSSQLlocal" />
+        <property name="configLocation" value="classpath:/spring/sql-mapper-config.xml" />
+        <property name="mapperLocations" value="classpath:/com/rg2/**/*.xml" />
+    </bean>
+
+    <bean id="sqlSessionTemplate4" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory4"/>
+    </bean>
+    -->
+    
+</beans>

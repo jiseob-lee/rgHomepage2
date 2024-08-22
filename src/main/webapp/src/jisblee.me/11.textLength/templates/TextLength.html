@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>Text Length</title>
+
+<meta charset="utf-8" />
+
+<script type="text/javascript">
+function checkLength() {
+	var frm = document.frm;
+	var text = frm.ta.value;
+	frm.len.value = (new TextEncoder().encode(text)).length;
+}
+</script>
+</head>
+
+<body>
+
+<form name="frm">
+
+<br/><br/>
+
+<textarea name="ta">
+
+</textarea>
+
+<br/><br/>
+<input type="button" value="길이 확인" onclick="checkLength();" />
+<br/><br/>
+
+<input type="text" name="len" />
+
+</form>
+
+</body>
+</html>

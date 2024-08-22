@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Kakao 지도 시작하기</title>
+	
+	<!-- <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=48db2a9456ff7710ab38d35097440853&libraries=services,clusterer,drawing"></script> -->
+	
+</head>
+<body>
+	
+	<br/><br/>
+	
+	<form name="frm">
+	위도 : <input type="text" name="latitude" value="33.450701" /><br/>
+	경도 : <input type="text" name="longitude" value="126.570667" /><br/>
+	<input type="button" value="조회" onclick="checkMap();"/><br/><br/>
+	</form>
+	
+	<div id="map" style="width:500px;height:400px;"></div>
+	
+	<!-- <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=6eb55aab41a370955a99fd3ca90e63aa&libraries=services,clusterer,drawing"></script> -->
+	
+	<script type="text/javascript">
+		function checkMap() {
+			var latitude = document.frm.latitude?.value;
+			var longitude = document.frm.longitude?.value;
+			var container = document.getElementById('map');
+			var options = {
+				center: new kakao.maps.LatLng(latitude, longitude),
+				level: 3
+			};
+
+			var map = new kakao.maps.Map(container, options);
+		}
+		
+		checkMap();
+	</script>
+	
+</body>
+</html>

@@ -1,0 +1,3 @@
+grant codeBase "file:/home/ubuntu/rmi/*" {
+    permission java.security.AllPermission;
+};
