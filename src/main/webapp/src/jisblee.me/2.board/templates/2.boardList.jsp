@@ -134,14 +134,14 @@
   <table ng-if="urlPath == 'rg' && openYn != '1'">
     <tr ng-repeat="a in boardList">
       <td>
-        <table border="1">
+        <table border="1" style="max-width:1000px;">
         <tr>
           <td>{{boardListCount - $index - (pageNo - 1) * listLimit}}</td>
           <td>{{a.subject}}</td>
           <td>{{a.dateCreated}}</td>
         </tr>
         <tr>
-          <td colspan="3" ng-bind-html="a.content | unsafe"></td>
+          <td colspan="3" ng-bind-html="a.content | unsafe" style="max-width:1000px;"></td>
         </tr>
         </table>
       </td>
