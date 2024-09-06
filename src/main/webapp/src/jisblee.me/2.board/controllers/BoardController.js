@@ -165,6 +165,11 @@ appBoard.controller('BoardCtrl',
 			}
 		}
 
+		$scope.enableScrolling = function() {
+			window.onscroll = function(){};
+			return true;
+		}
+
 		$scope.goSearch = function(searchKind, searchValue) {
 			//document.frm.searchKind.value, document.frm.searchValue.value)
 			console.log("searchKind", searchKind);

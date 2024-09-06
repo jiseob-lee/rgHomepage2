@@ -18,6 +18,7 @@
 <h3 ng-if="urlPath == 'rg' && openYn == '1'"><legend translate>board.manageOpenArticle</legend></h3>
 <h3 ng-if="urlPath == 'rg' && openYn != '1'"><legend translate>board.managePrivateArticle</legend></h3>
 
+<!-- <form name="frm" onsubmit="enableScrolling(); && goSearch(document.frm.searchKind.value, document.frm.searchValue.value);"> -->
 <form name="frm">
 
   <div style="width: 750px">
@@ -117,7 +118,7 @@
 
     <input type="text" name="searchValue" id="searchValue" ng-model="searchValue" size="30" 
     	style="font-size: 15pt; cursor: default; background-color: gray;" 
-    	ng-keydown="$event.keyCode === 13 && goSearch(searchKind, searchValue)" 
+    	ng-keydown="$event.keyCode === 13 && enableScrolling() == true && goSearch(searchKind, searchValue)" 
     	onkeydown="disableScrolling(); if (event.keyCode == 13) { event.preventDefault(); }"
     	onkeyup="enableScrolling();" 
     	onblur="enableScrolling();"
@@ -157,14 +158,15 @@
 	//document.frm.searchKind.value = document.frm.searchKind.value;
 //}
 
-function disableScrolling(){
+function disableScrolling() {
     var x=window.scrollX;
     var y=window.scrollY;
-    window.onscroll=function(){window.scrollTo(x, y);};
+    window.onscroll = function(){ window.scrollTo(x, y); };
 }
 
-function enableScrolling(){
-    window.onscroll=function(){};
+function enableScrolling() {
+    window.onscroll = function(){};
+    return true;
 }
 </script>
 
