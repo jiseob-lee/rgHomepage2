@@ -120,7 +120,7 @@
     	ng-keydown="$event.keyCode === 13 && goSearch(searchKind, searchValue)" 
     	onkeydown="disableScrolling(); if (event.keyCode == 13) { event.preventDefault(); }"
     	onkeyup="enableScrolling();" 
-    	onfocusout="enableScrolling();"
+    	onblur="enableScrolling();"
     	maxlength="200" />
     <%-- <input type="text" name="searchValue" id="searchValue" ng-model="searchValue" size="30" style="font-size: 15pt; cursor: default; background-color: gray;" maxlength="200" /> --%>
 
