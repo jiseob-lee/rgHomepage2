@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.junit.Test;
 
 import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.AddressNotFoundException;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CountryResponse;
 import com.maxmind.geoip2.record.Country;
@@ -31,18 +32,21 @@ public class GeoLite2 {
 		DatabaseReader reader = null;
 		InetAddress ipAddress = null;
 		CountryResponse response = null;
-
+		
+		String ip2 = request.getHeader("X-Forwarded-For") == null ? request.getRemoteAddr() : request.getHeader("X-Forwarded-For");
+		
 		try {
 
 			reader = new DatabaseReader.Builder(database).build();
 			
 			System.out.println("######################################## RemoteAddr 1 : " + request.getRemoteAddr());
+			System.out.println("######################################## RemoteAddr 1-1 : " + request.getHeader("X-Forwarded-For"));
 
 			if (ip == null || "".equals(ip)) {
-				ipAddress = "127.0.0.1".equals(request.getRemoteAddr()) || "0:0:0:0:0:0:0:1".equals(request.getRemoteAddr())
-						? InetAddress.getByName("13.124.60.122") : InetAddress.getByName(request.getRemoteAddr());
+				ipAddress = "127.0.0.1".equals(ip2) || "0:0:0:0:0:0:0:1".equals(ip2)
+						? InetAddress.getByName("13.124.60.122") : InetAddress.getByName(ip2);
 			} else {
-				ipAddress = InetAddress.getByName("ip");
+				ipAddress = InetAddress.getByName(ip);
 			}
 			
 			System.out.println("######################################## RemoteAddr 2 : " + ipAddress.toString());
@@ -51,6 +55,9 @@ public class GeoLite2 {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (AddressNotFoundException e) {
+			e.printStackTrace();
+			return "KR";
 		} catch (GeoIp2Exception e) {
 			e.printStackTrace();
 		}

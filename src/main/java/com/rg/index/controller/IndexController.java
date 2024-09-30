@@ -504,12 +504,13 @@ public class IndexController {
 		
 		
 		
+		String ip2 = request.getHeader("X-Forwarded-For") == null ? request.getRemoteAddr() : request.getHeader("X-Forwarded-For");
 		
 		if (request.getSession().getAttribute("loginId") == null) {
 			
 			IndexDTO indexDTO = new IndexDTO();
 			indexDTO.setProxyClientIp(request.getHeader("Proxy-Client-IP"));
-			indexDTO.setRemoteAddr(request.getRemoteAddr());
+			indexDTO.setRemoteAddr(ip2);
 			indexDTO.setUserAgent(request.getHeader("User-Agent"));
 			indexDTO.setxForwardedFor(request.getHeader("X-FORWARDED-FOR"));
 			
@@ -549,11 +550,13 @@ public class IndexController {
 	@RequestMapping("/logHash.do")
 	public void logHash(HttpServletRequest request, HttpServletResponse response) {
 		
+		String ip2 = request.getHeader("X-Forwarded-For") == null ? request.getRemoteAddr() : request.getHeader("X-Forwarded-For");
+		
 		if (request.getSession().getAttribute("loginId") == null) {
 			
 			IndexDTO indexDTO = new IndexDTO();
 			indexDTO.setProxyClientIp(request.getHeader("Proxy-Client-IP"));
-			indexDTO.setRemoteAddr(request.getRemoteAddr());
+			indexDTO.setRemoteAddr(ip2);
 			indexDTO.setUserAgent(request.getHeader("User-Agent"));
 			indexDTO.setxForwardedFor(request.getHeader("X-FORWARDED-FOR"));
 			

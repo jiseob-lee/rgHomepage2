@@ -94,7 +94,9 @@ public class EnvironmentController {
 		
 		//loginId = (String)session.getAttribute("loginId");
 		
-		logger.info("#### remoteAddr : " + request.getRemoteAddr());
+		String ip2 = request.getHeader("X-Forwarded-For") == null ? request.getRemoteAddr() : request.getHeader("X-Forwarded-For");
+		
+		logger.info("#### remoteAddr : " + ip2);
 		logger.info("#### loginId : " + loginId);
 		logger.info("#### loginUserName : " + loginUserName);
 		

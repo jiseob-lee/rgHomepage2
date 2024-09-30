@@ -90,7 +90,9 @@ public class TypingController {
 		
 		logger.debug("################################################### request.getRemoteHost : " + request.getRemoteHost());
 		
-		if (request.getRemoteAddr().equals("127.0.0.1") || request.getRemoteAddr().equals("0:0:0:0:0:0:0:1")) {
+		String ip2 = request.getHeader("X-Forwarded-For") == null ? request.getRemoteAddr() : request.getHeader("X-Forwarded-For");
+		
+		if (ip2.equals("127.0.0.1") || ip2.equals("0:0:0:0:0:0:0:1")) {
 			typingFileDirectory = "E:\\eclipse-workspace\\rg-aws\\resources\\typing";
 		}
 		

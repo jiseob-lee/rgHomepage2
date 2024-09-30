@@ -178,11 +178,13 @@ public class BoardController {
 		
 		logger.info("#### getBoardContent. 6");
 		
-		if (request.getSession() != null && request.getSession().getAttribute("loginId") == null && !ip.equals(request.getRemoteAddr())) {
+		String ip2 = request.getHeader("X-Forwarded-For") == null ? request.getRemoteAddr() : request.getHeader("X-Forwarded-For");
+		
+		if (request.getSession() != null && request.getSession().getAttribute("loginId") == null && !ip.equals(ip2)) {
 
 			IndexDTO indexDTO = new IndexDTO();
 			indexDTO.setProxyClientIp(request.getHeader("Proxy-Client-IP"));
-			indexDTO.setRemoteAddr(request.getRemoteAddr());
+			indexDTO.setRemoteAddr(ip2);
 			indexDTO.setUserAgent(request.getHeader("User-Agent"));
 			indexDTO.setxForwardedFor(request.getHeader("X-FORWARDED-FOR"));
 			indexDTO.setHash(request.getParameter("pathname"));
