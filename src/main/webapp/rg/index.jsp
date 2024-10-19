@@ -4,6 +4,8 @@
 <% // @ page import="jakarta.servlet.ServletContext" %>
 <% // @ page import="jakarta.servlet.RequestDispatcher" %>
 
+<%@ page import="javax.servlet.RequestDispatcher" %>
+
 <%
 //RequestDispatcher requestDispatcher = request.getRequestDispatcher("/rg/index.do");
 
