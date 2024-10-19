@@ -2,15 +2,16 @@
     pageEncoding="UTF-8"%>
 
 <% // @ page import="jakarta.servlet.ServletContext" %>
-<% // @ page import="jakarta.servlet.RequestDispatcher;" %>
+<% // @ page import="jakarta.servlet.RequestDispatcher" %>
 
 <%
 //RequestDispatcher requestDispatcher = request.getRequestDispatcher("/rg/index.do");
 
-//RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher​("/rg/index.do");
-//requestDispatcher.forward(request, response);
+RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/rg/index.do");
+requestDispatcher.forward(request, response);
 %>
 
+<%--
 <jsp:forward page="/rg/index.do" />
 
 <!DOCTYPE html>
@@ -27,3 +28,4 @@ location.href = "/rg/index.do";
 
 </body>
 </html>
+--%>
