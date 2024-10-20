@@ -1,5 +1,6 @@
 package com.rg.util;
 
+/*
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.event.ProgressEvent;
@@ -10,9 +11,11 @@ import com.amazonaws.services.s3.transfer.Transfer.TransferState;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+*/
 
 public class XferMgrProgress {
 
+	/*
     // waits for the transfer to complete, catching any exceptions that occur.
     public static void waitForCompletion(Transfer xfer) {
         // snippet-start:[s3.java1.s3_xfer_mgr_progress.wait_for_transfer]
@@ -240,4 +243,5 @@ public class XferMgrProgress {
             uploadFileWithListener(local_path, bucket_name, key_prefix, pause);
         }
     }
+    */
 }

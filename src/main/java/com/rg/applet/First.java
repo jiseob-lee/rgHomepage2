@@ -1,18 +1,18 @@
 package com.rg.applet;
-import java.applet.Applet;
-import java.awt.Graphics;
+//import java.applet.Applet;
+//import java.awt.Graphics;
 //import netscape.javascript.*;
 
-public class First extends Applet {
+public class First /* extends Applet */ {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7486715938342352654L;
+	//private static final long serialVersionUID = 7486715938342352654L;
 
-	public void paint(Graphics g) {
-		g.drawString("welcome to applet", 150, 150);
-	}
+	//public void paint(Graphics g) {
+		//g.drawString("welcome to applet", 150, 150);
+	//}
 
 	/*
     public void start() {

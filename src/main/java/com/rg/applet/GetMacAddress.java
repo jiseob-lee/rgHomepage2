@@ -1,18 +1,20 @@
 package com.rg.applet;
 
+/*
 import java.applet.Applet;
 import java.awt.Graphics;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+*/
 
-public class GetMacAddress extends Applet {
+public class GetMacAddress /* extends Applet */ {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 5774258676676483336L;
+	//private static final long serialVersionUID = 5774258676676483336L;
 
 	/*
 	public void getMacAddress() {
@@ -44,6 +46,7 @@ public class GetMacAddress extends Applet {
 	}
 	*/
 
+	/*
 	public void paint(Graphics g) {
 		g.drawRect(0, 0, 350, 350);
 		g.drawString("Hello World 2", 25, 50);
@@ -87,4 +90,5 @@ public class GetMacAddress extends Applet {
 	public void init() {
 		//paint();
 	}
+	*/
 }

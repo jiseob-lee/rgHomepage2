@@ -13,9 +13,9 @@ public class Client {
         
         System.setProperty("java.security.policy","file:/H:/eclipse-workspace/rg-aws/src/com/rg/rmi/client.policy");
         
-        if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-        }
+        //if (System.getSecurityManager() == null) {
+            //System.setSecurityManager(new SecurityManager());
+        //}
         
         try {
             Registry registry = LocateRegistry.getRegistry(host, 2000);

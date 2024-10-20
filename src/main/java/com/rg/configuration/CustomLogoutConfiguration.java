@@ -1,5 +1,6 @@
 package com.rg.configuration;
 
+/*
 import java.io.IOException;
 
 import jakarta.servlet.ServletException;
@@ -18,11 +19,13 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 import com.rg.util.RedisService3;
+*/
 
 //@Configuration
 //@EnableWebSecurity
 public class CustomLogoutConfiguration {
 
+	/*
 	@Autowired
 	private RedisService3 redisService;
 	
@@ -54,4 +57,6 @@ public class CustomLogoutConfiguration {
           ;
         return http.build();
     }
+    */
+	
 }

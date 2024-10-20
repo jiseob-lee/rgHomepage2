@@ -1,5 +1,6 @@
 package com.rg.util.controller;
 
+/*
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rg.util.S3Download;
 import com.rg.util.S3HighLevelMultipartUpload;
+*/
 
-@Controller
+//@Controller
 public class S3 {
 	
+	/*
 	private final Logger logger = LogManager.getLogger(S3.class);
 	
 	@RequestMapping(value = "/s3Download.do")
@@ -33,5 +36,6 @@ public class S3 {
 			e.printStackTrace();
 		}
 	}
+	*/
 
 }

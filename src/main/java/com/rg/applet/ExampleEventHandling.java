@@ -1,16 +1,19 @@
 package com.rg.applet;
 
+/*
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.applet.Applet;
 import java.awt.Graphics;
+*/
 
-public class ExampleEventHandling extends Applet implements MouseListener {
+public class ExampleEventHandling /* extends Applet implements MouseListener */ {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6986601685627336559L;
+	//private static final long serialVersionUID = -6986601685627336559L;
 
+	/*
 	StringBuffer strBuffer;
 
 	public void init() {
@@ -60,4 +63,5 @@ public class ExampleEventHandling extends Applet implements MouseListener {
 	public void mouseClicked(MouseEvent event) {
 		addItem("mouse clicked! ");
 	}
+	*/
 }

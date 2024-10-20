@@ -1,5 +1,6 @@
 package com.rg.util;
 
+/*
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
@@ -14,9 +15,11 @@ import com.amazonaws.services.s3.transfer.Upload;
 
 import java.io.File;
 import java.net.URLEncoder;
+*/
 
 public class S3Download {
 	
+	/*
 	public static void downloadFile(String bucket_name, String key_name, String file_path) {
 		
 		//String bucket_name = "";
@@ -28,21 +31,21 @@ public class S3Download {
 		//System.setProperty("javax.net.ssl.trustStore", "/home/ubuntu/certs_aws/jssecacerts");
 		//System.setProperty("javax.net.ssl.trustStorePassword", "changeit"); 
 		
-		/*
-		File f = new File(file_path);
-		TransferManager xfer_mgr = TransferManagerBuilder.standard().build();
-		try {
-		    Download xfer = xfer_mgr.download(bucket_name, key_name, f);
+		
+		//File f = new File(file_path);
+		//TransferManager xfer_mgr = TransferManagerBuilder.standard().build();
+		//try {
+		    //Download xfer = xfer_mgr.download(bucket_name, key_name, f);
 		    // loop with Transfer.isDone()
-		    XferMgrProgress.showTransferProgress(xfer);
+		    //XferMgrProgress.showTransferProgress(xfer);
 		    // or block with Transfer.waitForCompletion()
-		    XferMgrProgress.waitForCompletion(xfer);
-		} catch (AmazonServiceException e) {
-		    System.err.println(e.getErrorMessage());
-		    System.exit(1);
-		}
-		xfer_mgr.shutdownNow();
-		*/
+		    //XferMgrProgress.waitForCompletion(xfer);
+		//} catch (AmazonServiceException e) {
+		    //System.err.println(e.getErrorMessage());
+		    //System.exit(1);
+		//}
+		//xfer_mgr.shutdownNow();
+		
 		
         String clientRegion = "ap-northeast-2";
         String bucketName = "jisblee.me";
@@ -86,4 +89,5 @@ public class S3Download {
 		}
 
 	}
+	*/
 }

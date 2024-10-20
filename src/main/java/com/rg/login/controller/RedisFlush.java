@@ -1,5 +1,6 @@
 package com.rg.login.controller;
 
+/*
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
@@ -10,9 +11,11 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+*/
 
-public class RedisFlush extends QuartzJobBean {
+public class RedisFlush /* extends QuartzJobBean */ {
 	
+	/*
 	private final Logger logger = LogManager.getLogger(RedisFlush.class);
 	
 	//@Autowired
@@ -37,9 +40,10 @@ public class RedisFlush extends QuartzJobBean {
 		redisTemplate.execute(new RedisCallback<Object>() {
             @Override
             public Object doInRedis(RedisConnection connection) throws DataAccessException {
-                connection.flushAll();
+                //connection.flushAll();
                 return null;
             }
         });
 	}
+	*/
 }

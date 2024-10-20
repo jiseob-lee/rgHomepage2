@@ -14,9 +14,9 @@ public class Server implements Hello {
         
     public static void main(String args[]) {
 
-        if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-        }
+        //if (System.getSecurityManager() == null) {
+            //System.setSecurityManager(new SecurityManager());
+        //}
         
         try {
             Server obj = new Server();

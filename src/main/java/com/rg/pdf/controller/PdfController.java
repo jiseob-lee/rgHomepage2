@@ -1,5 +1,6 @@
 package com.rg.pdf.controller;
 
+/*
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,10 +17,12 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
+*/
 
-@Controller
+//@Controller
 public class PdfController {
 
+	/*
 	private final Logger logger = LogManager.getLogger(PdfController.class);
 
 
@@ -90,6 +93,6 @@ public class PdfController {
 
         stamper.close();
 	}
-	
+	*/
 	
 }

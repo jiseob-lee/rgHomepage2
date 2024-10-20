@@ -1,5 +1,6 @@
 package com.rg.toss.controller;
 
+/*
 import jakarta.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -20,10 +21,12 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Set;
+*/
 
-@Controller
+//@Controller
 public class WidgetController {
 
+	/*
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(value = "/toss/confirm.do")
@@ -132,13 +135,13 @@ public class WidgetController {
 	    }
     }
 
-    /**
+    /*
      * 인증성공처리
      * @param request
      * @param model
      * @return
      * @throws Exception
-     */
+     /
     @RequestMapping(value = "/toss/success.do", method = RequestMethod.GET)
     public String paymentRequest(HttpServletRequest request, Model model) throws Exception {
         return "/toss/success";
@@ -149,13 +152,13 @@ public class WidgetController {
         return "/toss/checkout";
     }
 
-    /**
+    /*
      * 인증실패처리
      * @param request
      * @param model
      * @return
      * @throws Exception
-     */
+     /
     @RequestMapping(value = "/toss/fail.do", method = RequestMethod.GET)
     public String failPayment(HttpServletRequest request, Model model) throws Exception {
         String failCode = request.getParameter("code");
@@ -166,4 +169,5 @@ public class WidgetController {
 
         return "/toss/fail";
     }
+    */
 }

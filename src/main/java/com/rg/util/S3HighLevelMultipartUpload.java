@@ -1,5 +1,6 @@
 package com.rg.util;
 
+/*
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,9 +56,11 @@ import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
 //import com.amazonaws.services.s3.model.CanonicalGrantee;
+*/
 
 public class S3HighLevelMultipartUpload {
 
+	/*
 	public static void s3Upload1(String filePath) throws IOException {
         String clientRegion = "ap-northeast-2";
         String bucketName = "jisblee.me";
@@ -127,15 +130,15 @@ public class S3HighLevelMultipartUpload {
             
             //ObjectListing listing = s3Client.listObjects("someBucket", "foo/");
             
-            /*
-            ArrayList<Grant> grantCollection = new ArrayList<Grant>();
-            Grant grant1 = new Grant(new CanonicalGrantee(s3Client.getS3AccountOwner().getId()), Permission.Read);
-            grantCollection.add(grant1);
-            AccessControlList bucketAcl = new AccessControlList();
-            bucketAcl.grantAllPermissions(grantCollection.toArray(new Grant[0]));
-            //s3Client.setBucketAcl(bucketName, bucketAcl);
-            s3Client.setObjectAcl(bucketName, keyName, bucketAcl);
-            */
+            
+            //ArrayList<Grant> grantCollection = new ArrayList<Grant>();
+            //Grant grant1 = new Grant(new CanonicalGrantee(s3Client.getS3AccountOwner().getId()), Permission.Read);
+            //grantCollection.add(grant1);
+            //AccessControlList bucketAcl = new AccessControlList();
+            //bucketAcl.grantAllPermissions(grantCollection.toArray(new Grant[0]));
+            ////s3Client.setBucketAcl(bucketName, bucketAcl);
+            //s3Client.setObjectAcl(bucketName, keyName, bucketAcl);
+            
             
             
             TransferManager tm = TransferManagerBuilder.standard()
@@ -152,20 +155,20 @@ public class S3HighLevelMultipartUpload {
             System.out.println("Object upload complete");
             
 
-            /*
+            
             // Get the existing object ACL that we want to modify.
-            AccessControlList acl = s3Client.getObjectAcl(bucketName, keyName);
+            //AccessControlList acl = s3Client.getObjectAcl(bucketName, keyName);
             
             // Clear the existing list of grants.
-            acl.getGrantsAsList().clear();
+            //acl.getGrantsAsList().clear();
             
             // Grant a sample set of permissions, using the existing ACL owner for Full Control permissions.
-            acl.grantPermission(new CanonicalGrantee(acl.getOwner().getId()), Permission.FullControl);
+            //acl.grantPermission(new CanonicalGrantee(acl.getOwner().getId()), Permission.FullControl);
             //acl.grantPermission(new EmailAddressGrantee(emailGrantee), Permission.WriteAcp);
     
             // Save the modified ACL back to the object.
-            s3Client.setObjectAcl(bucketName, keyName, acl);
-            */
+            //s3Client.setObjectAcl(bucketName, keyName, acl);
+            
             
         }
         catch(AmazonServiceException e) {
@@ -362,26 +365,26 @@ public class S3HighLevelMultipartUpload {
 
     
 
-    /**
+    /*
      * Strict authenticated encryption mode does not support ranged GETs. This is because we must use AES/CTR for ranged
      * GETs which is not an authenticated encryption algorithm. To do a partial get using authenticated encryption you have to
      * get the whole object and filter to the data you want.
-     */
+     /
     public static void s3UploadEncryption(String filePath, String serverFileName) throws NoSuchAlgorithmException {
 
         //System.setProperty("com.amazonaws.sdk.disableCertChecking", "true");
         
-        /*
-    	SecretKey secretKey = KeyGenerator.getInstance("AES").generateKey();
-        AmazonS3Encryption s3Encryption = AmazonS3EncryptionClientBuilder
-                .standard()
-                .withRegion(Regions.AP_NORTHEAST_2)
-                .withCryptoConfiguration(new CryptoConfiguration(CryptoMode.StrictAuthenticatedEncryption))
-                .withEncryptionMaterials(new StaticEncryptionMaterialsProvider(new EncryptionMaterials(secretKey)))
-                .build();
+        
+    	//SecretKey secretKey = KeyGenerator.getInstance("AES").generateKey();
+        //AmazonS3Encryption s3Encryption = AmazonS3EncryptionClientBuilder
+                //.standard()
+                //.withRegion(Regions.AP_NORTHEAST_2)
+                //.withCryptoConfiguration(new CryptoConfiguration(CryptoMode.StrictAuthenticatedEncryption))
+                //.withEncryptionMaterials(new StaticEncryptionMaterialsProvider(new EncryptionMaterials(secretKey)))
+                //.build();
 
-        s3Encryption.putObject("jisblee.me", "test2/aNewTwo.txt", new File("/home/ubuntu/download/abcd_2.txt"));
-        */
+        //s3Encryption.putObject("jisblee.me", "test2/aNewTwo.txt", new File("/home/ubuntu/download/abcd_2.txt"));
+        
 
         AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(Regions.AP_NORTHEAST_2)
@@ -393,12 +396,13 @@ public class S3HighLevelMultipartUpload {
         		"test2/aNewFour.txt",
         		"test2/aNewFour_1.txt",
         		"/home/ubuntu/download/Create_Table_1.txt");
-        /*
-        try {
-            s3Encryption.getObject(new GetObjectRequest("jisblee.me", "test2/aNewOne.txt").withRange(0, 2));
-        } catch (SecurityException e) {
-            System.err.println("Range GET is not supported with authenticated encryption");
-        }
-        */
+        
+        //try {
+            //s3Encryption.getObject(new GetObjectRequest("jisblee.me", "test2/aNewOne.txt").withRange(0, 2));
+        //} catch (SecurityException e) {
+            //System.err.println("Range GET is not supported with authenticated encryption");
+        //}
+        
     }
+    */
 }
