@@ -19,7 +19,7 @@
     <context:component-scan base-package="com.rg, com.rg2">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+        <!-- <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/> -->
     </context:component-scan>
 
 	<mvc:default-servlet-handler/>
@@ -139,7 +139,11 @@
 		-->
 		
 	</mvc:cors>
-
+    
+    
+    <!-- exception 처리를 위한 ExceptionResolver -->
+    <bean id="exceptionResolver" class="com.rg.exception.resolver.DefaultExceptionResolver" />
+    
 
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="defaultErrorView" value="cmmn/error"/>
