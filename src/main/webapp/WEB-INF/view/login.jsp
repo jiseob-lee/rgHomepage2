@@ -84,10 +84,24 @@ function loginProcess() {
 }
 
 function setCookie(cookie_name, value, days) {
-	var exdate = new Date(); 
-	exdate.setDate(exdate.getDate() + days); // 설정 일수만큼 현재시간에 만료값으로 지정
-	var cookie_value = escape(value) + ((days == null) ? '' : '; expires=' + exdate.toUTCString()); 
-	document.cookie = cookie_name + '=' + cookie_value;
+
+	//var exdate = new Date(); 
+
+	//exdate.setDate(exdate.getDate() + days); // 설정 일수만큼 현재시간에 만료값으로 지정
+
+	if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    
+	//var cookie_value = escape(value) + ((days == null) ? '' : '; expires=' + exdate.toUTCString()) + "; path=/";
+	
+	var cookie_value = value ? escape(value) : "";
+	
+	//document.cookie = cookie_name + '=' + cookie_value;
+	
+	document.cookie = cookie_name + "=" + (cookie_value || "")  + expires + "; path=/";
 }
 
 function getCookie(cookie_name) {
@@ -102,6 +116,10 @@ function getCookie(cookie_name) {
 	} 
 }
 
+function delCookie(cookie_name) {
+	document.cookie = cookie_name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/'
+}
+
 function onLoad() {
 	//var loginId = getCookie("loginId");
 	//if (loginId != null && loginId != "") {
@@ -111,6 +129,17 @@ function onLoad() {
 		//document.frm.username.focus();
 	//}
 	//document.frm.username.focus();
+}
+
+function autoLogin1() {
+	//alert("1");
+	if (document.getElementById('autoLogin').checked) {
+	    // 쿠키 세팅
+		setCookie('autoLogin', "1", 100);
+	} else {
+		// 쿠키 삭제
+		delCookie('autoLogin');
+	}
 }
 
 </script>
@@ -144,7 +173,7 @@ String currentLocale = localeUtil.getLocale().getLanguage();
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td><input type="checkbox" name="autoLogin" value="1" /> 자동 로그인 설정</td>
+    <td><input type="checkbox" name="autoLogin" id="autoLogin" value="1" onclick="autoLogin1();" /> 자동 로그인 설정</td>
   </tr>
   <tr>
     <td><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /></td>

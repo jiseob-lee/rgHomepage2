@@ -130,7 +130,9 @@ public class IndexController {
 		AES256Util aes256Util = new AES256Util();
 		
 		String loginIdEnc = null;//getCookie(request, "loginId");
+		String loginTokenDec = null;
 		String loginIdDec = null;
+		String loginPwDec = null;
 		
 		Cookie[] cookies = request.getCookies();
 
@@ -149,7 +151,11 @@ public class IndexController {
 		if (loginIdEnc != null) {
 			
 			try {
-				loginIdDec = aes256Util.decrypt(loginIdEnc);
+				loginTokenDec = aes256Util.decrypt(loginIdEnc);
+				logger.info("#### loginTokenDec : " + loginTokenDec);
+				String[] tmpArr = loginTokenDec.split("\\|\\|");
+				loginIdDec = "".equals(loginTokenDec) ? "" : tmpArr[0];
+				loginPwDec = tmpArr.length > 1 ? tmpArr[1] : "";
 			} catch (UnsupportedEncodingException | GeneralSecurityException e) {
 				e.printStackTrace();
 			}
@@ -158,6 +164,12 @@ public class IndexController {
 			
 			if ("yoon".equals(loginIdDec) || "rg".equals(loginIdDec)) {
 
+				String loginPwEncryptrdInDB = loginService.getLoginPwEncrypted(loginIdDec);
+				
+				if (!loginPwDec.equals(loginPwEncryptrdInDB)) {
+					return "login";
+				}
+				
 				Cookie cookie = new Cookie("loginId", loginIdEnc); // 쿠키 이름 지정하여 생성( key, value 개념)
 			    cookie.setMaxAge(60*60*24*100); //쿠키 유효 기간: 하루로 설정(60초 * 60분 * 24시간)
 			    cookie.setPath("/"); //모든 경로에서 접근 가능하도록 설정

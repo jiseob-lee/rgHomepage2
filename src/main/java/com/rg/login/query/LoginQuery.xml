@@ -47,4 +47,16 @@
 
 	</select>
 	
+	
+	<select id="getLoginPwEncrypted" parameterType="string" resultType="string">
+		
+		SELECT
+			user_password
+		FROM
+			user
+		WHERE
+			user_id = #{userId, jdbcType=VARCHAR}
+
+	</select>
+	
 </mapper>

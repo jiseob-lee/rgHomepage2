@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
 import com.rg.login.service.LoginService;
@@ -60,6 +61,9 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		logger.info("#### host : " + host);
 		
 		String loginId = authentication.getName();
+		
+		String loginPw = loginService.getLoginPwEncrypted(loginId);
+		
 		String loginName = loginService.getUserName(loginId);
 
 		HttpSession session = request.getSession();
@@ -71,7 +75,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		AES256Util aes256Util = new AES256Util();
 		String loginIdEnc = null;
 		try {
-			loginIdEnc = aes256Util.encrypt(loginId);
+			loginIdEnc = aes256Util.encrypt(loginId + "||" + loginPw);
 		} catch (UnsupportedEncodingException | GeneralSecurityException e) {
 			e.printStackTrace();
 		}
@@ -79,9 +83,26 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 	    cookie.setMaxAge(60*60*24*100); //쿠키 유효 기간: 하루로 설정(60초 * 60분 * 24시간)
 	    cookie.setPath("/"); //모든 경로에서 접근 가능하도록 설정
 	    
-	    if ("1".equals(request.getParameter("autoLogin"))) {
+	    Cookie cookie2 = new Cookie("autoLogin", "1"); // 쿠키 이름 지정하여 생성( key, value 개념)
+	    cookie2.setMaxAge(60*60*24*100); //쿠키 유효 기간: 하루로 설정(60초 * 60분 * 24시간)
+	    cookie2.setPath("/"); //모든 경로에서 접근 가능하도록 설정
+		
+		Cookie[] cookies = request.getCookies();
+		String autoLogin = "0";
+		
+	    if (cookies != null) {
+	        for (Cookie c : cookies) {
+	            String name = c.getName(); // 쿠키 이름 가져오기
+	            String value = c.getValue(); // 쿠키 값 가져오기
+	            if (name.equals("autoLogin")) {
+	            	autoLogin = value;
+	            }
+	        }
+	    }
+	    
+	    if ("1".equals(autoLogin)) {
 	    	response.addCookie(cookie); //response에 Cookie 추가
-	    	
+	    	response.addCookie(cookie2);
 	    	// 접속한 IP 정보 DB에 등록, IP 가 일치하지 않으면 자동 로그인 해지
 	    }
 

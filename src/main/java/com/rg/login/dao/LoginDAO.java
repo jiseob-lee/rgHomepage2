@@ -6,4 +6,6 @@ public interface LoginDAO {
 	
 	public String getUserName(String userId);
 	
+	public String getLoginPwEncrypted(String userId);
+	
 }

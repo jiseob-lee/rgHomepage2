@@ -22,4 +22,8 @@ public class LoginServiceImpl implements LoginService {
 	public String getUserName(String userId) {
 		return loginDAO.getUserName(userId);
 	}
+	
+	public String getLoginPwEncrypted(String userId) {
+		return loginDAO.getLoginPwEncrypted(userId);
+	}
 }

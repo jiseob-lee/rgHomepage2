@@ -35,4 +35,8 @@ public class LoginDAOImpl implements LoginDAO {
 	public String getUserName(String userId) {
 		return sqlSession.selectOne(namespace + ".getUserName", userId);
 	}
+	
+	public String getLoginPwEncrypted(String userId) {
+		return sqlSession.selectOne(namespace + ".getLoginPwEncrypted", userId);
+	}
 }
