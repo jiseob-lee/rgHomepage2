@@ -87,9 +87,14 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
+    <servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>
+	
 	
 	<!-- redis -->
-
+	<!--
 	<filter>
 		<filter-name>springSessionRepositoryFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -97,10 +102,10 @@
 	<filter-mapping>
 		<filter-name>springSessionRepositoryFilter</filter-name>
 		<url-pattern>/*</url-pattern>
-		<!-- <dispatcher>REQUEST</dispatcher> -->
-		<!-- <dispatcher>ERROR</dispatcher> -->
+		<- <dispatcher>REQUEST</dispatcher> ->
+		<- <dispatcher>ERROR</dispatcher> ->
 	</filter-mapping>
-
+	-->
 	
 	
 	<filter>
