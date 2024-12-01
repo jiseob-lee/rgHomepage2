@@ -154,6 +154,9 @@ public class IndexController {
 				Cookie cookie = new Cookie("loginId", loginIdEnc); // 쿠키 이름 지정하여 생성( key, value 개념)
 			    cookie.setMaxAge(60*60*24*100); //쿠키 유효 기간: 하루로 설정(60초 * 60분 * 24시간)
 			    cookie.setPath("/"); //모든 경로에서 접근 가능하도록 설정
+			    cookie.setHttpOnly(true);
+			    cookie.setSecure(true);
+			    
 			    response.addCookie(cookie); //response에 Cookie 추가
 			    
 				List<GrantedAuthority> authorities = new ArrayList<>();

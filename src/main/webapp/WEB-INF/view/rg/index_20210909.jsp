@@ -56,7 +56,7 @@
 
 html, body {
 	/* color:#666; */
-	font:14px/120% 'NotoKrR','dotum','Gulim',sans-serif,Arial,Helvetica,Clean,AppleGothic; 
+	font:15px/120% 'NotoKrR','dotum','Gulim',sans-serif,Arial,Helvetica,Clean,AppleGothic; 
 	min-width:1100px; 
 	font-weight:100;
 	
