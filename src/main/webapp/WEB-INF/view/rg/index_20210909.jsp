@@ -97,11 +97,11 @@ body {
 div.menu {
   float: left;
   border-right: 2px solid gray;
-  width: 135px;
+  width: 140px;
 }
 
 div.user {
-  width: 135px;
+  width: 140px;
   padding: 5px;
   white-space: pre-line;
   overflow-wrap: break-word;
