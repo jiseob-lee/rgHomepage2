@@ -46,7 +46,7 @@ md-datepicker {
 		<input type="button" value="로그 일람" ng-click="checkDates3('${_csrf.parameterName}', '${_csrf.token}')" />
 	</div>
 
-	<div style="clear: both;">
+	<div style="clear: both; font-size: 14px;">
 		<table class="logViewed">
 			<thead>
 				<tr align="center">
