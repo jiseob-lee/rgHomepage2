@@ -42,7 +42,7 @@
         
         
         <egovframework.rte.version>3.6.0</egovframework.rte.version>
-        <log4j.version>2.21.1</log4j.version>
+        <log4j.version>2.24.2</log4j.version>
         <nexacro.uiadapter.version>1.0.0-SNAPSHOT</nexacro.uiadapter.version>
         <org.slf4j-version>1.7.5</org.slf4j-version>
         <encoding>UTF-8</encoding>
