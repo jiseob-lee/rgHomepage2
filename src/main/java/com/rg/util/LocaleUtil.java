@@ -1,7 +1,5 @@
 package com.rg.util;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,10 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
@@ -47,6 +43,14 @@ public class LocaleUtil {
 		Locale locale = LocaleContextHolder.getLocale();
 		
 		logger.debug("########################################## Current locale : " + locale.getLanguage());
+		
+		String language = locale.getLanguage();
+		
+		//if (!(language == null || "".equals(language) || "fr".equals(language) || "ko".equals(language) || "en".equals(language))) {
+		if (!("fr".equals(language) || "ko".equals(language) || "en".equals(language))) {
+			locale = new Locale(Locale.FRANCE.getLanguage());
+		}
+
 		return locale;
 	}
 
