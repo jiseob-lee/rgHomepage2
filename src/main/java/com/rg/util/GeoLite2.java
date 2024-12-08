@@ -76,7 +76,6 @@ public class GeoLite2 {
 			return "KR";
 		} catch (GeoIp2Exception e) {
 			e.printStackTrace();
-			return Locale.FRANCE.getISO3Country();
 		}
 
 		//Country country = response.getCountry();
