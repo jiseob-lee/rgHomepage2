@@ -312,9 +312,9 @@ function setCookie(name, value, exp) {
 		</sec:authorize>
 
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/typingIntro1" target="_self" class="menuLink">성경 타자 (신약)</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/typingIntro1" target="_self" class="menuLink">성경 타자(신약)</a></h3>
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/typingIntro2" target="_self" class="menuLink">성경 타자 (구약)</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/typingIntro2" target="_self" class="menuLink">성경 타자(구약)</a></h3>
 		
 		<h3 class="menu">&nbsp;- <a href="/rg/#/typingRecord" target="_self" class="menuLink">타자 연습 내역</a></h3>
 
