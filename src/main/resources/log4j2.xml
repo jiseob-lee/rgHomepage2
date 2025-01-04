@@ -3,7 +3,7 @@
 <Configuration xmlns="http://logging.apache.org/log4j/2.0/config">
 	
 	<Properties>
-		<Property name="log-path">E:/work/tomcat_log</Property>
+		<Property name="log-path">D:/work/tomcat_log</Property>
 	</Properties>
 	
     <Appenders>

@@ -107,7 +107,7 @@ public class EnvironmentController {
 			map.put("loginId", vo.getLoginId());
 			map.put("loginUserName", vo.getLoginUserName());
 			
-			int sessionTime = 60 * 60 * 5;
+			int sessionTime = 60 * 60 * 10;
 			redisService.setTimeOutSecond(redisKey, sessionTime);
 		}
 		//map.put("loginId", loginId);

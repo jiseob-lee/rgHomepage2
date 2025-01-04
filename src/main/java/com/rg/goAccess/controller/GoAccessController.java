@@ -49,7 +49,7 @@ public class GoAccessController {
 	//@Autowired
 	//RedisTemplate<String, Object> redisTemplate;
 
-	private static String goaccessPath = "/home/ubuntu/apache-tomcat-10.1.31/webapps/ROOT/goaccess";
+	private static String goaccessPath = "/home/ubuntu/apache-tomcat-10.1.34/webapps/ROOT/goaccess";
 	//private static String goaccessPath2 = "/home/ubuntu/apache-tomcat-8.5.45_2/webapps/ROOT/goaccess";
 	//private String goaccessPath = "/home/ubuntu/goaccess";
 

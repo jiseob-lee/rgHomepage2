@@ -121,7 +121,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 			session.setAttribute("loginUserName", loginName);
 			
 			UserDetailsVO userDetailsVO = new UserDetailsVO();
-			int sessionTime = 60 * 60 * 5;
+			int sessionTime = 60 * 60 * 10;
 			
 			userDetailsVO.setLoginId(loginId);
 			userDetailsVO.setLoginUserId1(userId);
