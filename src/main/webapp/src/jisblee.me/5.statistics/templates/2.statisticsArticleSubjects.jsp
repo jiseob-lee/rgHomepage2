@@ -49,7 +49,7 @@ md-datepicker {
 			</tr>
 			<tr ng-repeat="article in articlesData">
 				<td align="center">{{$index + 1}}</td>
-				<td>{{article.subject}}</td>
+				<td style="width: 550px;">{{article.subject}}</td>
 				<td align="center">{{article.articleCount}} <span ng-if="article.countKo > 0 || article.countEn > 0"> &nbsp; ( {{article.countKo }} / {{article.countEn }} )</span></td>
 				<td align="center">{{article.refererCount}}</td>
 			</tr>
