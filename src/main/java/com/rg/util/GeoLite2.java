@@ -81,8 +81,11 @@ public class GeoLite2 {
 		//Country country = response.getCountry();
 		logger.debug(country.getIsoCode());            // 'US'
 		logger.debug(country.getName());               // 'United States'
-		logger.debug(country.getNames().get("zh-CN")); // '美国'
-
+		logger.debug("중국어 : " + country.getNames().get("zh-CN")); // '美国'
+		//logger.debug(country.getNames().get("ko-KR"));
+		//java.util.Locale locale1 = new java.util.Locale("ko", result.getCountryCode());
+		//logger.debug("국가명 : " + locale1.getDisplayCountry());
+		
 		return country.getIsoCode();
 	}
 	

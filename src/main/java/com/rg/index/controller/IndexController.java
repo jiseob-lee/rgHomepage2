@@ -234,8 +234,15 @@ public class IndexController {
 		}
 	    return null;
 	}
+
 	
 
+	@RequestMapping(value = "/")
+	public ModelAndView indexSlash(HttpServletResponse response, HttpServletRequest request) {
+		return new ModelAndView("redirect:/board/list/0/1");
+	}
+
+	
 	@RequestMapping(value = {"/index.do", "/board/list/{boardNo}/{pageNo}"})
 	public ModelAndView index(HttpServletResponse response, HttpServletRequest request,
 			@PathVariable("boardNo") Optional<Integer> boardNoVal, 

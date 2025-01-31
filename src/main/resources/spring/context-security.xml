@@ -23,6 +23,7 @@
         <intercept-url pattern="/" access="permitAll" />
         <intercept-url pattern="/*" access="permitAll" />
         <intercept-url pattern="/assets/**" access="permitAll" />
+        <intercept-url pattern="/api/**" access="permitAll" />
         <intercept-url pattern="/src/**" access="permitAll" />
         <intercept-url pattern="/goaccess/**" access="permitAll" />
         <intercept-url pattern="/rg/getLoginUserInfo.do" access="permitAll" />
