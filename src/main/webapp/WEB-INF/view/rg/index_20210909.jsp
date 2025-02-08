@@ -136,7 +136,7 @@ var GIS_SERVER_URL = "https://m1.juso.go.kr";
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.7/angular.min.js"></script>
 -->
 
-<script type="text/javascript" src="/assets/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery-3.7.1.min.js"></script>
 <!-- <script type="text/javascript" src="/assets/js/angular-1.7.9.min.js"></script> -->
 
 <!-- <script type="text/javascript" src="/assets/js/angular.1.8.0.min.js"></script> -->
@@ -159,7 +159,7 @@ var GIS_SERVER_URL = "https://m1.juso.go.kr";
 
 <!-- <script type="text/javascript" src="/assets/js/package/dist/js/service/HuskyEZCreator.js" charset="utf-8"></script> -->
 
-<script type="text/javascript" src="/assets/js/tinymce_7.6.0/tinymce.min.js"></script>
+<script type="text/javascript" src="/assets/js/tinymce_7.6.1/tinymce.min.js"></script>
 <script type="text/javascript" src="/assets/js/angular-ui-tinymce/tinymce.js"></script>
 
 <script type="text/javascript" src="/assets/js/moment-with-locales.js"></script>
