@@ -1,0 +1,131 @@
+var translations_ko = 
+{
+	"comment": {
+		"content": "내용",
+		"modify": "수정",
+		"enterPassword2": "비밀번호를 입력해주시기 바랍니다.",
+		"comment": "댓글",
+		"writer": "작성자",
+		"name": "이름",
+		"deleted": "삭제되었습니다.",
+		"checkPassword": "비밀번호를 확인합니다.",
+		"input": "입력",
+		"cancel": "취소",
+		"enterPassword": "댓글 등록시 입력한 비밀번호를 입력해주시기 바랍니다.",
+		"inputContent": "내용을 입력해주시기 바랍니다.",
+		"inputPassword": "비밀번호를 입력해주시기 바랍니다.",
+		"inputName": "이름을 입력해주시기 바랍니다.",
+		"max200": "최대 {0} 자까지 입력 가능합니다.",
+		"confirm": "확인",
+		"passwordNotMatch": "비밀번호가 일치하지 않습니다.\\n다시 입력해주시기 바랍니다.",
+		"delete": "삭제",
+		"apply": "반영",
+		"inputed": "입력되었습니다.",
+		"password": "비밀번호",
+		"errorOccurred": "에러가 발생했습니다.",
+		"modified": "수정되었습니다."
+	},
+	"board": {
+		"delete": "삭제",
+		"newArticle": "새글 입력",
+		"manageOpenArticle": "공개 게시글 관리",
+		"attachmentFile": "첨부파일",
+		"list": "목록",
+		"writer": "글쓴이",
+		"korean": "한글",
+		"managePrivateArticle": "게시글 관리",
+		"writeDate": "작성일",
+		"board": "게시판",
+		"viewCount": "조회수",
+		"selectBoard": "게시판 선택",
+		"no": "번호",
+		"title": "제목",
+		"language": "언어",
+		"english": "영어",
+		"modify": "수정",
+		"title2": "제 목",
+		"noArticle": "게시글이 없습니다.",
+		"totalArticleCount": "총 게시글 수",
+		"byte": "byte",
+		"search": "검색"
+	},
+	"title": {
+		"sample": {
+			"regUser": "등록자",
+			"description": "설명",
+			"useYn": "사용여부",
+			"id": "카테고리ID",
+			"name": "카테고리명"
+		}
+	},
+	"errors": {
+		"korean": "{0}은 한글을 입력하셔야 합니다.",
+		"integer": "{0} 은 integer 타입이어야 합니다.",
+		"range": "{0} 은 {1} 과 {2} 사이의 값이어야 합니다.",
+		"long": "{0} 은 long 타입이어야 합니다.",
+		"creditcard": "{0} 은 유효하지 않은 신용카드 번호입니다.",
+		"email": "{0} 은 유효하지 않은 이메일 주소입니다.",
+		"invalid": "{0} 은 유효하지 않은 값입니다.",
+		"required": "{0} 은 필수 입력값입니다.",
+		"ihidnum": "유효하지 않은 주민등록번호입니다.",
+		"byte": "{0} 은 byte 타입이어야 합니다.",
+		"minlength": "{0} 은 {1}자 이상 입력해야 합니다.",
+		"short": "{0} 은 short 타입이어야 합니다.",
+		"double": "{0} 은 double 타입이어야 합니다.",
+		"float": "{0} 은 float 타입이어야 합니다.",
+		"maxlength": "{0} 은 {1}자 이상 입력할수 없습니다.",
+		"date": "{0} 은 날짜 유형이 아닙니다.",
+		"prefix": "<div class='error'> ",
+		"suffix": "</div><br/>"
+	},
+	"fail": {
+		"common": {
+			"msg": "에러가 발생했습니다!",
+			"sql": "sql 에러가 발생했습니다! error code: {0}, error msg: {1}"
+		}
+	},
+	"login": {
+		"password": "패스워드",
+		"toFrontMain": "프론트 메인으로...",
+		"incorrectLogin": "로그인 정보가 올바르지 않습니다.",
+		"id": "아이디",
+		"login": "로그인"
+	},
+	"button": {
+		"delete": "삭제",
+		"modify": "수정",
+		"list": "목록",
+		"reset": "재설정",
+		"create": "등록",
+		"search": "검색"
+	},
+	"header": {
+		"internal": "내부",
+		"language": "Lang",
+		"boardTotal": "전체 게시판",
+		"korean": "Korean",
+		"headTitle": "이지섭의 홈페이지 입니다.",
+		"login": "로그인",
+		"english": "English",
+		"logout": "로그아웃"
+	},
+	"search": {
+		"name": "이름",
+		"keyword": "검색어 입력",
+		"id": "ID",
+		"choose": "검색어 선택"
+	},
+	"image": {
+		"errorBg": "error",
+		"search": "btn_form_search.gif"
+	},
+	"info": {
+		"nodata": {
+			"msg": "해당 데이터가 없습니다."
+		}
+	},
+	"list": {
+		"sample": "List Sample"
+	}
+}
+;
