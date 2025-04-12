@@ -159,7 +159,7 @@ var GIS_SERVER_URL = "https://m1.juso.go.kr";
 
 <!-- <script type="text/javascript" src="/assets/js/package/dist/js/service/HuskyEZCreator.js" charset="utf-8"></script> -->
 
-<script type="text/javascript" src="/assets/js/tinymce_7.6.1/tinymce.min.js"></script>
+<script type="text/javascript" src="/assets/js/tinymce_7.8.0/tinymce.min.js"></script>
 <script type="text/javascript" src="/assets/js/angular-ui-tinymce/tinymce.js"></script>
 
 <script type="text/javascript" src="/assets/js/moment-with-locales.js"></script>
