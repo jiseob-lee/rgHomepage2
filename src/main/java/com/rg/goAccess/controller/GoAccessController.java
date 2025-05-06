@@ -53,7 +53,7 @@ public class GoAccessController {
 	//private static String goaccessPath2 = "/home/ubuntu/apache-tomcat-8.5.45_2/webapps/ROOT/goaccess";
 	//private String goaccessPath = "/home/ubuntu/goaccess";
 
-	private final String apachePath = "/usr/local/apache-2.4.63";
+	private final String apachePath = "/usr/local/apache-2.4.63_2";
 	
 	@RequestMapping(value="/rg/getGoaccessCurrentTime.do")
 	@ResponseBody
