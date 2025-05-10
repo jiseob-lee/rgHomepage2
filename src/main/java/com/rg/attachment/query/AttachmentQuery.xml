@@ -217,4 +217,41 @@
 
 	</select>
 
+
+	<insert id="saveDownloadHistory" parameterType="com.rg.attachment.dto.AttachmentDTO">
+
+		insert into attachment_download_history
+		(
+			attachment_idx,
+			board_idx,
+			board_article_idx,
+			server_file_name,
+			attachment_name,
+			attachment_ext,
+			attachment_size,
+			date_created,
+			user_ip,
+			user_country,
+			user_subdivision,
+			user_city
+		)
+		values
+		(
+			#{attachmentIdx},
+			#{boardIdx},
+			#{boardArticleIdx},
+			#{serverFileName},
+			#{attachmentName},
+			#{attachmentExt},
+			#{attachmentSize},
+			now(),
+			#{userIp},
+			#{userCountry},
+			#{userSubdivision},
+			#{userCity}
+		)
+
+	</insert>
+
+
 </mapper>

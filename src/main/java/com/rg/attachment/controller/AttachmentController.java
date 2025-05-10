@@ -290,6 +290,8 @@ public class AttachmentController {
 			HttpSession session = request.getSession();
 			session.removeAttribute(request.getParameter("filename"));
 			
+			attachmentService.saveDownloadHistory(request, attachmentDTO);
+			
 		    return ResponseEntity
 		            .ok()
 		            .header(HttpHeaders.CONTENT_DISPOSITION,contentDisposition)

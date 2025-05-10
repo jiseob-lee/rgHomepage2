@@ -48,4 +48,7 @@ public interface AttachmentService {
 	public AttachmentDTO getAttachmentDTOInfo(String attachmentIdx);
 	
 	public void checkAttachmentExists();
+	
+	public void saveDownloadHistory(HttpServletRequest request, AttachmentDTO attachmentDTO);
+	
 }

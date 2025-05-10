@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -14,7 +13,6 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,7 +26,6 @@ import com.rg.board.dto.BoardDTO;
 import com.rg.board.service.BoardService;
 import com.rg.index.dto.IndexDTO;
 import com.rg.index.service.IndexService;
-import com.rg.login.dto.CustomUserDetails;
 import com.rg.util.GeoLite2;
 import com.rg.util.LocaleUtil;
 

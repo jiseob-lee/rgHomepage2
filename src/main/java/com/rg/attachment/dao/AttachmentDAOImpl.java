@@ -79,4 +79,9 @@ public class AttachmentDAOImpl implements AttachmentDAO {
 		logger.debug("########################### boardArticleIdx : " + attachmentDTO.getBoardArticleIdx() + " #####################");
 		return sqlSession.selectOne(namespace + ".getMaxAttachmentOrder", attachmentDTO);
 	}
+	
+	@Override
+	public void saveDownloadHistory(AttachmentDTO attachmentDTO) {
+		sqlSession.insert(namespace + ".saveDownloadHistory", attachmentDTO);
+	}
 }

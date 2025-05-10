@@ -2,18 +2,13 @@ package com.rg.attachment.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,9 +17,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.AddressNotFoundException;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CityResponse;
+import com.maxmind.geoip2.record.City;
+import com.maxmind.geoip2.record.Country;
+import com.maxmind.geoip2.record.Subdivision;
 import com.rg.attachment.dao.AttachmentDAOImpl;
 import com.rg.attachment.dto.AttachmentDTO;
-import com.rg.util.S3HighLevelMultipartUpload;
+import com.rg.util.GeoLite2;
+import com.rg.util.IP;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service("attachmentService")
 public class AttachmentServiceImpl implements AttachmentService {
@@ -242,6 +247,64 @@ public class AttachmentServiceImpl implements AttachmentService {
 		
 		attachmentDAO.updateFileExists(list1);
 		attachmentDAO.updateFileNotExists(list0);
+	}
+	
+	@Override
+	public void saveDownloadHistory(HttpServletRequest request, AttachmentDTO attachmentDTO) {
+
+		try {
+			
+			String ip = IP.getClientIP(request);
+			
+			attachmentDTO.setUserIp(ip);
+			
+			String GeoLite2Path = "D:/GeoLite2/GeoLite2-City.mmdb";
+			
+			// A File object pointing to your GeoIP2 or GeoLite2 database
+			if (new File("/home/ubuntu/GeoLite2").exists()) {
+				GeoLite2Path = "/home/ubuntu/GeoLite2/GeoLite2-City.mmdb";
+			}
+			
+			File database = new File(GeoLite2Path);
+			
+			DatabaseReader reader = new DatabaseReader.Builder(database).build();
+			
+			InetAddress ipAddress = InetAddress.getByName(ip);
+			
+			CityResponse response = reader.city(ipAddress);
+	
+			Country country = response.getCountry();
+			
+			logger.debug(country.getIsoCode());
+			logger.debug(country.getName());
+			
+			//indexDTO.setCountry(country.getName());
+			
+			Subdivision subdivision = response.getMostSpecificSubdivision();
+			//System.out.println(subdivision.getName()); 
+			//indexDTO.setSubdivision(subdivision.getName());
+			
+			City city = response.getCity();
+			//indexDTO.setCity(city.getName());
+			
+			
+			attachmentDTO.setUserCountry(country.getName());
+			attachmentDTO.setUserSubdivision(subdivision.getName());
+			attachmentDTO.setUserCity(city.getName());
+			
+			attachmentDAO.saveDownloadHistory(attachmentDTO);
+		
+		} catch (AddressNotFoundException e) {
+			logger.debug(e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			logger.debug(e.getMessage());
+			e.printStackTrace();
+		} catch (GeoIp2Exception e) {
+			logger.debug(e.getMessage());
+			e.printStackTrace();
+		}
+		
 	}
 }
 

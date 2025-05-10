@@ -21,6 +21,10 @@ public class AttachmentDTO {
 	private int listLimit;
 	private int listOffset;
 	private String openYn;
+	private String userIp;
+	private String userCountry;
+	private String userSubdivision;
+	private String userCity;
 	
 	
 	public String getAttachmentIdx() {
@@ -136,6 +140,30 @@ public class AttachmentDTO {
 	}
 	public void setOpenYn(String openYn) {
 		this.openYn = openYn;
+	}
+	public String getUserIp() {
+		return userIp;
+	}
+	public void setUserIp(String userIp) {
+		this.userIp = userIp;
+	}
+	public String getUserCountry() {
+		return userCountry;
+	}
+	public void setUserCountry(String userCountry) {
+		this.userCountry = userCountry;
+	}
+	public String getUserCity() {
+		return userCity;
+	}
+	public void setUserCity(String userCity) {
+		this.userCity = userCity;
+	}
+	public String getUserSubdivision() {
+		return userSubdivision;
+	}
+	public void setUserSubdivision(String userSubdivision) {
+		this.userSubdivision = userSubdivision;
 	}
 
 }

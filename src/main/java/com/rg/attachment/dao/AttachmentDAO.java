@@ -23,4 +23,6 @@ public interface AttachmentDAO {
 	public void updateFileMapping(AttachmentDTO attachmentDTO);
 	
 	public int getMaxAttachmentOrder(AttachmentDTO attachmentDTO);
+	
+	public void saveDownloadHistory(AttachmentDTO attachmentDTO);
 }
