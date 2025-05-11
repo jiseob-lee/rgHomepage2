@@ -856,6 +856,7 @@
 		    <version>3.11</version>
 		</dependency>
 
+		<!--
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-core-asl</artifactId>
@@ -867,11 +868,24 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.13</version>
 		</dependency>
+		-->
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.17.1</version>
+			<version>2.19.0</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.19.0</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-annotations</artifactId>
+		    <version>2.19.0</version>
 		</dependency>
 
 		<!--
@@ -912,16 +926,7 @@
     <artifactId>jakarta.inject-api</artifactId>
     <version>2.0.1</version>
 </dependency>
-<dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-databind</artifactId>
-    <version>2.17.1</version>
-</dependency>
-<dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-annotations</artifactId>
-    <version>2.17.1</version>
-</dependency>
+
 <!--
 <dependency>
     <groupId>javax.servlet.jsp</groupId>
