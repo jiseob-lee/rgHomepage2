@@ -88,6 +88,7 @@ var translations_ko =
 		"password": "패스워드",
 		"toFrontMain": "프론트 메인으로...",
 		"incorrectLogin": "로그인 정보가 올바르지 않습니다.",
+		"autoLogin": "자동 로그인 설정",
 		"id": "아이디",
 		"login": "로그인"
 	},

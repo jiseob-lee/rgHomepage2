@@ -173,7 +173,7 @@ String currentLocale = localeUtil.getLocale().getLanguage();
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td><input type="checkbox" name="autoLogin" id="autoLogin" value="1" onclick="autoLogin1();" /> 자동 로그인 설정</td>
+    <td><input type="checkbox" name="autoLogin" id="autoLogin" value="1" onclick="autoLogin1();" /> <spring:message code="login.autoLogin" text="자동 로그인 설정" /></td>
   </tr>
   <tr>
     <td><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /></td>

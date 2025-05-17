@@ -88,6 +88,7 @@ var translations_en =
 		"password": "Password",
 		"toFrontMain": "To Front Main...",
 		"incorrectLogin": "Login information is incorrect.",
+		"autoLogin": "Setting auto login",
 		"id": "Id",
 		"login": "Login"
 	},

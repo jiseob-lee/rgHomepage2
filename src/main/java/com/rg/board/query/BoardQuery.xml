@@ -268,6 +268,7 @@
 			</if>
 			b.user_id_created   as userIdCreated,
 			(select user_name_ko from user where user_id = b.user_id_created) as userNameCreated,
+			(select user_name_en from user where user_id = b.user_id_created) as userNameCreatedEng,
 			<if test="locale == null or locale == 'ko'">
 			DATE_FORMAT(b.date_modified, '%Y-%m-%d')     as dateModified,
 			</if>
@@ -276,6 +277,7 @@
 			</if>
 			b.user_id_modified  as userIdModified,
 			(select user_name_ko from user where user_id = b.user_id_modified) as userNameModified,
+			(select user_name_en from user where user_id = b.user_id_modified) as userNameModifiedEng,
 			b.open_yn           as openYn
 		
 		FROM board_article b, board c

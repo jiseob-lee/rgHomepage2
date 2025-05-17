@@ -13,9 +13,11 @@ public class BoardDTO {
 	private String dateCreated;
 	private String userIdCreated;
 	private String userNameCreated;
+	private String userNameCreatedEng;
 	private String dateModified;
 	private String userIdModified;
 	private String userNameModified;
+	private String userNameModifiedEng;
 	private int listLimit;
 	private int listOffset;
 	private String openYn;
@@ -153,6 +155,18 @@ public class BoardDTO {
 	}
 	public void setSearchValue(String searchValue) {
 		this.searchValue = searchValue;
+	}
+	public String getUserNameCreatedEng() {
+		return userNameCreatedEng;
+	}
+	public void setUserNameCreatedEng(String userNameCreatedEng) {
+		this.userNameCreatedEng = userNameCreatedEng;
+	}
+	public String getUserNameModifiedEng() {
+		return userNameModifiedEng;
+	}
+	public void setUserNameModifiedEng(String userNameModifiedEng) {
+		this.userNameModifiedEng = userNameModifiedEng;
 	}
 
 }
