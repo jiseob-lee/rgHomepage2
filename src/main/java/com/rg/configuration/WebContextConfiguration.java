@@ -1,5 +1,7 @@
 package com.rg.configuration;
 
+import org.springframework.context.annotation.Bean;
+
 //import java.util.concurrent.Executor;
 
 //import org.springframework.context.annotation.Bean;
@@ -22,6 +24,10 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 //import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 //import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 //import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 //import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 //import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -34,7 +40,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //@EnableWebMvc
 //@ComponentScan(basePackages = {"com.rg"})
 //public class WebContextConfiguration {
-public class WebContextConfiguration implements WebMvcConfigurer {
+//public class WebContextConfiguration implements WebMvcConfigurer {
+public class WebContextConfiguration {
 
 	/**
 	 * 뷰 리졸버를 설정한다.
@@ -91,11 +98,11 @@ public class WebContextConfiguration implements WebMvcConfigurer {
     	//registry.addInterceptor(new AuthInterceptor()).addPathPatterns("/**/*.do");
     //}
     
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
+    //@Override
+    //public void addCorsMappings(CorsRegistry registry) {
         //registry.addMapping("/**");
     	//registry.addMapping("/**").allowedOrigins("http://localhost", "http://localhost:8080", "http://localhost:8180").maxAge(3600);
-    }
+    //}
     
 	//@Bean
 	//public WebMvcConfigurer corsConfigurer() {
@@ -106,6 +113,16 @@ public class WebContextConfiguration implements WebMvcConfigurer {
 			//}
 		//};
 	//}
+    
+    
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        return mapper;
+    }
+
 }
 
 //@Configuration

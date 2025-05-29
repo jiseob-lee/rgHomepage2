@@ -93,22 +93,28 @@ public class GeoLite2 {
 	public void testCountry() {
 		
 		// A File object pointing to your GeoIP2 or GeoLite2 database
-		File database = new File("/home/ubuntu/GeoLite2/GeoLite2-Country.mmdb");
+		File database = new File("/home/ubuntu/GeoLite2/GeoLite2-City.mmdb");
 		//database = new File("E:/work/20240124 - modal/GeoLite2-Country.mmdb");
-		database = new File("E:/GeoLite2/GeoLite2-Country.mmdb");
+		database = new File("E:/GeoLite2/GeoLite2-City.mmdb");
 		// This creates the DatabaseReader object. To improve performance, reuse
 		// the object across lookups. The object is thread-safe.
 		DatabaseReader reader = null;
 		InetAddress ipAddress = null;
-		CountryResponse response = null;
-
+		//CountryResponse response = null;
+		CityResponse response = null;
+		//Country country = null;
+		
 		try {
 
 			reader = new DatabaseReader.Builder(database).build();
 			
 			ipAddress = InetAddress.getByName("13.124.111.141");
 
-			response = reader.country(ipAddress);
+			response = reader.city(ipAddress);
+			//response = client.city(ipAddress);
+			
+			//country = response.getCountry();
+			//response = reader.country(ipAddress);
 			
 		} catch (IOException e) {
 			e.printStackTrace();

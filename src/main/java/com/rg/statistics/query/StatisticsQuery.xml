@@ -10,6 +10,8 @@
 		
 		FROM 
 			access_log
+
+		WHERE hash is not NULL
 		
 		GROUP BY 
 			DATE(TIME)
