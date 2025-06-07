@@ -3,9 +3,6 @@ package com.rg.login.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +15,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.rg.login.dto.CustomUserDetails;
 import com.rg.login.service.LoginService;
@@ -48,14 +42,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     	
     	//HttpSession session = null;
     	
-    	/*
-    	RequestAttributes attribs = RequestContextHolder.getRequestAttributes();
-    	HttpServletRequest request = null;
-    	if (RequestContextHolder.getRequestAttributes() != null) {
-    	    request = ((ServletRequestAttributes) attribs).getRequest();
-    	    session = request.getSession();
-    	}
-    	*/
+    	
+    	//RequestAttributes attribs = RequestContextHolder.getRequestAttributes();
+    	//HttpServletRequest request = null;
+    	//if (RequestContextHolder.getRequestAttributes() != null) {
+    	    //request = ((ServletRequestAttributes) attribs).getRequest();
+    	    //session = request.getSession();
+    	//}
+    	
     	
     	//if (request != null) {
     	    //session = request.getSession();
@@ -100,10 +94,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             return result;
 
         } else {
-
+    		
         	logger.info("사용자 크리덴셜 정보가 틀립니다. 에러가 발생합니다.");
 
         	throw new BadCredentialsException("Bad credentials");
         }
     }
 }
+

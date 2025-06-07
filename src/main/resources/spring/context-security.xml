@@ -58,6 +58,7 @@
           password-parameter="password"
           authentication-failure-url="/login.do?error=true"
           authentication-success-handler-ref="loginSuccessHandler"
+          authentication-failure-handler-ref="loginFailHandler"
           />
 
  
@@ -89,4 +90,6 @@
 	<!-- <b:bean id="logoutHandler" class="com.rg.login.controller.CustomLogoutHandler" /> -->
 	<b:bean id="logoutSuccessHandler" class="com.rg.login.controller.CustomLogoutSuccessHandler" />
 	<b:bean id="loginSuccessHandler" class="com.rg.login.controller.CustomLoginSuccessHandler" />
+	<b:bean id="loginFailHandler" class="com.rg.login.controller.CustomLoginFailHandler" />
+
 </b:beans>

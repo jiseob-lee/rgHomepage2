@@ -149,6 +149,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		Map<String, String> loginMap = new HashMap<>();
 		
 		loginMap.put("loginId", userDetailsVO.getLoginId());
+		loginMap.put("loginResult", "success");
 		loginMap.put("ip", IP.getClientIP(request));
 		
 		Map<String, String> ipInfo = GeoLite2.getIpInfo(request);
