@@ -4,6 +4,22 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
+
+import com.rg.login.dto.UserDetailsVO;
+import com.rg.login.service.LoginService;
+import com.rg.util.AES256Util;
+import com.rg.util.CookieHandle;
+import com.rg.util.GeoLite2;
+import com.rg.util.IP;
+import com.rg.util.RedisService3;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -11,30 +27,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
-import org.springframework.stereotype.Component;
-
-import com.rg.login.service.LoginService;
-import com.rg.util.AES256Util;
-import com.rg.util.CookieHandle;
-import com.rg.util.RedisService3;
-import com.rg.login.dto.UserDetailsVO;
-
 @Component
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	private final Logger logger = LogManager.getLogger(CustomLoginSuccessHandler.class);
 
-	@Autowired
-	@Qualifier("sessionRegistry")
-	private SessionRegistry sessionRegistry;
+	//@Autowired
+	//@Qualifier("sessionRegistry")
+	//private SessionRegistry sessionRegistry;
 
 	//@Autowired
 	//private RedisTemplate<String, Object> redisTemplate;
@@ -110,9 +110,9 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 	    	// 접속한 IP 정보 DB에 등록, IP 가 일치하지 않으면 자동 로그인 해지
 	    }
 
-		if (session == null) {
-			logger.info("########################## session is null.");
-		} else {
+		//if (session == null) {
+			//logger.info("########################## session is null.");
+		//} else {
 			//session.setAttribute("loginUserId1", userId);
 			session.setAttribute("loginId", loginId);
 
@@ -142,8 +142,22 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 					//+ (String) session.getAttribute("loginUserId1"));
 			//logger.info("################################ session getUuidCount 1 : "
 					//+ (Integer) session.getAttribute("getUuidCount"));
-		}
+		//}
 
+		// 로그인 이력 기록
+		
+		Map<String, String> loginMap = new HashMap<>();
+		
+		loginMap.put("loginId", userDetailsVO.getLoginId());
+		loginMap.put("ip", IP.getClientIP(request));
+		
+		Map<String, String> ipInfo = GeoLite2.getIpInfo(request);
+		loginMap.put("country", ipInfo.get("country"));
+		loginMap.put("subdivision", ipInfo.get("subdivision"));
+		loginMap.put("city", ipInfo.get("city"));
+		
+		loginService.putLoginHistory(loginMap);
+		
 		//redisTemplate.setKeySerializer(new StringRedisSerializer());
 		//redisTemplate.setValueSerializer(new StringRedisSerializer());
 
@@ -340,3 +354,4 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		//return sb.toString();
 	//}
 }
+

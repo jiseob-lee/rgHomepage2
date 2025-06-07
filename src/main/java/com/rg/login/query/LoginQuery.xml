@@ -37,18 +37,21 @@
 	</select>
 
 	<select id="getUserName" resultType="string">
-		
+	<![CDATA[
+	
 		SELECT
 			USER_NAME_KO
 		FROM
 			user
 		WHERE
 			USER_ID = #{userId, jdbcType=VARCHAR}
-
+	
+	]]>
 	</select>
 	
 	
 	<select id="getLoginPwEncrypted" parameterType="string" resultType="string">
+	<![CDATA[
 		
 		SELECT
 			user_password
@@ -56,7 +59,32 @@
 			user
 		WHERE
 			user_id = #{userId, jdbcType=VARCHAR}
-
+	
+	]]>
 	</select>
 	
+	<insert id="putLoginHistory" parameterType="HashMap">
+	<![CDATA[
+	
+		insert into login_history
+		(
+			loginId,
+			loginTime,
+			ip,
+			country,
+			subdivision,
+			city
+		)
+		values
+		(
+			#{loginId, jdbcType=VARCHAR},
+			now(),
+			#{ip, jdbcType=VARCHAR},
+			#{country, jdbcType=VARCHAR},
+			#{subdivision, jdbcType=VARCHAR},
+			#{city, jdbcType=VARCHAR}
+		)
+	
+	]]>
+	</insert>
 </mapper>

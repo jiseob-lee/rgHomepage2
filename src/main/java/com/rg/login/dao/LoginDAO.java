@@ -1,5 +1,7 @@
 package com.rg.login.dao;
 
+import java.util.Map;
+
 public interface LoginDAO {
 	
 	public String loginProcess(String userId, String userPw);
@@ -8,4 +10,5 @@ public interface LoginDAO {
 	
 	public String getLoginPwEncrypted(String userId);
 	
+	public void putLoginHistory(Map<String, String> loginMap);
 }

@@ -1,5 +1,7 @@
 package com.rg.login.service;
 
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +27,9 @@ public class LoginServiceImpl implements LoginService {
 	
 	public String getLoginPwEncrypted(String userId) {
 		return loginDAO.getLoginPwEncrypted(userId);
+	}
+	
+	public void putLoginHistory(Map<String, String> loginMap) {
+		loginDAO.putLoginHistory(loginMap);
 	}
 }

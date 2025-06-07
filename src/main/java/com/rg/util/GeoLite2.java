@@ -3,7 +3,8 @@ package com.rg.util;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,8 +15,9 @@ import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.AddressNotFoundException;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
-import com.maxmind.geoip2.model.CountryResponse;
+import com.maxmind.geoip2.record.City;
 import com.maxmind.geoip2.record.Country;
+import com.maxmind.geoip2.record.Subdivision;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -87,6 +89,53 @@ public class GeoLite2 {
 		//logger.debug("국가명 : " + locale1.getDisplayCountry());
 		
 		return country.getIsoCode();
+	}
+	
+	public static Map<String, String> getIpInfo(HttpServletRequest request) {
+
+		Map<String, String> returnMap = new HashMap<>();
+		
+		try {
+			
+			String ip = IP.getClientIP(request);
+			
+			String GeoLite2Path = "D:/GeoLite2/GeoLite2-City.mmdb";
+			
+			// A File object pointing to your GeoIP2 or GeoLite2 database
+			if (new File("/home/ubuntu/GeoLite2").exists()) {
+				GeoLite2Path = "/home/ubuntu/GeoLite2/GeoLite2-City.mmdb";
+			}
+			
+			File database = new File(GeoLite2Path);
+			
+			DatabaseReader reader = new DatabaseReader.Builder(database).build();
+			
+			InetAddress ipAddress = InetAddress.getByName(ip);
+			
+			CityResponse response = reader.city(ipAddress);
+	
+			Country country = response.getCountry();
+			
+			Subdivision subdivision = response.getMostSpecificSubdivision();
+			
+			City city = response.getCity();
+			
+			returnMap.put("country", country.getName());
+			returnMap.put("subdivision", subdivision.getName());
+			returnMap.put("city", city.getName());
+			
+		} catch (AddressNotFoundException e) {
+			logger.debug(e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			logger.debug(e.getMessage());
+			e.printStackTrace();
+		} catch (GeoIp2Exception e) {
+			logger.debug(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return returnMap;
 	}
 	
 	@Test

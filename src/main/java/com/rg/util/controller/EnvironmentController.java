@@ -84,6 +84,8 @@ public class EnvironmentController {
 		
 		String redisKey = "LOGIN||SESSION||" + loginId + "||" + session.getId();
 		
+		logger.info("#### redisKey : " + redisKey);
+		
 		vo = redisService.selectRedisSession(redisKey);
 
 		//if (vo == null) {

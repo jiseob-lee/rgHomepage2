@@ -39,4 +39,8 @@ public class LoginDAOImpl implements LoginDAO {
 	public String getLoginPwEncrypted(String userId) {
 		return sqlSession.selectOne(namespace + ".getLoginPwEncrypted", userId);
 	}
+	
+	public void putLoginHistory(Map<String, String> loginMap) {
+		sqlSession.insert(namespace + ".putLoginHistory", loginMap);
+	}
 }
