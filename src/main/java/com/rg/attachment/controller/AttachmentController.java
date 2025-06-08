@@ -2,6 +2,7 @@ package com.rg.attachment.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -27,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
@@ -34,6 +36,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import org.springframework.web.util.UriUtils;
 
 import com.rg.attachment.dto.AttachmentDTO;
@@ -242,8 +245,99 @@ public class AttachmentController {
 		return map;
 	}
 
+	
+
 	@RequestMapping(value = {"/fileDownload.do", "/rg/fileDownload.do"})
-	public ResponseEntity<Object> downloadFile(HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity<StreamingResponseBody> downloadFile(HttpServletRequest request, HttpServletResponse response) {
+
+		String idx = request.getParameter("idx");
+		String filename = request.getParameter("filename");
+
+		if (idx == null || "".equals(idx) || filename == null || "".equals(filename)) {
+			//return;
+			//throw new RuntimeException("the given URL path is not valid");
+			return ResponseEntity
+		            .status(HttpStatus.BAD_REQUEST)
+		            .body(null);
+		}
+
+		String fileUploadPath = AttachmentService.getFileUploadPath("0");
+
+		AttachmentDTO attachmentDTO = attachmentService.getAttachmentDTOInfo(idx);
+
+		if (!filename.equals(attachmentDTO.getServerFileName())) {
+			//logger.error("############################");
+			//logger.error(filename + " : " + attachmentDTO.getServerFileName());
+			//return;
+			//throw new RuntimeException("the given URL path is not valid");
+			return ResponseEntity
+		            .status(HttpStatus.BAD_REQUEST)
+		            .body(null);
+		}
+		
+		
+		String filePath = fileUploadPath + filename .substring(0, 4) + "/" + filename + "." + attachmentDTO.getAttachmentExt();
+		File f = new File(filePath);
+		
+		StreamingResponseBody stream = null;
+		
+		if (f.exists()) {
+			//UrlResource resource;
+		    //try{
+		        //resource = new UrlResource("file:"+ filePath);
+		    //}catch (MalformedURLException e){
+		        //logger.error("the given File path is not valid");
+		        //e.getStackTrace();
+		        //throw new RuntimeException("the given URL path is not valid");
+		    //}
+			
+			try {
+			
+				final java.io.InputStream inputStream = new FileInputStream(f);
+
+			    stream = outputStream -> {
+			        byte[] buffer = new byte[1024];
+			        int bytesRead;
+			        while ((bytesRead = inputStream.read(buffer)) != -1) {
+			            outputStream.write(buffer, 0, bytesRead);
+			        }
+			        inputStream.close();
+			    };
+			    
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+
+		    //Header
+		    String originalFileName = attachmentDTO.getAttachmentName() + "." + attachmentDTO.getAttachmentExt();
+		    String encodedOriginalFileName = UriUtils.encode(originalFileName, StandardCharsets.UTF_8);
+
+		    String contentDisposition = "attachment; filename=\"" + encodedOriginalFileName + "\"";
+
+			HttpSession session = request.getSession();
+			session.removeAttribute(request.getParameter("filename"));
+			
+			attachmentService.saveDownloadHistory(request, attachmentDTO);
+			
+		    return ResponseEntity
+		            .ok()
+		            .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+		            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+		            .contentLength(f.length())
+		            .body(stream);
+		
+		} else {  // 파일이 없을 때.
+			//throw new RuntimeException("the given file does not exists.");
+			return ResponseEntity
+		            .status(HttpStatus.BAD_REQUEST)
+		            .body(null);
+		}
+	}
+
+	
+	
+	@RequestMapping(value = {"/fileDownload_backup_20250608.do", "/rg/fileDownload_backup_20250608.do"})
+	public ResponseEntity<Object> downloadFile_backup_20250608(HttpServletRequest request, HttpServletResponse response) {
 
 		String idx = request.getParameter("idx");
 		String filename = request.getParameter("filename");

@@ -4,11 +4,7 @@ package com.rg.util.controller;
 import java.util.HashMap;
 //import java.util.Locale;
 import java.util.Map;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +26,10 @@ import com.rg.util.GeoLite2;
 import com.rg.util.LocaleUtil;
 import com.rg.util.RedisService3;
 
-import java.util.Optional;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @CrossOrigin(origins = "http://localhost", maxAge = 3600)
@@ -84,7 +83,7 @@ public class EnvironmentController {
 		
 		String redisKey = "LOGIN||SESSION||" + loginId + "||" + session.getId();
 		
-		logger.info("#### redisKey : " + redisKey);
+		//logger.info("#### redisKey : " + redisKey);
 		
 		vo = redisService.selectRedisSession(redisKey);
 
@@ -98,9 +97,9 @@ public class EnvironmentController {
 		
 		String ip2 = request.getHeader("X-Forwarded-For") == null ? request.getRemoteAddr() : request.getHeader("X-Forwarded-For");
 		
-		logger.info("#### remoteAddr : " + ip2);
-		logger.info("#### loginId : " + loginId);
-		logger.info("#### loginUserName : " + loginUserName);
+		//logger.info("#### remoteAddr : " + ip2);
+		//logger.info("#### loginId : " + loginId);
+		//logger.info("#### loginUserName : " + loginUserName);
 		
 		Map<String, String> map = new HashMap<String, String>();
 		
@@ -190,7 +189,7 @@ public class EnvironmentController {
 		
 		map.put("csrfToken", token == null ? "" : token.getToken());
 		
-		logger.info("#### map : " + map);
+		//logger.info("#### map : " + map);
 		
 		return map;
 	}
@@ -202,8 +201,8 @@ public class EnvironmentController {
 	@RequestMapping(value = {"/getEmptyRequest.do", "/getEmptyRequest1.do", "/getEmptyRequest2.do", "/getEmptyRequest3.do", "/getEmptyRequest4.do"})
 	@ResponseBody
 	public Map<String, String> getEmptyRequest(HttpServletRequest request, HttpServletResponse response) {
-		logger.debug("######################## RequestURI : " + request.getRequestURI());
-		logger.debug("######################## RequestURL : " + request.getRequestURL().toString());
+		//logger.debug("######################## RequestURI : " + request.getRequestURI());
+		//logger.debug("######################## RequestURL : " + request.getRequestURL().toString());
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("RequestURI", request.getRequestURI());
 		return map;
