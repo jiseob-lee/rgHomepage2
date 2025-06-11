@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rg.loginlog.LoginLogMapper">
+
+	<select id="getLoginLogCount" resultType="Integer">
+	
+		SELECT 
+			COUNT(*) AS totalCount 
+		
+		FROM 
+			login_history
+	
+	</select>
+
+	<select id="getLoginLogList" parameterType="HashMap" resultType="com.rg.loginlog.dto.LoginLogDTO">
+	
+		SELECT
+		
+			loginId,
+			loginResult,
+			DATE_FORMAT(loginTime, '%Y/%m/%d %H:%i:%s') as loginTime,
+			ip,
+			country,
+			subdivision,
+			city
+		
+		FROM 
+			login_history
+
+		ORDER BY 
+			loginTime DESC
+		
+		LIMIT 
+			#{skipCount}, #{listLimit}
+			
+	</select>
+
+</mapper>

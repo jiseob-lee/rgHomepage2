@@ -16,7 +16,9 @@ var myModule = angular.module('rg',
         'ngMessages',
         'pascalprecht.translate',
         'rg.S3',
-        'rg.Jido'
+        'rg.Jido',
+        'rg.LoginLog',
+        'rg.DownHistory'
     ]);
 
 myModule.controller('RgCtrl', ['$scope', '$routeParams', '$location', '$http', '$log', '$translate',
@@ -195,6 +197,34 @@ myModule.config(function($routeProvider, $locationProvider, $httpProvider, $tran
 	if (window.location.pathname.length >= 3 && window.location.pathname.substring(0, 3) == "/rg") {
 		//alert("rg path.");
 	    $routeProvider
+	        
+	        .when('/getDownHistory', {
+	            templateUrl: '/src/jisblee.me/14.downhistory/templates/1.downHistory.jsp',
+	            controller: 'DownHistoryCtrl',
+	            controllerAs: 'downhistory',
+	            requiresLogin: true
+	        })
+	        
+	        .when('/getDownHistory/:pageNo', {
+	            templateUrl: '/src/jisblee.me/14.downhistory/templates/1.downHistory.jsp',
+	            controller: 'DownHistoryCtrl',
+	            controllerAs: 'downhistory',
+	            requiresLogin: true
+	        })
+	        
+	        .when('/getLoginLog', {
+	            templateUrl: '/src/jisblee.me/13.loginlog/templates/1.loginLog.jsp',
+	            controller: 'LoginLogCtrl',
+	            controllerAs: 'loginlog',
+	            requiresLogin: true
+	        })
+	        
+	        .when('/getLoginLog/:pageNo', {
+	            templateUrl: '/src/jisblee.me/13.loginlog/templates/1.loginLog.jsp',
+	            controller: 'LoginLogCtrl',
+	            controllerAs: 'loginlog',
+	            requiresLogin: true
+	        })
 	        
 	    	.when('/textLength', {
 	            templateUrl: '/src/jisblee.me/11.textLength/templates/TextLength.html',
@@ -420,106 +450,6 @@ myModule.config(function($routeProvider, $locationProvider, $httpProvider, $tran
 	            requiresLogin: true
 	        })
 	        
-	        /*
-	        .when('/board', {
-	            templateUrl: '/src/HumanBase/6.staff/tmpl/board.jsp',
-	            controller: 'BoardCtrl',
-	            controllerAs: 'board',
-	            requiresLogin: true
-	        })
-	        
-	        .when('/itnews/:pageNo', {
-	            templateUrl: '/src/HumanBase/6.staff/tmpl/board.jsp',
-	            controller: 'BoardCtrl',
-	            controllerAs: 'board',
-	            requiresLogin: true
-	        })
-	
-	        .when('/notice', {
-	            templateUrl: '/src/HumanBase/6.staff/tmpl/board.jsp',
-	            controller: 'BoardCtrl',
-	            controllerAs: 'board',
-	            requiresLogin: true
-	        })
-	
-	        .when('/notice/:pageNo', {
-	            templateUrl: '/src/HumanBase/6.staff/tmpl/board.jsp',
-	            controller: 'BoardCtrl',
-	            controllerAs: 'board',
-	            requiresLogin: true
-	        })
-	        
-	        .when('/itnewsInput', {
-	            templateUrl: '/src/HumanBase/6.staff/tmpl/boardInput.jsp',
-	            controller: 'BoardCtrl',
-	            controllerAs: 'board',
-	            requiresLogin: true
-	        })
-	
-	        .when('/noticeInput', {
-	            templateUrl: '/src/HumanBase/6.staff/tmpl/boardInput.jsp',
-	            controller: 'BoardCtrl',
-	            controllerAs: 'board',
-	            requiresLogin: true
-	        })
-	
-	        .when('/noticeEdit/:boardArticleIdx/:pageNo', {
-	            templateUrl: '/src/HumanBase/6.staff/tmpl/boardEdit.jsp',
-	            controller: 'BoardCtrl',
-	            controllerAs: 'board',
-	            requiresLogin: true
-	        })
-	
-	        .when('/itnewsEdit/:boardArticleIdx/:pageNo', {
-	            templateUrl: '/src/HumanBase/6.staff/tmpl/boardEdit.jsp',
-	            controller: 'BoardCtrl',
-	            controllerAs: 'board',
-	            requiresLogin: true
-	        })
-	
-	        .when('/noticeView/:boardArticleIdx/:pageNo', {
-	            templateUrl: '/src/HumanBase/6.staff/tmpl/boardView.jsp',
-	            controller: 'BoardCtrl',
-	            controllerAs: 'board',
-	            requiresLogin: true
-	        })
-	
-	        .when('/itnewsView/:boardArticleIdx/:pageNo', {
-	            templateUrl: '/src/HumanBase/6.staff/tmpl/boardView.jsp',
-	            controller: 'BoardCtrl',
-	            controllerAs: 'board',
-	            requiresLogin: true
-	        })
-	
-	        .when('/hire', {
-	            templateUrl: '/src/HumanBase/6.staff/tmpl/boardEdit.jsp',
-	            controller: 'BoardCtrl',
-	            controllerAs: 'board',
-	            requiresLogin: true
-	        })
-	
-	        .when('/history', {
-	            templateUrl: '/src/HumanBase/6.staff/tmpl/history.jsp',
-	            controller: 'HistoryCtrl',
-	            controllerAs: 'history',
-	            requiresLogin: true
-	        })
-	
-	        .when('/history/:year', {
-	            templateUrl: '/src/HumanBase/6.staff/tmpl/history.jsp',
-	            controller: 'HistoryCtrl',
-	            controllerAs: 'history',
-	            requiresLogin: true
-	        })
-	
-	        .when('/customer', {
-	            templateUrl: '/src/HumanBase/6.staff/tmpl/customer.jsp',
-	            controller: 'CustomerCtrl',
-	            controllerAs: 'customer',
-	            requiresLogin: true
-	        })
-	        */
-	
 	        //.otherwise({redirectTo: '/staff/login.do'})
 	        ;
     
