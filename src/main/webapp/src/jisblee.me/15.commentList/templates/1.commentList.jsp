@@ -15,50 +15,38 @@ td {
 
 <body>
 
-<h3>다운로드 로그</h3>
+<h3>댓글 목록</h3>
 
 <form name="frm">
 
   <div style="margin: 10px; float: left; font-size: 10pt;">
-  총 로그 개수 : {{totalCount | number}}
+  총 댓글 개수 : {{totalCount | number}}
   </div>
   
   <table class="notice">
     <colgroup>
       <col style="width: 65px;" />
+      <col style="width: 235px;" />
+      <col style="width: 325px;" />
       <col style="width: 115px;" />
-      <col style="width: 240px;" />
-      <col style="width: 215px;" />
-      <col style="width: 115px;" />
-      <col style="width: 90px;" />
-      <col style="width: 115px;" />
-      <col style="width: 140px;" />
       <col style="width: 115px;" />
     </colgroup>
     <tr align="center">
       <td>No.</td>
-      <td>게시판명</td>
       <td>게시글명</td>
-      <td>다운 파일명</td>
-      <td>파일 크기</td>
-      <td>다운 시간</td>
-      <td>국가</td>
-      <td>지역</td>
-      <td>도시</td>
+      <td>댓글 내용</td>
+      <td>사용자명</td>
+      <td>작성일</td>
     </tr>
     <tr ng-if="totalCount == 0">
-      <td colspan="8" align="center">로그가 없습니다.</td>
+      <td colspan="8" align="center">댓글이 없습니다.</td>
     <tr>
-    <tr ng-repeat="dummy in downHistoryList">
+    <tr ng-repeat="dummy in commentList">
       <td align="center">{{totalCount - $index - (pageNo - 1) * listLimit}}</td>
-      <td align="center">{{downHistoryList[$index].board_name}}</td>
-      <td align="center">{{downHistoryList[$index].subject}}</td>
-      <td align="center">{{downHistoryList[$index].fileName}}</td>
-      <td align="center">{{downHistoryList[$index].attachment_size | number}}</td>
-      <td align="center">{{downHistoryList[$index].date_created}}</td>
-      <td align="center">{{downHistoryList[$index].user_country}}</td>
-      <td align="center">{{downHistoryList[$index].user_subdivision}}</td>
-      <td align="center">{{downHistoryList[$index].user_city}}</td>
+      <td align="center">{{commentList[$index].boardArticleSubject}}</td>
+      <td align="center">{{commentList[$index].content}}</td>
+      <td align="center">{{commentList[$index].userName}}</td>
+      <td align="center">{{commentList[$index].dateCreated}}</td>
     </tr>
     <tr>
       <td colspan="8" style="border: 0px; padding: 14px; text-align: center; word-spacing: 2px;">

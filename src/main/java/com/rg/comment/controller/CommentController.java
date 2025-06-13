@@ -204,5 +204,17 @@ public class CommentController {
 		return mav;
 	}
 	*/
+
+	@RequestMapping("/rg/getCommentTotalList.do")
+	@ResponseBody
+	public Map<String, Object> getCommentTotalList(HttpServletRequest request, HttpServletResponse response) {
+
+		int pageNo = request.getParameter("pageNo") == null || "".equals(request.getParameter("pageNo")) 
+				? 1 : Integer.parseInt(request.getParameter("pageNo"));
+
+		Map<String, Object> commentTotalListMap = commentService.getCommentTotalList(pageNo);
+		
+		return commentTotalListMap;
+	}
 	
 }

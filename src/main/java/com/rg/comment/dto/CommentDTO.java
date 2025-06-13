@@ -9,6 +9,7 @@ public class CommentDTO {
 	private String userPassword;
 	private String userName;
 	private String boardArticleIdx;
+	private String boardArticleSubject;
 	private String parentIdx;
 	private int level;
 	private String action;
@@ -93,6 +94,12 @@ public class CommentDTO {
 	}
 	public void setUserIp(String userIp) {
 		this.userIp = userIp;
+	}
+	public String getBoardArticleSubject() {
+		return boardArticleSubject;
+	}
+	public void setBoardArticleSubject(String boardArticleSubject) {
+		this.boardArticleSubject = boardArticleSubject;
 	}
 	
 }

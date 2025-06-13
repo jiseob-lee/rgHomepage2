@@ -137,4 +137,57 @@
 
 	</select>
 
+	<select id="getCommentTotalList" parameterType="HashMap" resultType="com.rg.comment.dto.CommentDTO">
+	
+		SELECT
+		
+			b.comment_idx as commentIdx,
+			b.content,
+			DATE_FORMAT(b.date_created, '%Y-%m-%d') as dateCreated,
+			DATE_FORMAT(b.date_modified, '%Y-%m-%d') as dateModified,
+			b.user_name as userName,
+			b.board_article_idx as boardArticleIdx,
+			c.subject  as boardArticleSubject,
+			b.parent_idx as parentIdx
+
+		FROM 
+		
+			comment b, board_article c
+		
+		WHERE
+		
+			b.delete_yn = 'N'
+			
+            AND b.board_article_idx = c.board_article_idx
+			
+		ORDER BY
+		
+			b.date_created DESC
+			
+		LIMIT
+		
+			#{skipCount}, #{listLimit}
+			
+	</select>
+
+	<select id="getCommentTotalCount" resultType="Integer">
+	
+		SELECT
+		
+			count(*)
+
+		FROM 
+		
+			comment b, board_article c
+		
+		WHERE
+		
+			b.delete_yn = 'N'
+			
+            AND b.board_article_idx = c.board_article_idx
+		
+	</select>
+
+
 </mapper>
+

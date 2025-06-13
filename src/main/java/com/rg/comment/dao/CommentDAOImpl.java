@@ -1,6 +1,7 @@
 package com.rg.comment.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import jakarta.annotation.Resource;
 
@@ -49,4 +50,16 @@ public class CommentDAOImpl implements CommentDAO {
 	public int checkCommentPassword(CommentDTO commentDTO) {
 		return sqlSession.selectOne(namespace + ".checkCommentPassword", commentDTO);
 	}
+	
+	@Override
+	public int getCommentTotalCount() {
+		return sqlSession.selectOne(namespace + ".getCommentTotalCount", null);
+	}
+	
+	@Override
+	public List<CommentDTO> getCommentTotalList(Map<String, Object> map) {
+		List<CommentDTO> commentDTOTotalList = sqlSession.selectList(namespace + ".getCommentTotalList", map);
+		return commentDTOTotalList;
+	}
+	
 }

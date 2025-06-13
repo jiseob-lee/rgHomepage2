@@ -5,6 +5,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시글 목록</title>
+
+<style type="text/css">
+td {
+  font-size: 10pt !important;
+}
+</style>
 </head>
 
 <body>
@@ -19,14 +25,14 @@
   
   <table class="notice">
     <colgroup>
-      <col style="width: 75px;" />
-      <col style="width: 125px;" />
-      <col style="width: 150px;" />
-      <col style="width: 225px;" />
-      <col style="width: 175px;" />
-      <col style="width: 125px;" />
-      <col style="width: 150px;" />
-      <col style="width: 125px;" />
+      <col style="width: 65px;" />
+      <col style="width: 100px;" />
+      <col style="width: 90px;" />
+      <col style="width: 190px;" />
+      <col style="width: 115px;" />
+      <col style="width: 115px;" />
+      <col style="width: 140px;" />
+      <col style="width: 115px;" />
     </colgroup>
     <tr align="center">
       <td>No.</td>

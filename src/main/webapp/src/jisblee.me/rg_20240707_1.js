@@ -18,7 +18,8 @@ var myModule = angular.module('rg',
         'rg.S3',
         'rg.Jido',
         'rg.LoginLog',
-        'rg.DownHistory'
+        'rg.DownHistory',
+		'rg.CommentList'
     ]);
 
 myModule.controller('RgCtrl', ['$scope', '$routeParams', '$location', '$http', '$log', '$translate',
@@ -197,7 +198,21 @@ myModule.config(function($routeProvider, $locationProvider, $httpProvider, $tran
 	if (window.location.pathname.length >= 3 && window.location.pathname.substring(0, 3) == "/rg") {
 		//alert("rg path.");
 	    $routeProvider
-	        
+
+			.when('/getCommentTotalList', {
+			    templateUrl: '/src/jisblee.me/15.commentList/templates/1.commentList.jsp',
+			    controller: 'CommentListCtrl',
+			    controllerAs: 'commentlist',
+			    requiresLogin: true
+			})
+	
+			.when('/getCommentTotalList/:pageNo', {
+			    templateUrl: '/src/jisblee.me/15.commentList/templates/1.commentList.jsp',
+			    controller: 'CommentListCtrl',
+			    controllerAs: 'commentlist',
+			    requiresLogin: true
+			})
+
 	        .when('/getDownHistory', {
 	            templateUrl: '/src/jisblee.me/14.downhistory/templates/1.downHistory.jsp',
 	            controller: 'DownHistoryCtrl',

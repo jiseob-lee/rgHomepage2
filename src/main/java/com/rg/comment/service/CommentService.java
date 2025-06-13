@@ -1,6 +1,7 @@
 package com.rg.comment.service;
 
 import java.util.List;
+import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -17,4 +18,6 @@ public interface CommentService {
 	public void inputComment(CommentDTO boardDTO, HttpServletRequest request);
 
 	public int checkCommentPassword(CommentDTO boardDTO);
+	
+	public Map<String, Object> getCommentTotalList(int pageNo);
 }
