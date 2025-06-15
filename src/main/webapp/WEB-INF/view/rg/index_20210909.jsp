@@ -228,7 +228,9 @@ var GIS_SERVER_URL = "https://m1.juso.go.kr";
 <script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/addrlink/map/view-map.min.js"></script>
 <script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/addrlink/map/search-map.min.js"></script>
 
+<!--
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=48db2a9456ff7710ab38d35097440853&libraries=services,clusterer,drawing"></script>
+-->
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -307,7 +309,9 @@ function setCookie(name, value, exp) {
 		
 		<h3 class="menu">&nbsp;- <a href="/rg/#/juso" target="_self" class="menuLink">주소</a></h3>
 		
+		<!--
 		<h3 class="menu">&nbsp;- <a href="/rg/#/Check_the_latitude_and_longitude" target="_self" class="menuLink">위도, 경도 조회</a></h3>
+		-->
 		
 		<h3 class="menu">&nbsp;- <a href="/rg/#/textLength" target="_self" class="menuLink">문자열 길이</a></h3>
 		
