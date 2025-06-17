@@ -50,12 +50,12 @@ md-datepicker {
 		<table class="logViewed">
 			<thead>
 				<tr align="center">
-					<td rowspan="2" style="width:50px;">no.</td>
-					<td rowspan="2" style="width:250px;">User Agent</td>
-					<td style="width:110px;">IP</td>
-					<td style="width:150px;">Path</td>
-					<td rowspan="2" style="width:150px;">Title</td>
-					<td style="width:80px;">Country<br/>subdivision</td>
+					<td rowspan="2" style="width:60px;">no.</td>
+					<td rowspan="2" style="width:285px;">User Agent</td>
+					<td style="width:120px;">IP</td>
+					<td style="width:170px;">Path</td>
+					<td rowspan="2" style="width:180px;">Title</td>
+					<td style="width:90px;">Country<br/>subdivision</td>
 				</tr>
 				<tr align="center">
 					<td>Time</td>
