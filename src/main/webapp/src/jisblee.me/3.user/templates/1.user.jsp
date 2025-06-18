@@ -44,7 +44,8 @@ table.user td {
       {{user.userId}}
     </td>
     <td>
-      <input type="text" name="userNameKo" value="{{user.userNameKo}}" />
+      <input type="text" name="userNameKo" value="{{user.userNameKo}}" ng-if="user.userPassword != null" />
+      <input type="text" name="userNameKo" value="{{user.userNameKo}}" ng-if="user.userPassword == null" style="text-decoration: line-through; background-color: gray;" />
     </td>
     <td>
       <span ng-if="user.userPassword == null"><del><font color="gray">{{user.dateCreated}}</font></del></span>
