@@ -63,7 +63,7 @@ md-datepicker {
 				<tr align="center">
 					<td>Time</td>
 					<td>Referer</td>
-					<td>City<br/>Locale</td>
+					<td>City</td>
 				</tr>
 			</thead>
 			<tbody ng-repeat="log in logData">
