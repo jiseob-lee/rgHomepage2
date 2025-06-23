@@ -7,7 +7,9 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <title>로그 조회</title>
+
 <style type="text/css">
 table.logViewed {
   table-layout: fixed;
@@ -31,6 +33,7 @@ md-datepicker {
 }
 
 </style>
+
 </head>
 
 <body>
