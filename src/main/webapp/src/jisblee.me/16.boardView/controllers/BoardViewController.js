@@ -12,10 +12,15 @@ appStatistics.controller('BoardViewCtrl', ['$scope', '$http', '$routeParams', '$
 	
 	    //$log.debug("$location", $location);
 	    
-	    if ($location.path().indexOf("/getBoardView1") == 0) {
+	    if ($location.path().indexOf("/getBoardView") == 0) {
 			// IP 접속현황을 구한다.
 			$http.get("/rg/parseBoardView.do").then(function(response) {
 	
+	
+				$scope.logData = response.data;
+				$scope.logCount = response.data.length;
+				
+				/*
 				//$log.debug("getIpCount.do", response.data);
 				
 				$scope.totalCount = response.data.totalCount;
@@ -37,6 +42,8 @@ appStatistics.controller('BoardViewCtrl', ['$scope', '$http', '$routeParams', '$
 				$scope.linkStart = Math.floor(($scope.pageNo - 1) / $scope.pageLinkCount) * $scope.pageLinkCount + 1;
 				$scope.linkEnd = ($scope.pageEnd - $scope.linkStart > $scope.pageLinkCount) 
 									? $scope.linkStart + $scope.pageLinkCount : $scope.pageEnd;
+				*/
+				
 			});
 	    }
 
