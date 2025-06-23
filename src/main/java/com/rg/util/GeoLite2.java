@@ -137,6 +137,53 @@ public class GeoLite2 {
 		
 		return returnMap;
 	}
+
+	public static Map<String, String> getIpInfo(String ip) {
+
+		Map<String, String> returnMap = new HashMap<>();
+		
+		try {
+			
+			//String ip = IP.getClientIP(request);
+			
+			String GeoLite2Path = "D:/GeoLite2/GeoLite2-City.mmdb";
+			
+			// A File object pointing to your GeoIP2 or GeoLite2 database
+			if (new File("/home/ubuntu/GeoLite2").exists()) {
+				GeoLite2Path = "/home/ubuntu/GeoLite2/GeoLite2-City.mmdb";
+			}
+			
+			File database = new File(GeoLite2Path);
+			
+			DatabaseReader reader = new DatabaseReader.Builder(database).build();
+			
+			InetAddress ipAddress = InetAddress.getByName(ip);
+			
+			CityResponse response = reader.city(ipAddress);
+	
+			Country country = response.getCountry();
+			
+			Subdivision subdivision = response.getMostSpecificSubdivision();
+			
+			City city = response.getCity();
+			
+			returnMap.put("country", country.getName());
+			returnMap.put("subdivision", subdivision.getName());
+			returnMap.put("city", city.getName());
+			
+		} catch (AddressNotFoundException e) {
+			logger.debug(e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			logger.debug(e.getMessage());
+			e.printStackTrace();
+		} catch (GeoIp2Exception e) {
+			logger.debug(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return returnMap;
+	}
 	
 	@Test
 	public void testCountry() {
