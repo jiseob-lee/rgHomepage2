@@ -1,9 +1,11 @@
 package com.rg.accesslog.service;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -31,11 +33,33 @@ public class AccessLogServiceImpl implements AccessLogService {
 	@Override
 	public List<BoardViewDTO> getBoardViewList(String logDate) {
 		
-		String filename = "jisblee.me-ssl-access_log." + logDate + "-00.log";
+		File directory = new File(logPath);
 		
-		List<BoardViewDTO> list = parseBoardViewList(logPath + filename);
+		String[] fileNames = directory.list();
 		
-		return list;
+		List<String> filenameList = Arrays.asList(fileNames);
+		
+
+		List<BoardViewDTO> boardViewList = new ArrayList<>();
+		
+		int i = 0;
+		
+		//String filename = "jisblee.me-ssl-access_log." + logDate + "-00.log";
+		
+		String filename = String.format("jisblee.me-ssl-access_log." + logDate + "-%02d.log", i++);
+		
+		do {
+			
+			List<BoardViewDTO> list = parseBoardViewList(logPath + filename);
+			
+			boardViewList.addAll(list);
+			
+			filename = String.format("jisblee.me-ssl-access_log." + logDate + "-%02d.log", i++);
+			
+		} while (filenameList.contains(filename));
+		
+		
+		return boardViewList;
 	}
 	
 	private List<BoardViewDTO> parseBoardViewList(String filePath) {
