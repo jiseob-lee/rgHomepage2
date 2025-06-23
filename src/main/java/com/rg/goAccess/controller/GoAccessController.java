@@ -107,7 +107,7 @@ public class GoAccessController {
 	@ResponseBody
 	public Map<String, String> goProcessParse(GoAccessDTO goAccessDTO) {
 		
-		String goaccessCommand = "/usr/local/bin/goaccess --config-file=/usr/local/etc/goaccess/goaccess.conf ";
+		String goaccessCommand = "/usr/local/bin/goaccess --geoip-database=/home/ubuntu/GeoLite2/GeoLite2-City.mmdb --config-file=/usr/local/etc/goaccess/goaccess.conf ";
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 		Date date = new Date();

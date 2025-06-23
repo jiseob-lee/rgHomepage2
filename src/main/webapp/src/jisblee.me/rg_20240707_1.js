@@ -19,7 +19,8 @@ var myModule = angular.module('rg',
         'rg.Jido',
         'rg.LoginLog',
         'rg.DownHistory',
-		'rg.CommentList'
+		'rg.CommentList',
+		'rg.BoardView'
     ]);
 
 myModule.controller('RgCtrl', ['$scope', '$routeParams', '$location', '$http', '$log', '$translate',
@@ -198,6 +199,13 @@ myModule.config(function($routeProvider, $locationProvider, $httpProvider, $tran
 	if (window.location.pathname.length >= 3 && window.location.pathname.substring(0, 3) == "/rg") {
 		//alert("rg path.");
 	    $routeProvider
+	        
+	        .when('/getBoardView', {
+	            templateUrl: '/src/jisblee.me/16.boardView/templates/1.boardView.jsp',
+	            controller: 'BoardViewCtrl',
+	            controllerAs: 'boardview',
+	            requiresLogin: true
+	        })
 
 			.when('/getCommentTotalList', {
 			    templateUrl: '/src/jisblee.me/15.commentList/templates/1.commentList.jsp',

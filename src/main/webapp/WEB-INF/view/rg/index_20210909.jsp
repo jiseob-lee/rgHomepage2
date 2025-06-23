@@ -217,6 +217,8 @@ var GIS_SERVER_URL = "https://m1.juso.go.kr";
 
 <script type="text/javascript" src="/src/jisblee.me/15.commentList/controllers/CommentListController.js"></script>
 
+<script type="text/javascript" src="/src/jisblee.me/16.boardView/controllers/BoardViewController.js"></script>
+
 <script type="text/javascript" src="/src/jisblee.me/rg_20240707_1.js"></script>
 
 
@@ -324,6 +326,8 @@ function setCookie(name, value, exp) {
 		<h3 class="menu">&nbsp;- <a href="/rg/#/getDownHistory" target="_self" class="menuLink">다운로드 내역</a></h3>
 		
 		<h3 class="menu">&nbsp;- <a href="/rg/#/getCommentTotalList" target="_self" class="menuLink">댓글 목록</a></h3>
+		
+		<h3 class="menu">&nbsp;- <a href="/rg/#/getBoardView" target="_self" class="menuLink">Board View</a></h3>
 		
 		</sec:authorize>
 
