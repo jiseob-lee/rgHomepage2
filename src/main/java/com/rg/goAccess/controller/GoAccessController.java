@@ -136,7 +136,7 @@ public class GoAccessController {
 			goaccessCommand += accessLogFiles.get(i) + " ";
 		}
 		
-		goaccessCommand += " -o " + goaccessPath + "/" + currentTime + ".html";
+		goaccessCommand += " --exclude-ip 127.0.0.1 -o " + goaccessPath + "/" + currentTime + ".html";
 				
 		//return 0;
 		
