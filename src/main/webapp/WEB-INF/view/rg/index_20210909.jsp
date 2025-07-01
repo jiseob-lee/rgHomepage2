@@ -124,6 +124,12 @@ footer {
 h3.menu {
   margin-bottom: 20px;
 }
+
+a.underline {
+  text-decoration: underline;
+  text-underline-position: under;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -264,7 +270,18 @@ function setCookie(name, value, exp) {
     date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
     var domain = ".jisblee.me";
     document.cookie = name + '=' + escape(value) + ';expires=' + date.toUTCString() + ";path=/;" + "domain=" + domain + ";";
-};
+}
+
+function makeUnderline(elem) {
+	var aElems = document.getElementsByTagName("a");
+	if (aElems != null && aElems.length > 0) {
+		for (var i=0; i < aElems.length; i++) {
+			aElems[i].classList.remove('underline');
+		}
+	}
+	elem.classList.add('underline');
+}
+
 </script>
 
 </head>
@@ -287,60 +304,60 @@ function setCookie(name, value, exp) {
 				
 		<!-- "${currentLocale }" -->
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/attachment/0/1" target="_self" class="menuLink">첨부 파일</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/attachment/0/1" target="_self" class="menuLink" onclick="makeUnderline(this);">첨부 파일</a></h3>
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/board/list/0/1" target="_self" class="menuLink">게시글</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/board/list/0/1" target="_self" class="menuLink" onclick="makeUnderline(this);">게시글</a></h3>
 
-		<h3 class="menu">&nbsp;- <a href="/rg/#/manageBoard" target="_self" class="menuLink">게시판</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/manageBoard" target="_self" class="menuLink" onclick="makeUnderline(this);">게시판</a></h3>
 
-		<h3 class="menu">&nbsp;- <a href="/rg/#/board/list/0/1/1" target="_self" class="menuLink">공개 게시글</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/board/list/0/1/1" target="_self" class="menuLink" onclick="makeUnderline(this);">공개 게시글</a></h3>
 		
 		</sec:authorize>
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/getIpCount" target="_self" class="menuLink">글 조회 수</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/getIpCount" target="_self" class="menuLink" onclick="makeUnderline(this);">글 조회 수</a></h3>
 
-		<h3 class="menu">&nbsp;- <a href="/rg/#/getStatisticsArticleSubjects" target="_self" class="menuLink">조회된 글</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/getStatisticsArticleSubjects" target="_self" class="menuLink" onclick="makeUnderline(this);">조회된 글</a></h3>
 
-		<h3 class="menu">&nbsp;- <a href="/rg/#/getStatisticsLogs" target="_self" class="menuLink">조회 글 로그</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/getStatisticsLogs" target="_self" class="menuLink" onclick="makeUnderline(this);">조회 글 로그</a></h3>
 
-		<h3 class="menu">&nbsp;- <a href="/rg/#/goaccess" target="_self" class="menuLink">goaccess</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/goaccess" target="_self" class="menuLink" onclick="makeUnderline(this);">goaccess</a></h3>
 
 		<sec:authorize access="hasRole('ROLE_SUPER')">
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/test" target="_self" class="menuLink">테스트</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/test" target="_self" class="menuLink" onclick="makeUnderline(this);">테스트</a></h3>
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/juso" target="_self" class="menuLink">주소</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/juso" target="_self" class="menuLink" onclick="makeUnderline(this);">주소</a></h3>
 		
 		<!--
 		<h3 class="menu">&nbsp;- <a href="/rg/#/Check_the_latitude_and_longitude" target="_self" class="menuLink">위도, 경도 조회</a></h3>
 		-->
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/textLength" target="_self" class="menuLink">문자열 길이</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/textLength" target="_self" class="menuLink" onclick="makeUnderline(this);">문자열 길이</a></h3>
 		
 		<!--
 		<h3 class="menu">&nbsp;- <a href="/rg/#/s3" target="_self" class="menuLink">S3</a></h3>
 		-->
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/getLoginLog" target="_self" class="menuLink">로그인 로그</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/getLoginLog" target="_self" class="menuLink" onclick="makeUnderline(this);">로그인 로그</a></h3>
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/getDownHistory" target="_self" class="menuLink">다운로드 내역</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/getDownHistory" target="_self" class="menuLink" onclick="makeUnderline(this);">다운로드 내역</a></h3>
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/getCommentTotalList" target="_self" class="menuLink">댓글 목록</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/getCommentTotalList" target="_self" class="menuLink" onclick="makeUnderline(this);">댓글 목록</a></h3>
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/getBoardView" target="_self" class="menuLink">Board View</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/getBoardView" target="_self" class="menuLink" onclick="makeUnderline(this);">Board View</a></h3>
 		
 		</sec:authorize>
 
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/typingIntro1" target="_self" class="menuLink">성경 타자(신약)</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/typingIntro1" target="_self" class="menuLink" onclick="makeUnderline(this);">성경 타자(신약)</a></h3>
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/typingIntro2" target="_self" class="menuLink">성경 타자(구약)</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/typingIntro2" target="_self" class="menuLink" onclick="makeUnderline(this);">성경 타자(구약)</a></h3>
 		
-		<h3 class="menu">&nbsp;- <a href="/rg/#/typingRecord" target="_self" class="menuLink">타자 연습 내역</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/typingRecord" target="_self" class="menuLink" onclick="makeUnderline(this);">타자 연습 내역</a></h3>
 
-		<h3 class="menu">&nbsp;- <a href="/rg/#/user" target="_self" class="menuLink">사용자</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/rg/#/user" target="_self" class="menuLink" onclick="makeUnderline(this);">사용자</a></h3>
 
-		<h3 class="menu">&nbsp;- <a href="/" target="_self">프론트 메인</a></h3>
+		<h3 class="menu">&nbsp;- <a href="/" target="_self" class="menuLink" onclick="makeUnderline(this);">프론트 메인</a></h3>
 
 		
 		<sec:authorize access="hasRole('ROLE_SUPER')">
