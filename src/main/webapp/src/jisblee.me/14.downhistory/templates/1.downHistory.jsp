@@ -25,15 +25,16 @@ td {
   
   <table class="notice">
     <colgroup>
-      <col style="width: 65px;" />
-      <col style="width: 115px;" />
-      <col style="width: 240px;" />
+      <col style="width: 60px;" />
+      <col style="width: 100px;" />
+      <col style="width: 220px;" />
       <col style="width: 215px;" />
-      <col style="width: 115px;" />
       <col style="width: 90px;" />
+      <col style="width: 90px;" />
+      <col style="width: 100px;" />
       <col style="width: 115px;" />
-      <col style="width: 140px;" />
-      <col style="width: 115px;" />
+      <col style="width: 100px;" />
+      <col style="width: 100px;" />
     </colgroup>
     <tr align="center">
       <td>No.</td>
@@ -42,6 +43,7 @@ td {
       <td>다운 파일명</td>
       <td>파일 크기</td>
       <td>다운 시간</td>
+      <td>IP</td>
       <td>국가</td>
       <td>지역</td>
       <td>도시</td>
@@ -56,6 +58,7 @@ td {
       <td align="center">{{downHistoryList[$index].fileName}}</td>
       <td align="center">{{downHistoryList[$index].attachment_size | number}}</td>
       <td align="center">{{downHistoryList[$index].date_created}}</td>
+      <td align="center">{{downHistoryList[$index].user_ip}}</td>
       <td align="center">{{downHistoryList[$index].user_country}}</td>
       <td align="center">{{downHistoryList[$index].user_subdivision}}</td>
       <td align="center">{{downHistoryList[$index].user_city}}</td>
