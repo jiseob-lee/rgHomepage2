@@ -29,7 +29,7 @@ public class Repeater {
             System.out.println(future.get(3, TimeUnit.SECONDS));
             System.out.println("Finished!");
             
-            File folder = new File("/home/ubuntu/apache-tomcat-10.1.40/webapps/ROOT/goaccess");
+            File folder = new File("/home/ubuntu/apache-tomcat-10.1.43/webapps/ROOT/goaccess");
     		File[] files = folder.listFiles();
     		if (files != null &&  files.length > 0) {
     			return 1;
