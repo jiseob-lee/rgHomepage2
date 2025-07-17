@@ -338,6 +338,9 @@ function makeUnderline(elem) {
 		<h3 class="menu">&nbsp;- <a href="/rg/#/s3" target="_self" class="menuLink">S3</a></h3>
 		-->
 		
+		</sec:authorize>
+		
+		
 		<h3 class="menu">&nbsp;- <a href="/rg/#/getLoginLog" target="_self" class="menuLink" onclick="makeUnderline(this);">로그인 로그</a></h3>
 		
 		<h3 class="menu">&nbsp;- <a href="/rg/#/getDownHistory" target="_self" class="menuLink" onclick="makeUnderline(this);">다운로드 내역</a></h3>
@@ -346,8 +349,6 @@ function makeUnderline(elem) {
 		
 		<h3 class="menu">&nbsp;- <a href="/rg/#/getBoardView" target="_self" class="menuLink" onclick="makeUnderline(this);">Board View</a></h3>
 		
-		</sec:authorize>
-
 		
 		<h3 class="menu">&nbsp;- <a href="/rg/#/typingIntro1" target="_self" class="menuLink" onclick="makeUnderline(this);">성경 타자(신약)</a></h3>
 		
