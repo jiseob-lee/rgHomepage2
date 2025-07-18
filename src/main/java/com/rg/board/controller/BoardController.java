@@ -177,6 +177,8 @@ public class BoardController {
 		
 		String ip2 = request.getHeader("X-Forwarded-For") == null ? request.getRemoteAddr() : request.getHeader("X-Forwarded-For");
 		
+		logger.info("#### ip2 : " + ip2);
+		
 		if (request.getSession() != null && request.getSession().getAttribute("loginId") == null && !ip.equals(ip2)) {
 
 			IndexDTO indexDTO = new IndexDTO();
