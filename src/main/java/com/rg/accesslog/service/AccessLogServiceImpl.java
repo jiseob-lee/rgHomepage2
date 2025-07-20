@@ -189,8 +189,8 @@ public class AccessLogServiceImpl implements AccessLogService {
             
             String requestURI = dto.getRequestURI();
             
-            String articleIdx = requestURI.substring(requestURI.indexOf("boardArticleIdx=") 
-            		+ "boardArticleIdx=".length(), requestURI.indexOf("&"));
+            String articleIdx = requestURI.indexOf("boardArticleIdx=") == -1 ? "0" : 
+            	requestURI.substring(requestURI.indexOf("boardArticleIdx=") + "boardArticleIdx=".length(), requestURI.indexOf("&"));
             
             //if (arrStr != null && arrStr.length > 5) {
 	            String articleSubject = accessLogDAO.getArticleSubject(articleIdx);
