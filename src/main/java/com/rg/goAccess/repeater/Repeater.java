@@ -8,13 +8,25 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import com.rg.goAccess.controller.ConfigHolder;
+
 public class Repeater {
+
+	//@Value("${goaccessPath}")
+	//private String path;
+	
+	//private static String goaccessPath;
 	
 	private static int no = 0;
 
 	public static void resetNo() {
 		no = 0;
 	}
+	
+	//@PostConstruct
+	//public void init() {
+		//goaccessPath = path;
+	//}
 	
     public static int repeat() throws Exception {
     	
@@ -29,7 +41,7 @@ public class Repeater {
             System.out.println(future.get(3, TimeUnit.SECONDS));
             System.out.println("Finished!");
             
-            File folder = new File("/home/ubuntu/apache-tomcat-10.1.43/webapps/ROOT/goaccess");
+            File folder = new File(ConfigHolder.goaccessPath);
     		File[] files = folder.listFiles();
     		if (files != null &&  files.length > 0) {
     			return 1;

@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.rg.accesslog.dao.AccessLogDAOImpl;
@@ -25,7 +26,8 @@ public class AccessLogServiceImpl implements AccessLogService {
 	
 	private final Logger logger = LogManager.getLogger(AccessLogServiceImpl.class);
 	
-	private final String logPath = "/usr/local/apache-2.4.63_2/logs/";
+	@Value("${apacheAccessLogPath}")
+	private String logPath;
 	
 	@Autowired
 	private AccessLogDAOImpl accessLogDAO;

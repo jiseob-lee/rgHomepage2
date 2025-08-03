@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
@@ -24,6 +25,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.data.redis.core.RedisTemplate;
 //import org.springframework.data.redis.core.StringRedisTemplate;
 //import org.springframework.data.redis.core.ValueOperations;
@@ -49,11 +51,21 @@ public class GoAccessController {
 	//@Autowired
 	//RedisTemplate<String, Object> redisTemplate;
 
-	private static String goaccessPath = "/home/ubuntu/apache-tomcat-10.1.43/webapps/ROOT/goaccess";
+	//@Value("${goaccessPath}")
+	//private String path;
+	//private static String goaccessPath;
+	
 	//private static String goaccessPath2 = "/home/ubuntu/apache-tomcat-8.5.45_2/webapps/ROOT/goaccess";
 	//private String goaccessPath = "/home/ubuntu/goaccess";
 
-	private final String apachePath = "/usr/local/apache-2.4.63_2";
+	@Value("${apachePath}")
+	private String apachePath;
+
+
+	//@PostConstruct
+	//public void init() {
+		//goaccessPath = path;
+	//}
 	
 	@RequestMapping(value="/rg/getGoaccessCurrentTime.do")
 	@ResponseBody
@@ -64,7 +76,7 @@ public class GoAccessController {
 	    //currentTime = (String) stringStringValueOperations.get(key);
 	    
 		if ("".equals(currentTime)) {
-			File folder = new File(goaccessPath);
+			File folder = new File(ConfigHolder.goaccessPath);
 			File[] files = folder.listFiles();
 			if (files != null) { //some JVMs return null for empty dirs
 				for (File f: files) {
@@ -136,7 +148,7 @@ public class GoAccessController {
 			goaccessCommand += accessLogFiles.get(i) + " ";
 		}
 		
-		goaccessCommand += " --exclude-ip 127.0.0.1 -o " + goaccessPath + "/" + currentTime + ".html";
+		goaccessCommand += " --exclude-ip 127.0.0.1 -o " + ConfigHolder.goaccessPath + "/" + currentTime + ".html";
 				
 		//return 0;
 		
@@ -159,7 +171,7 @@ public class GoAccessController {
 		
 		//commandsArray[2] = "/usr/local/apache2/logs/jisblee.me-access_log.2018-10-21-00.log";
 
-		commandsArray[datesList.size() + 1] = "-o " + goaccessPath + "/report.html";
+		commandsArray[datesList.size() + 1] = "-o " + ConfigHolder.goaccessPath + "/report.html";
 
 		//commandsArray[2] = "-a";
 		
@@ -348,7 +360,7 @@ public class GoAccessController {
 		
 		file.setWritable(false, false);
 		
-		emptyFolder(new File(goaccessPath));
+		emptyFolder(new File(ConfigHolder.goaccessPath));
 		
 		/*
 		try {
