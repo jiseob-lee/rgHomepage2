@@ -2,14 +2,111 @@ package com.rg.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import com.rg.login.controller.CustomAuthenticationProvider;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfiguration {
 
+    //@Bean
+    //public WebSecurityCustomizer webSecurityCustomizer() {
+        //return (web) -> web.ignoring().requestMatchers("/assets/**", "/src/**", "index.jsp", "index.html");
+    //}
+
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/assets/**", "/src/**", "index.jsp", "index.html");
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   AuthenticationSuccessHandler loginSuccessHandler,
+                                                   LogoutSuccessHandler logoutSuccessHandler,
+                                                   SessionRegistry sessionRegistry,
+                                                   HandlerMappingIntrospector introspector) throws Exception {
+    	
+    	MvcRequestMatcher.Builder mvc = new MvcRequestMatcher.Builder(introspector).servletPath("/");
+    	
+        http
+        	//.csrf(csrf -> csrf.disable())
+        	.csrf(csrf -> csrf
+                .ignoringRequestMatchers(mvc.pattern("/getBoardContent.do"))  // <-- CSRF 예외 등록
+            )
+
+            .authorizeHttpRequests(auth -> auth
+            	.requestMatchers(mvc.pattern("/assets/**"), mvc.pattern("/src/**"), mvc.pattern("index.jsp"), mvc.pattern("index.html")).permitAll()
+            	//.requestMatchers("/", "/**").permitAll()
+            	.requestMatchers(mvc.pattern("/rg/**")).hasRole("USER")
+                .anyRequest().permitAll()
+            )
+            //.authorizeHttpRequests(auth -> auth
+                    //.antMatchers("/api/**").permitAll()
+                    //.antMatchers("/admin/**").hasRole("ADMIN")
+                    //.anyRequest().authenticated()
+                //)
+            .formLogin(form -> form
+                .loginPage("/login.do")
+                .loginProcessingUrl("/login")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .failureUrl("/login.do?error=true")
+                .successHandler(loginSuccessHandler)
+            )
+
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
+                .logoutSuccessHandler(logoutSuccessHandler)
+            )
+
+            .sessionManagement(session -> session
+                .sessionFixation(sessionFixation -> sessionFixation.none())
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(false)
+                .expiredUrl("/login.do")
+                .sessionRegistry(sessionRegistry)
+            );
+
+        return http.build();
     }
 
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http,
+                                                       AuthenticationProvider customAuthenticationProvider) throws Exception {
+        return http
+            .getSharedObject(AuthenticationManagerBuilder.class)
+            .authenticationProvider(customAuthenticationProvider)
+            .build();
+    }
+
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
+    }
+
+    // Handler 및 Provider 등록 (Component Scan 가능하면 생략 가능)
+    @Bean
+    public AuthenticationProvider customAuthenticationProvider() {
+        return new CustomAuthenticationProvider();
+    }
+
+    //@Bean
+    //public AuthenticationSuccessHandler loginSuccessHandler() {
+        //return new CustomLoginSuccessHandler();
+    //}
+
+    //@Bean
+    //public LogoutSuccessHandler logoutSuccessHandler() {
+        //return new CustomLogoutSuccessHandler();
+    //}
+    
 }

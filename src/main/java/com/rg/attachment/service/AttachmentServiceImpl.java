@@ -271,26 +271,26 @@ public class AttachmentServiceImpl implements AttachmentService {
 			
 			InetAddress ipAddress = InetAddress.getByName(ip);
 			
-			CityResponse response = reader.city(ipAddress);
+			CityResponse response = "127.0.0.1".equals(ip) ? null : reader.city(ipAddress);
 	
-			Country country = response.getCountry();
+			Country country = response == null ? null : response.getCountry();
 			
-			logger.debug(country.getIsoCode());
-			logger.debug(country.getName());
+			logger.debug(country == null ? "" : country.getIsoCode());
+			logger.debug(country == null ? "" : country.getName());
 			
 			//indexDTO.setCountry(country.getName());
 			
-			Subdivision subdivision = response.getMostSpecificSubdivision();
+			Subdivision subdivision = response == null ? null : response.getMostSpecificSubdivision();
 			//System.out.println(subdivision.getName()); 
 			//indexDTO.setSubdivision(subdivision.getName());
 			
-			City city = response.getCity();
+			City city = response == null ? null : response.getCity();
 			//indexDTO.setCity(city.getName());
 			
 			
-			attachmentDTO.setUserCountry(country.getName());
-			attachmentDTO.setUserSubdivision(subdivision.getName());
-			attachmentDTO.setUserCity(city.getName());
+			attachmentDTO.setUserCountry(country == null ? "" : country.getName());
+			attachmentDTO.setUserSubdivision(subdivision == null ? "" : subdivision.getName());
+			attachmentDTO.setUserCity(city == null ? "" : city.getName());
 			
 			attachmentDAO.saveDownloadHistory(attachmentDTO);
 		

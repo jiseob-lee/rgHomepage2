@@ -31,5 +31,21 @@ public class CookieHandle {
 		}
 	    return null;
 	}
-	
+
+	public static void setCookieHttpOnly(HttpServletResponse response, String name, String value, int days) {
+
+		Cookie refreshCookie = new Cookie(name, value);
+        refreshCookie.setHttpOnly(true);            // ✅ JavaScript에서 접근 못하게
+        //refreshCookie.setSecure(true);              // ✅ HTTPS에서만 전송
+        refreshCookie.setPath("/");                 // 경로 설정
+        //refreshCookie.setSameSite("");
+        if (days > -1) {
+        	refreshCookie.setMaxAge(days * 24 * 60 * 60);  // 7일
+        }
+
+        response.addHeader("Set-Cookie", name + "=" + value + "; SameSite=None; Secure; HttpOnly; Path=/");
+        
+        //response.addCookie(refreshCookie);
+    }
+
 }

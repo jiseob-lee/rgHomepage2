@@ -1,8 +1,11 @@
 package com.rg.login.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.stereotype.Component;
 
 import com.rg.util.CookieHandle;
 import com.rg.util.RedisService3;
@@ -12,8 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import java.io.IOException;
-
+@Component
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
 	@Autowired
