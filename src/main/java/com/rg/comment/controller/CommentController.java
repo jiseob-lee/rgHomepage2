@@ -67,7 +67,7 @@ public class CommentController {
 		commentService.updateComment(commentDTO, request);
 	}
 
-	@RequestMapping(value="/deleteComment.do")
+	@RequestMapping(value="/deleteComment.do", method=RequestMethod.POST)
 	@ResponseBody
 	public void deleteComment(HttpServletRequest request, CommentDTO commentDTO) {
 
