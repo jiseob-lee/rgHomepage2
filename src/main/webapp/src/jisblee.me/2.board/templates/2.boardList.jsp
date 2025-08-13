@@ -11,6 +11,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시글 목록</title>
+
+
+<style type="text/css">
+table.view, td.view {
+  border: 2px solid green;
+  max-width: 1000px;
+}
+</style>
+
+
 </head>
 
 <body>
@@ -135,14 +145,14 @@
   <table ng-if="urlPath == 'rg' && openYn != '1'">
     <tr ng-repeat="a in boardList">
       <td>
-        <table border="1" style="max-width:1000px;">
+        <table class="view">
         <tr>
-          <td>{{boardListCount - $index - (pageNo - 1) * listLimit}}</td>
-          <td>{{a.subject}}</td>
-          <td>{{a.dateCreated}}</td>
+          <td class="view">{{boardListCount - $index - (pageNo - 1) * listLimit}}</td>
+          <td class="view">{{a.subject}}</td>
+          <td class="view">{{a.dateCreated}}</td>
         </tr>
         <tr>
-          <td colspan="3" ng-bind-html="a.content | unsafe" style="max-width:1000px;"></td>
+          <td colspan="3" ng-bind-html="a.content | unsafe" class="view"></td>
         </tr>
         </table>
       </td>
