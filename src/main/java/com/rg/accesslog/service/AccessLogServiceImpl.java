@@ -135,9 +135,13 @@ public class AccessLogServiceImpl implements AccessLogService {
             
             String[] arrStr = dto.getRequestURI().split("/");
             
+            logger.debug("arrStr.length : " + arrStr.length);
+            
             if (arrStr != null && arrStr.length > 5) {
-	            String articleSubject = accessLogDAO.getArticleSubject(arrStr[5]);
-	            dto.setArticleSubject(articleSubject);
+            	if (arrStr.length <= 6 || (arrStr.length > 6 && (arrStr[6] == null || "".equals(arrStr[6]) || "ko".equals(arrStr[6]) || "en".equals(arrStr[6])))) {
+		            String articleSubject = accessLogDAO.getArticleSubject(arrStr[5]);
+		            dto.setArticleSubject(articleSubject);
+            	}
             }
             
         } else {
