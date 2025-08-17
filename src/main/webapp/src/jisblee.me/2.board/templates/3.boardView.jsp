@@ -34,8 +34,8 @@
       <td colspan="6" style="border: 0px; padding: 12px; text-align: right;">
         <div style="float: left;">
           <spring:message code="board.language" text="언어" /> : 
-          <input type="radio" name="language1" value="korean" ng-model="language1" ng-change="changeViewLanguage(1);" /><spring:message code="board.korean" text="한글" /> &nbsp;
-          <input type="radio" name="language1" value="english" ng-model="language1" ng-change="changeViewLanguage(1);" /><spring:message code="board.english" text="영어" />
+          <input type="radio" name="language1" value="korean" id="korean1" ng-model="language1" ng-change="changeViewLanguage(1);" /><label for="korean1"><spring:message code="board.korean" text="한글" /></label> &nbsp;
+          <input type="radio" name="language1" value="english" id="english1" ng-model="language1" ng-change="changeViewLanguage(1);" /><label for="english1"><spring:message code="board.english" text="영어" /></label>
         </div>
         <div style="float: right;">
           <button ng-click="goEdit()" ng-if="urlPath == 'rg'" translate>board.modify</button>
@@ -75,8 +75,8 @@
       <td colspan="6" style="border: 0px; padding: 12px; text-align: right;">
         <div style="float: left;">
           <spring:message code="board.language" text="언어" /> : 
-          <input type="radio" name="language2" value="korean" ng-model="language2" ng-change="changeViewLanguage(2);" /><spring:message code="board.korean" text="한글" /> &nbsp;
-          <input type="radio" name="language2" value="english" ng-model="language2" ng-change="changeViewLanguage(2);" /><spring:message code="board.english" text="영어" />
+          <input type="radio" name="language2" value="korean" id="korean2" ng-model="language2" ng-change="changeViewLanguage(2);" /><label for="korean2"><spring:message code="board.korean" text="한글" /></label> &nbsp;
+          <input type="radio" name="language2" value="english" id="english2" ng-model="language2" ng-change="changeViewLanguage(2);" /><label for="english2"><spring:message code="board.english" text="영어" /></label>
         </div>
         <div style="float: right;">
           <button ng-click="goEdit()" ng-if="urlPath == 'rg'" translate>board.modify</button>
