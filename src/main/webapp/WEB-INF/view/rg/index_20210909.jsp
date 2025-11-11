@@ -326,7 +326,9 @@ function makeUnderline(elem) {
 		
 		<h3 class="menu">&nbsp;- <a href="/rg/#/test" target="_self" class="menuLink" onclick="makeUnderline(this);">테스트</a></h3>
 		
+		<!--
 		<h3 class="menu">&nbsp;- <a href="/rg/#/juso" target="_self" class="menuLink" onclick="makeUnderline(this);">주소</a></h3>
+		-->
 		
 		<!--
 		<h3 class="menu">&nbsp;- <a href="/rg/#/Check_the_latitude_and_longitude" target="_self" class="menuLink">위도, 경도 조회</a></h3>
