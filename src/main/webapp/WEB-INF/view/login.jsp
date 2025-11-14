@@ -3,7 +3,9 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <%@ page import="com.rg.util.LocaleUtil" %>
+<%@ page import="org.springframework.web.servlet.support.RequestContext" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -155,6 +157,12 @@ String currentLocale = localeUtil.getLocale().getLanguage();
 
 //out.println(currentLocale);
 
+%>
+
+<%
+    //RequestContext rc = new RequestContext(request);
+    //java.util.Locale locale = rc.getLocale();
+    //out.println("현재 Locale: " + locale.toString());
 %>
 
 <div class="login">

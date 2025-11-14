@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,6 +37,12 @@ public class LocaleUtil {
 		LocaleContextHolder.setLocale(locale);
 		
 		//setLocale(locale);
+		
+		Cookie cookie = new Cookie("lang", locale.toString());
+		cookie.setMaxAge(60 * 60 * 60); // 1시간 동안 유효하도록 설정
+		cookie.setPath("/");      // 모든 경로에서 유효
+		//cookie.setDomain(".jisblee.me");
+		response.addCookie(cookie);
 	}
 	
 	public Locale getLocale() {
