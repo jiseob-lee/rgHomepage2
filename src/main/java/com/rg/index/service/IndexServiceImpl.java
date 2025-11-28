@@ -47,7 +47,7 @@ public class IndexServiceImpl implements IndexService {
 			
 			InetAddress ipAddress = InetAddress.getByName(indexDTO.getRemoteAddr());
 
-			if ("127.0.0.1".equals(ipAddress.getHostAddress())) {
+			if ("127.0.0.1".equals(ipAddress.getHostAddress()) || "0:0:0:0:0:0:0:1".equals(ipAddress.getHostAddress())) {
 				return;
 			}
 			
