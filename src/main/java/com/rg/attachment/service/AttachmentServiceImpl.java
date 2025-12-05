@@ -58,11 +58,15 @@ public class AttachmentServiceImpl implements AttachmentService {
 		
 		BoardDTO boardDTO = new BoardDTO();
 		
-		boardDTO.setBoardArticleIdx(Integer.parseInt(boardArticleIdx));
+		if (boardArticleIdx == null || "".equals(boardArticleIdx)) {
+			boardDTO.setBoardArticleIdx(0);
+		} else {
+			boardDTO.setBoardArticleIdx(Integer.parseInt(boardArticleIdx));
+		}
 		
 		BoardDTO returnDTO = boardDAO.getBoardContent(boardDTO);
 		
-		String openYn = returnDTO.getOpenYn();
+		String openYn = returnDTO == null ? "n" : returnDTO.getOpenYn();
 		
 		if (requestURI != null && !requestURI.startsWith("/rg") && openYn != null && !openYn.equalsIgnoreCase("Y")) {
 			return new ArrayList<AttachmentDTO>();
