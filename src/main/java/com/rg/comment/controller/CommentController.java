@@ -39,7 +39,7 @@ public class CommentController {
 	
 	@RequestMapping("/getCommentList.do")
 	@ResponseBody
-	public List<CommentDTO> getCommentList(CommentDTO commentDTO) {
+	public List<CommentDTO> getCommentList(CommentDTO commentDTO, HttpServletRequest request) {
 		
 		//ModelAndView mav = new ModelAndView();
 		//mav.setVi
@@ -53,6 +53,8 @@ public class CommentController {
 		
 		commentDTO.setLocale(currentLocale);
 		commentDTO.setOpenYn("Y");
+		
+		commentDTO.setRequestURI(request.getRequestURI());
 		
 		List<CommentDTO> commentList = commentService.getCommentList(commentDTO);
 		

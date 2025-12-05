@@ -26,6 +26,7 @@ public class AttachmentDTO {
 	private String userSubdivision;
 	private String userCity;
 	
+	private String requestURI;
 	
 	public String getAttachmentIdx() {
 		return attachmentIdx;
@@ -164,6 +165,12 @@ public class AttachmentDTO {
 	}
 	public void setUserSubdivision(String userSubdivision) {
 		this.userSubdivision = userSubdivision;
+	}
+	public String getRequestURI() {
+		return requestURI;
+	}
+	public void setRequestURI(String requestURI) {
+		this.requestURI = requestURI;
 	}
 
 }

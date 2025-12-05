@@ -17,6 +17,8 @@ public class CommentDTO {
 	private String openYn;
 	private String userIp;
 	
+	private String requestURI;
+	
 	public String getCommentIdx() {
 		return commentIdx;
 	}
@@ -100,6 +102,12 @@ public class CommentDTO {
 	}
 	public void setBoardArticleSubject(String boardArticleSubject) {
 		this.boardArticleSubject = boardArticleSubject;
+	}
+	public String getRequestURI() {
+		return requestURI;
+	}
+	public void setRequestURI(String requestURI) {
+		this.requestURI = requestURI;
 	}
 	
 }

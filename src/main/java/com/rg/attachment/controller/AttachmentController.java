@@ -58,6 +58,9 @@ public class AttachmentController {
 			|| request.getRequestURL().toString().endsWith("jisblee.me:4000/getAttachmentList.do")) {
 			attachmentDTO.setOpenYn("Y");
 		}
+		
+		attachmentDTO.setRequestURI(request.getRequestURI());
+		
 		return attachmentService.getAttachmentList(attachmentDTO);
 	}
 

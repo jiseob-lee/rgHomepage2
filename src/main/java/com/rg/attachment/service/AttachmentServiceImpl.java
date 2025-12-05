@@ -26,6 +26,8 @@ import com.maxmind.geoip2.record.Country;
 import com.maxmind.geoip2.record.Subdivision;
 import com.rg.attachment.dao.AttachmentDAOImpl;
 import com.rg.attachment.dto.AttachmentDTO;
+import com.rg.board.dao.BoardDAOImpl;
+import com.rg.board.dto.BoardDTO;
 import com.rg.util.GeoLite2;
 import com.rg.util.IP;
 
@@ -39,12 +41,33 @@ public class AttachmentServiceImpl implements AttachmentService {
 	private static String fileUploadPath = AttachmentService.getFileUploadPath("1");
 	private static String customerUploadPath = AttachmentService.getFileUploadPath("4");
 	private static String imageUploadPath = AttachmentService.getFileUploadPath("img");
-	
+
 	@Autowired
 	private AttachmentDAOImpl attachmentDAO;
+
+	@Autowired
+	private BoardDAOImpl boardDAO;
 	
 	@Override
 	public List<AttachmentDTO> getAttachmentList(AttachmentDTO attachmentDTO) {
+		
+
+		String requestURI = attachmentDTO.getRequestURI();
+		
+		String boardArticleIdx = attachmentDTO.getBoardArticleIdx();
+		
+		BoardDTO boardDTO = new BoardDTO();
+		
+		boardDTO.setBoardArticleIdx(Integer.parseInt(boardArticleIdx));
+		
+		BoardDTO returnDTO = boardDAO.getBoardContent(boardDTO);
+		
+		String openYn = returnDTO.getOpenYn();
+		
+		if (requestURI != null && !requestURI.startsWith("/rg") && openYn != null && !openYn.equalsIgnoreCase("Y")) {
+			return new ArrayList<AttachmentDTO>();
+		}
+		
 		return attachmentDAO.getAttachmentList(attachmentDTO);
 	}
 	

@@ -236,10 +236,15 @@ public class BoardController {
 		
 		logger.info("#### getBoardContent. 1");
 		
-		return boardService.getBoardContent(boardDTO);
-		//BoardDTO returnDTO = boardService.getBoardContent(boardDTO);
+		//return boardService.getBoardContent(boardDTO);
+		
+		boardDTO.setRequestURI(request.getRequestURI());
+		
+		BoardDTO returnDTO = boardService.getBoardContent(boardDTO);
+		
 		//returnDTO.setCsrfToken(token.getToken());
-		//return returnDTO;
+		
+		return returnDTO;
 	}
 
 	@RequestMapping("/rg/getBoardListCount.do")
@@ -258,8 +263,9 @@ public class BoardController {
 
 	@RequestMapping("/rg/getBoardContent.do")
 	@ResponseBody
-	public BoardDTO getBoardContentAdmin(BoardDTO boardDTO) {
+	public BoardDTO getBoardContentAdmin(BoardDTO boardDTO, HttpServletRequest request) {
 		logger.debug("########## /rg/getBoardContent.do");
+		boardDTO.setRequestURI(request.getRequestURI());
 		return boardService.getBoardContent(boardDTO);
 	}
 

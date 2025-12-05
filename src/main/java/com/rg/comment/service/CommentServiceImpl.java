@@ -1,5 +1,6 @@
 package com.rg.comment.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.rg.attachment.dto.AttachmentDTO;
+import com.rg.board.dao.BoardDAOImpl;
+import com.rg.board.dto.BoardDTO;
 import com.rg.comment.dao.CommentDAOImpl;
 import com.rg.comment.dto.CommentDTO;
 import com.rg.loginlog.dto.LoginLogDTO;
@@ -23,9 +27,29 @@ public class CommentServiceImpl implements CommentService {
 
 	@Autowired
 	private CommentDAOImpl commentDAO;
-
+	
+	@Autowired
+	private BoardDAOImpl boardDAO;
+	
 	@Override
 	public List<CommentDTO> getCommentList(CommentDTO commentDTO) {
+		
+		String requestURI = commentDTO.getRequestURI();
+		
+		String boardArticleIdx = commentDTO.getBoardArticleIdx();
+		
+		BoardDTO boardDTO = new BoardDTO();
+		
+		boardDTO.setBoardArticleIdx(Integer.parseInt(boardArticleIdx));
+		
+		BoardDTO returnDTO = boardDAO.getBoardContent(boardDTO);
+		
+		String openYn = returnDTO.getOpenYn();
+		
+		if (requestURI != null && !requestURI.startsWith("/rg") && openYn != null && !openYn.equalsIgnoreCase("Y")) {
+			return new ArrayList<CommentDTO>();
+		}
+		
 		return commentDAO.getCommentList(commentDTO);
 	}
 

@@ -1,9 +1,13 @@
 package com.rg.board.service;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 //import org.apache.logging.log4j.LogManager;
 //import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +19,7 @@ import com.rg.board.dto.BoardDTO;
 @Service("boardService")
 public class BoardServiceImpl implements BoardService {
 
-	//private final Logger logger = LogManager.getLogger(BoardServiceImpl.class);
+	private final Logger logger = LogManager.getLogger(BoardServiceImpl.class);
 
 	@Autowired
 	private BoardDAOImpl boardDAO;
@@ -43,7 +47,22 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public BoardDTO getBoardContent(BoardDTO boardDTO) {
-		return boardDAO.getBoardContent(boardDTO);
+		
+		logger.info("#### boardDTO : " + boardDTO.toString());
+		
+		String requestURI = boardDTO.getRequestURI();
+		
+		BoardDTO returnDTO = boardDAO.getBoardContent(boardDTO);
+		
+		String openYn = returnDTO.getOpenYn();
+		
+		if (requestURI != null && !requestURI.startsWith("/rg") && openYn != null && !openYn.equalsIgnoreCase("Y")) {
+			return new BoardDTO();
+		}
+		
+		logger.info("#### returnDTO : " + returnDTO.toString());
+		
+		return returnDTO;
 	}
 
 	@Override

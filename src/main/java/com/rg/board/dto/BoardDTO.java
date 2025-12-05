@@ -26,7 +26,8 @@ public class BoardDTO {
 	
 	private String searchKind;
 	private String searchValue;
-	
+
+	private String requestURI;
 	
 	public int getBoardArticleIdx() {
 		return boardArticleIdx;
@@ -169,4 +170,43 @@ public class BoardDTO {
 		this.userNameModifiedEng = userNameModifiedEng;
 	}
 
+	public String getRequestURI() {
+		return this.requestURI;
+	}
+	public void setRequestURI(String requestURI) {
+		this.requestURI = requestURI;
+	}
+	
+	public String toString() {
+		
+		String str = "\n\n";
+
+		str += "boardArticleIdx : " + this.boardArticleIdx + "\n";
+		str += "boardIdx : " + this.boardIdx + "\n";
+		str += "boardName : " + this.boardName + "\n";
+		str += "subject : " + this.subject + "\n";
+		//str += "content : " + this.content + "\n";
+		str += "subjectEng : " + this.subjectEng + "\n";
+		//str += "contentEng : " + this.contentEng + "\n";
+		str += "hitCount : " + this.hitCount + "\n";
+		str += "dateCreated : " + this.dateCreated + "\n";
+		str += "userIdCreated : " + this.userIdCreated + "\n";
+		str += "userNameCreated : " + this.userNameCreated + "\n";
+		str += "userNameCreatedEng : " + this.userNameCreatedEng + "\n";
+		str += "dateModified : " + this.dateModified + "\n";
+		str += "userIdModified : " + this.userIdModified + "\n";
+		str += "userNameModified : " + this.userNameModified + "\n";
+		str += "userNameModifiedEng : " + this.userNameModifiedEng + "\n";
+		str += "listLimit : " + this.listLimit + "\n";
+		str += "listOffset : " + this.listOffset + "\n";
+		str += "openYn : " + this.openYn + "\n";
+		str += "locale : " + this.locale + "\n";
+		str += "searchKind : " + this.searchKind + "\n";
+		str += "searchValue : " + this.searchValue + "\n";
+		str += "requestURI : " + this.requestURI + "\n";
+		
+		str += "\n\n";
+		
+		return str;
+	}
 }
