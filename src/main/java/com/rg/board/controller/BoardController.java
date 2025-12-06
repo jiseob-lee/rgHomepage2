@@ -264,7 +264,17 @@ public class BoardController {
 	@RequestMapping("/rg/getBoardContent.do")
 	@ResponseBody
 	public BoardDTO getBoardContentAdmin(BoardDTO boardDTO, HttpServletRequest request) {
+		
 		logger.debug("########## /rg/getBoardContent.do");
+		
+		HttpSession session = request.getSession();
+		
+		String loginId = (String)session.getAttribute("loginId");
+		
+		if (loginId == null || "".equals(loginId)) {
+			return new BoardDTO();
+		}
+		
 		boardDTO.setRequestURI(request.getRequestURI());
 		return boardService.getBoardContent(boardDTO);
 	}

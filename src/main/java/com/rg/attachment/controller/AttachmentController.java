@@ -41,6 +41,7 @@ import org.springframework.web.util.UriUtils;
 
 import com.rg.attachment.dto.AttachmentDTO;
 import com.rg.attachment.service.AttachmentService;
+import com.rg.board.dto.BoardDTO;
 
 @Controller
 public class AttachmentController {
@@ -60,6 +61,18 @@ public class AttachmentController {
 		}
 		
 		attachmentDTO.setRequestURI(request.getRequestURI());
+		
+		
+		if (attachmentDTO.getRequestURI().startsWith("/rg")) {
+
+			HttpSession session = request.getSession();
+			
+			String loginId = (String)session.getAttribute("loginId");
+			
+			if (loginId == null || "".equals(loginId)) {
+				return new ArrayList<AttachmentDTO>();
+			}
+		}
 		
 		return attachmentService.getAttachmentList(attachmentDTO);
 	}
