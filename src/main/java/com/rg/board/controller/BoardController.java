@@ -26,8 +26,10 @@ import com.rg.board.dto.BoardDTO;
 import com.rg.board.service.BoardService;
 import com.rg.index.dto.IndexDTO;
 import com.rg.index.service.IndexService;
+import com.rg.login.dto.UserDetailsVO;
 import com.rg.util.GeoLite2;
 import com.rg.util.LocaleUtil;
+import com.rg.util.RedisService3;
 
 @Controller
 @CrossOrigin(origins = "http://localhost", maxAge = 3600)
@@ -40,7 +42,10 @@ public class BoardController {
 
 	@Autowired
 	private IndexService indexService;
-
+	
+	@Autowired
+	private RedisService3 redisService;
+	
 	static private String ip = "";
 	
 	static {
@@ -273,6 +278,14 @@ public class BoardController {
 		
 		if (loginId == null || "".equals(loginId)) {
 			return new BoardDTO();
+		
+		} else {
+			
+			UserDetailsVO vo = redisService.selectRedisSession("LOGIN||SESSION||" + loginId + "||" + session.getId());
+			
+			if (vo == null || vo.getLoginId() == null || "".equals(vo.getLoginId()) || "null".equals(vo.getLoginId())) {
+				return new BoardDTO();
+			}
 		}
 		
 		boardDTO.setRequestURI(request.getRequestURI());

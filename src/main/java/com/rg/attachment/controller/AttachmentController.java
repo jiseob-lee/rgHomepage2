@@ -42,6 +42,8 @@ import org.springframework.web.util.UriUtils;
 import com.rg.attachment.dto.AttachmentDTO;
 import com.rg.attachment.service.AttachmentService;
 import com.rg.board.dto.BoardDTO;
+import com.rg.login.dto.UserDetailsVO;
+import com.rg.util.RedisService3;
 
 @Controller
 public class AttachmentController {
@@ -50,7 +52,10 @@ public class AttachmentController {
 
 	@Autowired
 	private AttachmentService attachmentService;
-
+	
+	@Autowired
+	private RedisService3 redisService;
+	
 	@RequestMapping(value= {"/rg/getAttachmentList.do", "/getAttachmentList.do"})
 	@ResponseBody
 	public List<AttachmentDTO> getAttachmentList(AttachmentDTO attachmentDTO, HttpServletRequest request) {
@@ -70,8 +75,18 @@ public class AttachmentController {
 			String loginId = (String)session.getAttribute("loginId");
 			
 			if (loginId == null || "".equals(loginId)) {
+				
 				return new ArrayList<AttachmentDTO>();
+			
+			} else {
+				
+				UserDetailsVO vo = redisService.selectRedisSession("LOGIN||SESSION||" + loginId + "||" + session.getId());
+				
+				if (vo == null || vo.getLoginId() == null || "".equals(vo.getLoginId()) || "null".equals(vo.getLoginId())) {
+					return new ArrayList<AttachmentDTO>();
+				}
 			}
+			
 		}
 		
 		return attachmentService.getAttachmentList(attachmentDTO);
