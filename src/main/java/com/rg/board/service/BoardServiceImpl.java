@@ -54,13 +54,13 @@ public class BoardServiceImpl implements BoardService {
 		
 		BoardDTO returnDTO = boardDAO.getBoardContent(boardDTO);
 		
-		String openYn = returnDTO.getOpenYn();
+		String openYn = returnDTO == null ? "N" : returnDTO.getOpenYn();
 		
 		if (requestURI != null && !requestURI.startsWith("/rg") && openYn != null && !openYn.equalsIgnoreCase("Y")) {
 			return new BoardDTO();
 		}
 		
-		logger.info("#### returnDTO : " + returnDTO.toString());
+		logger.info("#### returnDTO : " + returnDTO == null ? "" : returnDTO.toString());
 		
 		return returnDTO;
 	}
