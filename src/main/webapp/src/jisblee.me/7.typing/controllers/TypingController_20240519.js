@@ -634,7 +634,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 			$http(req).then(function successCallback(response) {
 				
 				if (response.data.totalCount < 7) {
-					$("#typingMessage").html(" &nbsp; &nbsp; 한 행을 타이핑하시고 엔터를 누르시면 되겠습니다.");
+					$("#typingMessage").html(" &nbsp; &nbsp; 한 행을 타이핑하시고 엔터나 스페이스를 누르시면 되겠습니다.");
 				}
 				
 			}, function errorCallback(response) {
