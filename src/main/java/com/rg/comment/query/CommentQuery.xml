@@ -93,7 +93,23 @@
 	</update>
 
 
-	<update id="deleteComment">
+	<delete id="deleteComment">
+	
+		DELETE FROM
+			comment
+
+		WHERE
+			comment_idx = #{commentIdx}
+			
+			<if test='commentIdx == "55" or commentIdx == "54"'>
+				and user_password = SHA2( #{userPassword}, 0 )
+			</if>
+			<if test='commentIdx != "55" and commentIdx != "54"'>
+				and user_password = #{userPassword}
+			</if>
+	</delete>
+
+	<update id="deleteComment_backup">
 	
 		UPDATE 
 			comment
