@@ -229,9 +229,19 @@ public class AttachmentServiceImpl implements AttachmentService {
 	}
 	
 	public AttachmentDTO getAttachmentDTOInfo(String attachmentIdx) {
+		if (hasNonDigit(attachmentIdx)) {
+			return new AttachmentDTO();
+		}
 		return attachmentDAO.getAttachmentDTOInfo(attachmentIdx);
 	}
-
+	
+	public boolean hasNonDigit(String str) {
+	    if (str == null || str.isEmpty()) {
+	        return true; // 필요에 따라 true로 바꿀 수도 있음
+	    }
+	    return !str.matches("\\d+");
+	}
+	
 	@Override
 	public int getAttachmentListTotalCount(AttachmentDTO attachmentDTO) {
 		return attachmentDAO.getAttachmentListTotalCount(attachmentDTO);
