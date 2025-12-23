@@ -66,7 +66,7 @@ md-datepicker {
 					<td>City</td>
 				</tr>
 			</thead>
-			<tbody ng-repeat="log in logData">
+			<tbody ng-repeat="log in logData track by $index">
 				<tr align="center">
 					<td rowspan="2">{{logCount - $index}}</td>
 					<td rowspan="2" align="left">{{log.userAgent}}</td>
