@@ -229,12 +229,14 @@ var GIS_SERVER_URL = "https://m1.juso.go.kr";
 
 
 <!-- <script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/jquery-1.12.4.min.js"></script> -->
+<!--
 <script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/rnic-search.js"></script>
 <script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/addrlink/map/ol.js"></script>
 <script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/addrlink/map/OverlayScrollbars.min.js"></script>
 <script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/addrlink/map/jquery-ui.min.js"></script>
 <script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/addrlink/map/view-map.min.js"></script>
 <script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/addrlink/map/search-map.min.js"></script>
+-->
 
 <!--
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=48db2a9456ff7710ab38d35097440853&libraries=services,clusterer,drawing"></script>
