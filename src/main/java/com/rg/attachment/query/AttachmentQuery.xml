@@ -23,8 +23,10 @@
 			b.file_exists       as fileExists,
 			b.attachment_size   as attachmentSize
 		
-		FROM attachment b, board_article c
-		
+		FROM attachment b
+			
+			LEFT JOIN board_article c ON b.board_article_idx = c.board_article_idx
+			
 		WHERE
 
 			b.flag_deleted = '0'
@@ -37,8 +39,6 @@
 				AND b.board_article_idx = #{boardArticleIdx}
 			</if>
 
-            AND b.board_article_idx = c.board_article_idx
-			
 			<if test="openYn != null and (openYn = 'y' or openYn = 'Y')">
 				AND c.open_yn = 'y'
 			</if>
