@@ -58,7 +58,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 		
 		BoardDTO boardDTO = new BoardDTO();
 		
-		if (boardArticleIdx == null || "".equals(boardArticleIdx)) {
+		if (boardArticleIdx == null || "".equals(boardArticleIdx) || hasNonDigit(boardArticleIdx)) {
 			boardDTO.setBoardArticleIdx(0);
 		} else {
 			boardDTO.setBoardArticleIdx(Integer.parseInt(boardArticleIdx));

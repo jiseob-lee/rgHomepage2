@@ -1,7 +1,5 @@
 package com.rg.board.service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
