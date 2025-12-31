@@ -40,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
 		
 		BoardDTO boardDTO = new BoardDTO();
 		
-		if (boardArticleIdx == null || "".equals(boardArticleIdx)) {
+		if (boardArticleIdx == null || "".equals(boardArticleIdx) || hasNonDigit(boardArticleIdx)) {
 			boardDTO.setBoardArticleIdx(0);
 		} else {
 			boardDTO.setBoardArticleIdx(Integer.parseInt(boardArticleIdx));
@@ -106,5 +106,12 @@ public class CommentServiceImpl implements CommentService {
 		
 		return map;
 	}
-	
+
+	public boolean hasNonDigit(String str) {
+	    if (str == null || str.isEmpty()) {
+	        return true; // 필요에 따라 true로 바꿀 수도 있음
+	    }
+	    return !str.matches("\\d+");
+	}
+		
 }
