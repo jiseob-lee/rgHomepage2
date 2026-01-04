@@ -144,7 +144,7 @@ public class EnvironmentController {
 			for (int i=0; i < cs.length; i++) {
 				Cookie c = cs[i];
 				//logger.debug("######### log 2 : " + i + " : " + c.getName() + " : " + c.getValue());
-				if ("lang".equals(c.getName())) {
+				if ("LOCALE".equals(c.getName())) {
 					lang = c.getValue();
 				}
 			}

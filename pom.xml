@@ -38,9 +38,9 @@
         -->
         
         <!-- <spring.framework.version>6.1.21</spring.framework.version> -->
-        <spring.framework.version>6.2.12</spring.framework.version>
+        <spring.framework.version>7.0.2</spring.framework.version>
         
-        <spring.security.version>6.3.8</spring.security.version>
+        <spring.security.version>7.0.2</spring.security.version>
         
         
         <egovframework.rte.version>3.6.0</egovframework.rte.version>
@@ -166,7 +166,12 @@
 		    <version>1.9.25.1</version>
 		</dependency>
 
-		
+		<dependency>
+			<groupId>org.jspecify</groupId>
+			<artifactId>jspecify</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
 		<!--
 		<dependency>
 		    <groupId>com.nexacro.archetype</groupId>
@@ -411,7 +416,7 @@
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-jcl</artifactId>
-		    <version>${spring.framework.version}</version>
+		    <version>6.2.15</version>
 		</dependency>
 		
 		<dependency>

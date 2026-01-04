@@ -12,8 +12,6 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import com.rg.login.controller.CustomAuthenticationProvider;
 
@@ -30,21 +28,20 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    AuthenticationSuccessHandler loginSuccessHandler,
                                                    LogoutSuccessHandler logoutSuccessHandler,
-                                                   SessionRegistry sessionRegistry,
-                                                   HandlerMappingIntrospector introspector) throws Exception {
+                                                   SessionRegistry sessionRegistry) throws Exception {
     	
-    	MvcRequestMatcher.Builder mvc = new MvcRequestMatcher.Builder(introspector).servletPath("/");
+    	//MvcRequestMatcher.Builder mvc = new MvcRequestMatcher.Builder(introspector).servletPath("/");
     	
         http
         	//.csrf(csrf -> csrf.disable())
         	.csrf(csrf -> csrf
-                .ignoringRequestMatchers(mvc.pattern("/getBoardContent.do"))  // <-- CSRF 예외 등록
+                .ignoringRequestMatchers("/getBoardContent.do")  // <-- CSRF 예외 등록
             )
 
             .authorizeHttpRequests(auth -> auth
-            	.requestMatchers(mvc.pattern("/assets/**"), mvc.pattern("/src/**"), mvc.pattern("index.jsp"), mvc.pattern("index.html")).permitAll()
+            	.requestMatchers("/assets/**", "/src/**", "/index.jsp", "/index.html").permitAll()
             	//.requestMatchers("/", "/**").permitAll()
-            	.requestMatchers(mvc.pattern("/rg/**")).hasRole("USER")
+            	.requestMatchers("/rg/**").hasRole("USER")
                 .anyRequest().permitAll()
             )
             //.authorizeHttpRequests(auth -> auth

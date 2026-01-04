@@ -741,7 +741,7 @@ public class IndexController {
 		}
 		
 		localeUtil.setLocale(currentLocale, request, response);
-		setCookie(response, "lang", currentLocale);
+		setCookie(response, "LOCALE", currentLocale);
 
 		logger.debug("###################### Current locale 2 (/rg/getLocale.do) : " + currentLocale);
 		

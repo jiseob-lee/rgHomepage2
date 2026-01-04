@@ -1,5 +1,8 @@
 package com.rg.configuration;
 
+import java.time.Duration;
+import java.util.Locale;
+
 import org.springframework.context.annotation.Bean;
 
 //import java.util.concurrent.Executor;
@@ -12,18 +15,9 @@ import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-//import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-//import org.springframework.core.Ordered;
-//import org.springframework.web.servlet.HandlerMapping;
-//import org.springframework.web.servlet.HandlerInterceptor;
-//import org.springframework.web.multipart.MultipartResolver;
-//import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-//import org.springframework.web.multipart.support.StandardServletMultipartResolver;
-//import org.springframework.web.servlet.ViewResolver;
-//import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-//import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.LocaleResolver;
+
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -122,7 +116,18 @@ public class WebContextConfiguration {
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         return mapper;
     }
+    
+    
+    @Bean
+    public LocaleResolver localeResolver() {
+    	CookieLocaleResolver resolver = new CookieLocaleResolver();
+        //resolver.setCookieName("lang");
+        resolver.setCookieMaxAge(Duration.ofDays(30));   // 👈 여기
+        resolver.setCookiePath("/");
+        resolver.setDefaultLocale(Locale.FRENCH);
 
+        return resolver;
+    }
 }
 
 //@Configuration
