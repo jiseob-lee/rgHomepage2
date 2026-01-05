@@ -741,7 +741,7 @@ public class IndexController {
 		}
 		
 		localeUtil.setLocale(currentLocale, request, response);
-		setCookie(response, "LOCALE", currentLocale);
+		setCookie(response, "org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE", currentLocale);
 
 		logger.debug("###################### Current locale 2 (/rg/getLocale.do) : " + currentLocale);
 		

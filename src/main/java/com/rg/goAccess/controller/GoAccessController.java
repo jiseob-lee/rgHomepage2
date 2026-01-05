@@ -131,6 +131,8 @@ public class GoAccessController {
 
 		//logger.debug("############################ FromDate : " + goAccessDTO.getFromDate());
 		//logger.debug("############################ ToDate : " + goAccessDTO.getToDate());
+		logger.info("#### FromDate : " + goAccessDTO.getFromDate());
+		logger.info("#### ToDate : " + goAccessDTO.getToDate());
 		
 		List<LocalDate> datesList = getDatesBetweenTerms(goAccessDTO);
 		//for (int i=0; i < datesList.size(); i++) {

@@ -270,7 +270,7 @@ $(document).ready(function() {
 function setCookie(name, value, exp) {
     var date = new Date();
     date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
-    var domain = ".jisblee.me";
+    var domain = "jisblee.me";
     document.cookie = name + '=' + escape(value) + ';expires=' + date.toUTCString() + ";path=/;" + "domain=" + domain + ";";
 }
 
@@ -375,7 +375,7 @@ function makeUnderline(elem) {
 		
 		<input type="hidden" name="currentLocale" id="currentLocale" value="${currentLocale }" />
 		
-		<select name="language" onchange="setCookie('lang', this.value, 30); location.href = 'https://jisblee.me' + window.location.pathname + '?lang=' + this.value + window.location.hash">
+		<select name="language" onchange="setCookie('org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE', this.value, 30); location.href = 'https://jisblee.me' + window.location.pathname + '?lang=' + this.value + window.location.hash">
 			<option value="ko" <c:if test="${currentLocale eq 'ko' }">selected='selected'</c:if>><spring:message code="header.korean" text="Korean" /></option>
 			<option value="en" <c:if test="${currentLocale eq 'en' }">selected='selected'</c:if>><spring:message code="header.english" text="English" /></option>
 		</select>

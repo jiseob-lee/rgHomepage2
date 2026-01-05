@@ -38,7 +38,7 @@ public class LocaleUtil {
 		
 		//setLocale(locale);
 		
-		Cookie cookie = new Cookie("LOCALE", locale.toString());
+		Cookie cookie = new Cookie("org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE", locale.toString());
 		cookie.setMaxAge(60 * 60 * 60); // 1시간 동안 유효하도록 설정
 		cookie.setPath("/");      // 모든 경로에서 유효
 		//cookie.setDomain(".jisblee.me");
