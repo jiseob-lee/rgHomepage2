@@ -41,14 +41,17 @@ public class GeoLite2 {
 		// This creates the DatabaseReader object. To improve performance, reuse
 		// the object across lookups. The object is thread-safe.
 		DatabaseReader reader = null;
+		//Reader reader = null;
 		InetAddress ipAddress = null;
 		CityResponse response = null;
+		//LookupResult result = null;
 		
 		String ip2 = request.getHeader("X-Forwarded-For") == null ? request.getRemoteAddr() : request.getHeader("X-Forwarded-For");
 		
 		try {
 
 			reader = new DatabaseReader.Builder(database).withCache(new CHMCache()).build();
+			//reader = new Reader(database, new CHMCache());
 			
 			//WebServiceClient client = new WebServiceClient.Builder(171734, "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")
 				    //.build();
@@ -69,7 +72,11 @@ public class GeoLite2 {
 			response = reader.city(ipAddress);
 			//response = client.city(ipAddress);
 			
-			country = response.getCountry();
+			country = response.country();
+			//Country country = response.getCountry();
+			//result = reader.get(ipAddress, LookupResult.class);
+			
+			//country = result.getCountry();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -80,15 +87,15 @@ public class GeoLite2 {
 			e.printStackTrace();
 		}
 
-		//Country country = response.getCountry();
-		logger.debug(country.getIsoCode());            // 'US'
-		logger.debug(country.getName());               // 'United States'
-		logger.debug("중국어 : " + country.getNames().get("zh-CN")); // '美国'
+		//Country country = result.getCountry();
+		logger.debug(country.isoCode());            // 'US'
+		logger.debug(country.name());               // 'United States'
+		logger.debug("중국어 : " + country.names().get("zh-CN")); // '美国'
 		//logger.debug(country.getNames().get("ko-KR"));
 		//java.util.Locale locale1 = new java.util.Locale("ko", result.getCountryCode());
 		//logger.debug("국가명 : " + locale1.getDisplayCountry());
 		
-		return country.getIsoCode();
+		return country.isoCode();
 	}
 	
 	public static Map<String, String> getIpInfo(HttpServletRequest request) {
@@ -98,6 +105,15 @@ public class GeoLite2 {
 		try {
 			
 			String ip = IP.getClientIP(request);
+
+			if ("127.0.0.1".equals(ip)) {
+				
+				returnMap.put("country", "");
+				returnMap.put("subdivision", "");
+				returnMap.put("city", "");
+				
+				return returnMap;
+			}
 			
 			String GeoLite2Path = "D:/GeoLite2/GeoLite2-City.mmdb";
 			
@@ -108,21 +124,22 @@ public class GeoLite2 {
 			
 			File database = new File(GeoLite2Path);
 			
-			DatabaseReader reader = new DatabaseReader.Builder(database).build();
+			//DatabaseReader reader = new DatabaseReader.Builder(database).build();
+			DatabaseReader reader = new DatabaseReader.Builder(database).withCache(new CHMCache()).build();
 			
 			InetAddress ipAddress = InetAddress.getByName(ip);
 			
 			CityResponse response = reader.city(ipAddress);
 	
-			Country country = response.getCountry();
+			Country country = response.country();
 			
-			Subdivision subdivision = response.getMostSpecificSubdivision();
+			Subdivision subdivision = response.mostSpecificSubdivision();
 			
-			City city = response.getCity();
+			City city = response.city();
 			
-			returnMap.put("country", country.getName());
-			returnMap.put("subdivision", subdivision.getName());
-			returnMap.put("city", city.getName());
+			returnMap.put("country", country.name());
+			returnMap.put("subdivision", subdivision.name());
+			returnMap.put("city", city.name());
 			
 		} catch (AddressNotFoundException e) {
 			logger.debug(e.getMessage());
@@ -142,6 +159,15 @@ public class GeoLite2 {
 
 		Map<String, String> returnMap = new HashMap<>();
 		
+		if ("127.0.0.1".equals(ip)) {
+			
+			returnMap.put("country", "");
+			returnMap.put("subdivision", "");
+			returnMap.put("city", "");
+			
+			return returnMap;
+		}
+		
 		try {
 			
 			//String ip = IP.getClientIP(request);
@@ -155,21 +181,22 @@ public class GeoLite2 {
 			
 			File database = new File(GeoLite2Path);
 			
-			DatabaseReader reader = new DatabaseReader.Builder(database).build();
+			//DatabaseReader reader = new DatabaseReader.Builder(database).build();
+			DatabaseReader reader = new DatabaseReader.Builder(database).withCache(new CHMCache()).build();
 			
 			InetAddress ipAddress = InetAddress.getByName(ip);
 			
 			CityResponse response = reader.city(ipAddress);
 	
-			Country country = response.getCountry();
+			Country country = response.country();
 			
-			Subdivision subdivision = response.getMostSpecificSubdivision();
+			Subdivision subdivision = response.mostSpecificSubdivision();
 			
-			City city = response.getCity();
+			City city = response.city();
 			
-			returnMap.put("country", country.getName());
-			returnMap.put("subdivision", subdivision.getName());
-			returnMap.put("city", city.getName());
+			returnMap.put("country", country.name());
+			returnMap.put("subdivision", subdivision.name());
+			returnMap.put("city", city.name());
 			
 		} catch (AddressNotFoundException e) {
 			logger.debug(e.getMessage());
@@ -202,7 +229,8 @@ public class GeoLite2 {
 		
 		try {
 
-			reader = new DatabaseReader.Builder(database).build();
+			//reader = new DatabaseReader.Builder(database).build();
+			reader = new DatabaseReader.Builder(database).withCache(new CHMCache()).build();
 			
 			ipAddress = InetAddress.getByName("13.124.111.141");
 
@@ -218,10 +246,42 @@ public class GeoLite2 {
 			e.printStackTrace();
 		}
 
-		Country country = response.getCountry();
-		logger.debug(country.getIsoCode());            // 'US'
-		logger.debug(country.getName());               // 'United States'
-		logger.debug(country.getNames().get("zh-CN")); // '美国'
+		Country country = response.country();
+		logger.debug(country.isoCode());            // 'US'
+		logger.debug(country.name());               // 'United States'
+		logger.debug(country.names().get("zh-CN")); // '美国'
 		
 	}
+	
+	/*
+    public static class LookupResult {
+        private final Country country;
+
+        @MaxMindDbConstructor
+        public LookupResult (
+            @MaxMindDbParameter(name="country") Country country
+        ) {
+            this.country = country;
+        }
+
+        public Country getCountry() {
+            return this.country;
+        }
+    }
+
+    public static class Country {
+        private final String isoCode;
+
+        @MaxMindDbConstructor
+        public Country (
+            @MaxMindDbParameter(name="iso_code") String isoCode
+        ) {
+            this.isoCode = isoCode;
+        }
+
+        public String getIsoCode() {
+            return this.isoCode;
+        }
+    }
+    */
 }

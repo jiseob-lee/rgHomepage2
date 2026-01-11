@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.maxmind.db.CHMCache;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.AddressNotFoundException;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
@@ -288,59 +290,18 @@ public class AttachmentServiceImpl implements AttachmentService {
 	
 	@Override
 	public void saveDownloadHistory(HttpServletRequest request, AttachmentDTO attachmentDTO) {
-
-		try {
-			
-			String ip = IP.getClientIP(request);
-			
-			attachmentDTO.setUserIp(ip);
-			
-			String GeoLite2Path = "D:/GeoLite2/GeoLite2-City.mmdb";
-			
-			// A File object pointing to your GeoIP2 or GeoLite2 database
-			if (new File("/home/ubuntu/GeoLite2").exists()) {
-				GeoLite2Path = "/home/ubuntu/GeoLite2/GeoLite2-City.mmdb";
-			}
-			
-			File database = new File(GeoLite2Path);
-			
-			DatabaseReader reader = new DatabaseReader.Builder(database).build();
-			
-			InetAddress ipAddress = InetAddress.getByName(ip);
-			
-			CityResponse response = "127.0.0.1".equals(ip) ? null : reader.city(ipAddress);
 	
-			Country country = response == null ? null : response.getCountry();
-			
-			logger.debug(country == null ? "" : country.getIsoCode());
-			logger.debug(country == null ? "" : country.getName());
-			
-			//indexDTO.setCountry(country.getName());
-			
-			Subdivision subdivision = response == null ? null : response.getMostSpecificSubdivision();
-			//System.out.println(subdivision.getName()); 
-			//indexDTO.setSubdivision(subdivision.getName());
-			
-			City city = response == null ? null : response.getCity();
-			//indexDTO.setCity(city.getName());
-			
-			
-			attachmentDTO.setUserCountry(country == null ? "" : country.getName());
-			attachmentDTO.setUserSubdivision(subdivision == null ? "" : subdivision.getName());
-			attachmentDTO.setUserCity(city == null ? "" : city.getName());
-			
-			attachmentDAO.saveDownloadHistory(attachmentDTO);
+		String ip = IP.getClientIP(request);
 		
-		} catch (AddressNotFoundException e) {
-			logger.debug(e.getMessage());
-			e.printStackTrace();
-		} catch (IOException e) {
-			logger.debug(e.getMessage());
-			e.printStackTrace();
-		} catch (GeoIp2Exception e) {
-			logger.debug(e.getMessage());
-			e.printStackTrace();
-		}
+		attachmentDTO.setUserIp(ip);
+		
+		Map<String, String> geoLiteMap = GeoLite2.getIpInfo(ip);
+        
+		attachmentDTO.setUserCountry(geoLiteMap == null ? "" : geoLiteMap.get("country"));
+		attachmentDTO.setUserSubdivision(geoLiteMap == null ? "" : geoLiteMap.get("subdivision"));
+		attachmentDTO.setUserCity(geoLiteMap == null ? "" : geoLiteMap.get("city"));
+		
+		attachmentDAO.saveDownloadHistory(attachmentDTO);
 		
 	}
 }

@@ -3,22 +3,24 @@ package com.rg.index.service;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.maxmind.db.CHMCache;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.AddressNotFoundException;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
-import com.maxmind.geoip2.model.CountryResponse;
 import com.maxmind.geoip2.record.City;
 import com.maxmind.geoip2.record.Country;
 import com.maxmind.geoip2.record.Subdivision;
 import com.rg.index.dao.IndexDAOImpl;
 import com.rg.index.dto.IndexDTO;
+import com.rg.util.GeoLite2;
 
 @Service("indexService")
 public class IndexServiceImpl implements IndexService {
@@ -32,18 +34,8 @@ public class IndexServiceImpl implements IndexService {
 	public void insertAccessLog(IndexDTO indexDTO) {
 		
 		try {
-
-			//String GeoLite2Path = "D:/GeoLite2/GeoLite2-Country.mmdb";
-			String GeoLite2Path = "D:/GeoLite2/GeoLite2-City.mmdb";
 			
-			// A File object pointing to your GeoIP2 or GeoLite2 database
-			if (new File("/home/ubuntu/GeoLite2").exists()) {
-				GeoLite2Path = "/home/ubuntu/GeoLite2/GeoLite2-City.mmdb";
-			}
-			
-			File database = new File(GeoLite2Path);
-			
-			DatabaseReader reader = new DatabaseReader.Builder(database).build();
+			Map<String, String> geoMap = GeoLite2.getIpInfo(indexDTO.getRemoteAddr());
 			
 			InetAddress ipAddress = InetAddress.getByName(indexDTO.getRemoteAddr());
 
@@ -51,32 +43,11 @@ public class IndexServiceImpl implements IndexService {
 				return;
 			}
 			
-			try {
-				// Replace "city" with the appropriate method for your database, e.g.,
-				// "country".
-				//CountryResponse response = reader.country(ipAddress);
-				CityResponse response = reader.city(ipAddress);
-	
-				Country country = response.getCountry();
-				
-				logger.debug(country.getIsoCode());
-				logger.debug(country.getName());
-				
-				indexDTO.setCountry(country.getName());
-				
-				Subdivision subdivision = response.getMostSpecificSubdivision();
-				System.out.println(subdivision.getName()); 
-				indexDTO.setSubdivision(subdivision.getName());
-				
-				City city = response.getCity();
-				indexDTO.setCity(city.getName());
-				
-				indexDAO.insertAccessLog(indexDTO);
-				
-			} catch (AddressNotFoundException e) {
-				logger.debug(e.getMessage());
-				e.printStackTrace();
-			}
+			indexDTO.setCountry(geoMap == null ? "" : geoMap.get("country"));
+			indexDTO.setSubdivision(geoMap == null ? "" : geoMap.get("subdivision"));
+			indexDTO.setCity(geoMap == null ? "" : geoMap.get("city"));
+			
+			indexDAO.insertAccessLog(indexDTO);
 			
 			logger.debug("#^##");
 			logger.debug("#^########################### Hash : " + indexDTO.getHash());
@@ -88,8 +59,6 @@ public class IndexServiceImpl implements IndexService {
 			logger.debug("#^##");
 			
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (GeoIp2Exception e) {
 			e.printStackTrace();
 		}
 	}
