@@ -5,21 +5,18 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.PathMatcher;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.HandlerExecutionChain;
-import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
+import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/rg")
@@ -51,10 +48,10 @@ public class EndpointDocController {
 				////LOG.info("Key : " + entry.getKey() + " Value : " + entry.getValue());
 				////LOG.info(entry.getKey().getPatternsCondition().toString());
 				
-				String pattern = entry.getKey().getPatternsCondition().toString();
+				String pattern = entry.getKey().getPathPatternsCondition().toString();
 				pattern = pattern.substring(1, pattern.length() - 1);
 				if (pattern.endsWith("endPoints3.do")) {
-					PatternsRequestCondition condition = entry.getKey().getPatternsCondition().getMatchingCondition(request);
+					PathPatternsRequestCondition condition = entry.getKey().getPathPatternsCondition().getMatchingCondition(request);
 					if (condition != null) {
 						//LOG.info("#### condition : " + condition.toString());
 						System.out.println("#### condition : " + condition.toString());

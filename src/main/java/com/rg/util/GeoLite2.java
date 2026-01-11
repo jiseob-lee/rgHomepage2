@@ -106,7 +106,7 @@ public class GeoLite2 {
 			
 			String ip = IP.getClientIP(request);
 
-			if ("127.0.0.1".equals(ip)) {
+			if ("127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip)) {
 				
 				returnMap.put("country", "");
 				returnMap.put("subdivision", "");
@@ -159,7 +159,7 @@ public class GeoLite2 {
 
 		Map<String, String> returnMap = new HashMap<>();
 		
-		if ("127.0.0.1".equals(ip)) {
+		if ("127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip)) {
 			
 			returnMap.put("country", "");
 			returnMap.put("subdivision", "");
