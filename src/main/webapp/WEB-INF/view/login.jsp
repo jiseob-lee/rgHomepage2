@@ -195,7 +195,7 @@ String currentLocale = localeUtil.getLocale().getLanguage();
   </tr>
   </c:if>
   <tr>
-    <td colspan="2"><br/><a href="http://jisblee.me/"><spring:message code="login.toFrontMain" text="프론트 메인으로.." /></a></td>
+    <td colspan="2"><br/><a href="/"><spring:message code="login.toFrontMain" text="프론트 메인으로.." /></a></td>
   </tr>
 </table>
 </form>

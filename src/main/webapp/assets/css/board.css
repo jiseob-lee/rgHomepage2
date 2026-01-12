@@ -1,12 +1,7 @@
 
 /* css animation */
-div.ani {
+.ani {
   background-color: white;
-  width: 180px;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  border: 1px solid;
-  margin: 10px;
 }
 
 pre {
@@ -18,7 +13,6 @@ ul.ani {
   width: calc(180px * 10);
   padding: 0px;
   margin: 0px;
-  background-color: white;
 }
 
 ul.ani li {
@@ -69,9 +63,9 @@ ul.ani {
 div.article, div.rmi, div.apr {
   /* border: 1px dashed lightgray; */ 
   background-color: #2d474a; 
-  width: 98%; 
+  width: 95%; 
   padding: 5px; 
-  margin: 3px; 
+  margin: 5px; 
   color: #cdcfd1;
   line-height: 160%;
   
@@ -117,7 +111,7 @@ p.content br {
 
 div.main {
 	width: 900px;
-	text-align: center;
+	align: center;
     margin: auto;
 }
 
@@ -130,7 +124,7 @@ li.boardItem {
   display: inline-block;
   list-style: none;
   padding: 10px;
-  font-size: 12pt;
+  font-size: 10pt;
 }
 
 
@@ -138,44 +132,20 @@ li.boardItem {
 table.board {
   table-layout: fixed;
   border-collapse: collapse;
-  width: 890px;
+  width: 800px;
   clear: both;
 }
 
 table.board td {
   border: 1px solid lightgray;
   
-  font-size: 12pt;
+  font-size: 10pt;
   border-left: 0px;
   border-right: 0px;
   padding-left: 5px;
   padding-top: 8px;
   padding-bottom: 8px;
   line-height: 135%;
-}
-
-table {
-  table-layout: fixed;
-}
-
-td {
-  word-wrap: break-word;         /* All browsers since IE 5.5+ */
-  overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
-  white-space: normal;
-  /* padding: 12px 0 12px; */
-}
-
-a {
-  white-space: normal;
-  text-decoration: none;
-}
-
-a:hover, a:active {
-  text-decoration : underline;
-}
-
-table.board td.borderNone {
-  border: 0px;
 }
 
 table.board td.body {
@@ -194,29 +164,10 @@ table.board a:hover, table.board a:active {
   text-align: left;
   word-wrap: break-word;         /* All browsers since IE 5.5+ */
   overflow-wrap: break-word;  /* Renamed property in CSS3 draft spec */
+  text-align: left;
   padding-left: 12px;
 }
 
-table.notice {
-  table-layout: fixed;
-  border-collapse: collapse;
-  width: 750px;
-  clear: both;
-}
-
-table.notice td {
-  border: 1px solid lightgray;
-  font-size: 12pt;
-  border-left: 0px;
-  border-right: 0px;
-  padding-left: 5px;
-  padding-top: 9px;
-  padding-bottom: 9px;
-  
-  word-wrap: break-word;         /* All browsers since IE 5.5+ */
-  overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
-  white-space: normal;
-}
 
 
 .commentInput {
@@ -237,14 +188,12 @@ table.notice td {
 } 
 
 .button2 {
-  padding: 2px 5px;
-  margin: 1px; 
+  padding: 5px 10px; 
   background: #ccc; 
   border: 0 none;
   cursor: pointer;
   -webkit-border-radius: 5px;
   border-radius: 5px;
-  font-size: 90%;
 } 
 
 .button:active, .button2:active {
@@ -258,28 +207,3 @@ table.articleViewed td {
   padding : 2px;
 }
 
-
-span.yellow {
-  color: yellow;
-}
-
-span.yellowBg {
-  background-color: yellow;
-}
-
-span.underline {
-  text-decoration: underline;
-}
-
-.dblUnderlined {
-  text-decoration: underline;
-  text-underline-position: under;
-}
-
-span > b {
-  font-size: 120%;
-}
-
-ul.referencedWebPage li {
-  margin-bottom: 10px;
-}
