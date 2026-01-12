@@ -321,13 +321,11 @@
 	        <version>5.0.2</version>
 	    </dependency>
 	    
-		<!--
 		<dependency>
 			<groupId>com.maxmind.db</groupId>
 			<artifactId>maxmind-db</artifactId>
 			<version>4.0.2</version>
 		</dependency>
-		-->
 		
 	    <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
 		<dependency>
