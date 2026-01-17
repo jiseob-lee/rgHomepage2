@@ -12,7 +12,11 @@
 			access_log
 
 		WHERE hash is not NULL
-		
+
+		and (SUBSTRING_INDEX(hash, '/', -1) = 'ko'
+			or SUBSTRING_INDEX(hash, '/', -1) = 'en'
+			or SUBSTRING_INDEX(hash, '/', -1) REGEXP '^[0-9]+$')
+			
 		GROUP BY 
 			DATE(TIME)
 		
