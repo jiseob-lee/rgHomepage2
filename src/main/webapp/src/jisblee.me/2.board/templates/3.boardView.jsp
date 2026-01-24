@@ -52,7 +52,7 @@
       <td align="center"><legend translate>board.writer</legend></td>
       <td align="left">{{userNameCreated}}</td>
       <td align="center"><legend translate>board.writeDate</legend></td>
-      <td align="left">{{dateCreated}}</td>
+      <td align="left">{{dateCreatedTime}}</td>
       <td align="center" ng-if="openYn == '1'"><legend translate>board.viewCount</legend></td>
       <td align="center" ng-if="openYn == '0'"><legend translate>board.board</legend></td>
       <td align="left" ng-if="openYn == '1'">{{hitCount}}</td>

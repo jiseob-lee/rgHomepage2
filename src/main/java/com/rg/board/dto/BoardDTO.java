@@ -11,10 +11,12 @@ public class BoardDTO {
 	private String contentEng;
 	private int hitCount;
 	private String dateCreated;
+	private String dateCreatedTime;
 	private String userIdCreated;
 	private String userNameCreated;
 	private String userNameCreatedEng;
 	private String dateModified;
+	private String dateModifiedTime;
 	private String userIdModified;
 	private String userNameModified;
 	private String userNameModifiedEng;
@@ -208,5 +210,17 @@ public class BoardDTO {
 		str += "\n\n";
 		
 		return str;
+	}
+	public String getDateCreatedTime() {
+		return dateCreatedTime;
+	}
+	public void setDateCreatedTime(String dateCreatedTime) {
+		this.dateCreatedTime = dateCreatedTime;
+	}
+	public String getDateModifiedTime() {
+		return dateModifiedTime;
+	}
+	public void setDateModifiedTime(String dateModifiedTime) {
+		this.dateModifiedTime = dateModifiedTime;
 	}
 }

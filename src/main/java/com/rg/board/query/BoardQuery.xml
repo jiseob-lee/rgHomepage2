@@ -262,18 +262,22 @@
 			b.hit_count         as hitCount,
 			<if test="locale == null or locale == 'ko'">
 			DATE_FORMAT(b.date_created, '%Y-%m-%d')      as dateCreated,
+			DATE_FORMAT(b.date_created, '%Y-%m-%d %H:%i:%S')      as dateCreatedTime,
 			</if>
 			<if test="locale != null and locale != 'ko'">
 			DATE_FORMAT(b.date_created, '%b %e %Y')      as dateCreated,
+			DATE_FORMAT(b.date_created, '%b %e %Y')      as dateCreatedTime,
 			</if>
 			b.user_id_created   as userIdCreated,
 			(select user_name_ko from user where user_id = b.user_id_created) as userNameCreated,
 			(select user_name_en from user where user_id = b.user_id_created) as userNameCreatedEng,
 			<if test="locale == null or locale == 'ko'">
 			DATE_FORMAT(b.date_modified, '%Y-%m-%d')     as dateModified,
+			DATE_FORMAT(b.date_modified, '%Y-%m-%d %H:%i:%S')     as dateModifiedTime,
 			</if>
 			<if test="locale != null and locale != 'ko'">
 			DATE_FORMAT(b.date_modified, '%b %e %Y')     as dateModified,
+			DATE_FORMAT(b.date_modified, '%b %e %Y')     as dateModifiedTime,
 			</if>
 			b.user_id_modified  as userIdModified,
 			(select user_name_ko from user where user_id = b.user_id_modified) as userNameModified,

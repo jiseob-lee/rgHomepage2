@@ -354,6 +354,7 @@ appBoard.controller('BoardCtrl',
 				$scope.subjectKor = response.data.subject;
 				$scope.userNameCreated = response.data.userNameCreated;
 				$scope.dateCreated = response.data.dateCreated;
+				$scope.dateCreatedTime = response.data.dateCreatedTime;
 				$scope.hitCount = response.data.hitCount;
 				$scope.content = $sce.trustAsHtml(response.data.content);
 
