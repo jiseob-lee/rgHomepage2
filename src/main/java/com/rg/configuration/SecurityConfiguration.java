@@ -36,6 +36,8 @@ public class SecurityConfiguration {
         	//.csrf(csrf -> csrf.disable())
         	.csrf(csrf -> csrf
                 .ignoringRequestMatchers("/getBoardContent.do")  // <-- CSRF 예외 등록
+                .ignoringRequestMatchers("/getBoardListCount.do")
+                .ignoringRequestMatchers("/createResponse.do")
             )
 
             .authorizeHttpRequests(auth -> auth
