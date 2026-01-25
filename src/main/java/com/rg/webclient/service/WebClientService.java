@@ -9,11 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rg.webclient.dto.ApiException;
 import com.rg.webclient.dto.ApiResponse;
 import com.rg.webclient.dto.BusinessException;
-import com.rg.webclient.dto.ExternalRequest;
 import com.rg.webclient.dto.InternalErrorCode;
 
 import reactor.core.publisher.Mono;

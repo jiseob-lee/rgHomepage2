@@ -1,13 +1,10 @@
 package com.rg.webclient.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,8 +20,11 @@ public class WebClientController {
 	
 	private final Logger logger = LogManager.getLogger(WebClientController.class);
 	
-	@Autowired
 	private WebClientService webClientService;
+
+	public WebClientController(WebClientService webClientService) {
+		this.webClientService = webClientService;
+	}
 	
 	@RequestMapping(value = "/createGet.do", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
