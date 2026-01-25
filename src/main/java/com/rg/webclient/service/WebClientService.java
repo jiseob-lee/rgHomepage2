@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 @Service
 public class WebClientService {
 
-	public Mono<ApiResponse2> createGet() {
+	public Mono<ApiResponse2> createGet(String boardArticleIdx) {
 		
 		WebClient webClient = WebClient.builder()
 				.baseUrl("http://localhost:8080")
@@ -30,7 +30,7 @@ public class WebClientService {
 		Mono<ApiResponse2> response = webClient.get()
 				.uri(uriBuilder -> uriBuilder
 						.path("/getBoardContent.do")
-						.queryParam("boardArticleIdx", "860")
+						.queryParam("boardArticleIdx", boardArticleIdx)
 						.queryParam("pathnam", "/board/view/0/1/860")
 						.queryParam("referrer", "")
 						.queryParam("lang", "ko")

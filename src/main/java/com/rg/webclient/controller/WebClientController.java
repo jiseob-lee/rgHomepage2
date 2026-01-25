@@ -29,9 +29,9 @@ public class WebClientController {
 	
 	@RequestMapping(value = "/createGet.do", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public Mono<ApiResponse2> createGet() {
+	public Mono<ApiResponse2> createGet(@RequestParam(value="boardArticleIdx") String boardArticleIdx) {
 		
-		Mono<ApiResponse2> value = webClientService.createGet();
+		Mono<ApiResponse2> value = webClientService.createGet(boardArticleIdx);
 		
 		logger.info("#### value (get) : " + value);
 		
