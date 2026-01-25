@@ -65,6 +65,8 @@ public class BoardController {
 	public int getBoardListCount(BoardDTO boardDTO, HttpServletRequest request) {
 		//logger.debug("########## /getBoardListCount.do");
 		
+		logger.info("#### boardDTO : " + boardDTO.toString());
+		
 		//CustomUserDetails userInfo = (CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
 		HttpSession session = request.getSession();
 		
