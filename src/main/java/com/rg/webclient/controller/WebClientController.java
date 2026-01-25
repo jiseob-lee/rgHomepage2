@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.rg.webclient.dto.ApiResponse2;
 import com.rg.webclient.dto.ExternalRequest;
 import com.rg.webclient.service.WebClientService;
 
@@ -28,9 +29,9 @@ public class WebClientController {
 	
 	@RequestMapping(value = "/createGet.do", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public Mono<Map<String, Object>> createGet() {
+	public Mono<ApiResponse2> createGet() {
 		
-		Mono<Map<String, Object>> value = webClientService.createGet();
+		Mono<ApiResponse2> value = webClientService.createGet();
 		
 		logger.info("#### value (get) : " + value);
 		
