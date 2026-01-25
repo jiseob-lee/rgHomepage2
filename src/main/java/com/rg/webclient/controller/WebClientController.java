@@ -26,11 +26,11 @@ public class WebClientController {
 		this.webClientService = webClientService;
 	}
 	
-	@RequestMapping(value = "/createGet.do", produces = "text/plain;charset=UTF-8")
+	@RequestMapping(value = "/createGet.do", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public Mono<String> createGet() {
+	public Mono<Map<String, Object>> createGet() {
 		
-		Mono<String> value = webClientService.createGet();
+		Mono<Map<String, Object>> value = webClientService.createGet();
 		
 		logger.info("#### value (get) : " + value);
 		

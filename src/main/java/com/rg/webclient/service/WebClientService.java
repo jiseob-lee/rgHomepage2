@@ -3,6 +3,7 @@ package com.rg.webclient.service;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -19,14 +20,14 @@ import reactor.core.publisher.Mono;
 @Service
 public class WebClientService {
 
-	public Mono<String> createGet() {
+	public Mono<Map<String, Object>> createGet() {
 		
 		WebClient webClient = WebClient.builder()
 				.baseUrl("http://localhost:8080")
 				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE + "; charset=UTF-8")
 				.build();
 		
-		Mono<String> response = webClient.get()
+		Mono<Map<String, Object>> response = webClient.get()
 				.uri(uriBuilder -> uriBuilder
 						.path("/getBoardContent.do")
 						.queryParam("boardArticleIdx", "860")
@@ -43,9 +44,11 @@ public class WebClientService {
 					resp.bodyToMono(String.class)
 						.flatMap(body -> Mono.error(new IllegalStateException("5xx 에러 : " + body)))
 					)
-				.bodyToMono(String.class);
+				.bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {});
 		
 		return response;
+		//return response.map(map -> new HashMap<String, Object>(map));
+		//rawMonoMap.map(map -> (Map<String, Object>) map);
 		//return response.block();
 	}
 
