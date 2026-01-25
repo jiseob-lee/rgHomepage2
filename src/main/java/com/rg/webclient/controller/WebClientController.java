@@ -20,7 +20,7 @@ public class WebClientController {
 	
 	private final Logger logger = LogManager.getLogger(WebClientController.class);
 	
-	private WebClientService webClientService;
+	private final WebClientService webClientService;
 
 	public WebClientController(WebClientService webClientService) {
 		this.webClientService = webClientService;
