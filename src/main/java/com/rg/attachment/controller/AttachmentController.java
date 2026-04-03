@@ -385,7 +385,7 @@ public class AttachmentController {
 
 		AttachmentDTO attachmentDTO = attachmentService.getAttachmentDTOInfo(idx);
 
-		if (!filename.equals(attachmentDTO.getServerFileName())) {
+		if (attachmentDTO == null || !filename.equals(attachmentDTO.getServerFileName())) {
 			//logger.error("############################");
 			//logger.error(filename + " : " + attachmentDTO.getServerFileName());
 			//return;
