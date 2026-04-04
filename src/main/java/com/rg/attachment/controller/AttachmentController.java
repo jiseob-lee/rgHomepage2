@@ -41,7 +41,6 @@ import org.springframework.web.util.UriUtils;
 
 import com.rg.attachment.dto.AttachmentDTO;
 import com.rg.attachment.service.AttachmentService;
-import com.rg.board.dto.BoardDTO;
 import com.rg.login.dto.UserDetailsVO;
 import com.rg.util.RedisService3;
 
@@ -296,7 +295,7 @@ public class AttachmentController {
 
 		AttachmentDTO attachmentDTO = attachmentService.getAttachmentDTOInfo(idx);
 
-		if (!filename.equals(attachmentDTO.getServerFileName())) {
+		if (attachmentDTO == null || !filename.equals(attachmentDTO.getServerFileName())) {
 			//logger.error("############################");
 			//logger.error(filename + " : " + attachmentDTO.getServerFileName());
 			//return;
