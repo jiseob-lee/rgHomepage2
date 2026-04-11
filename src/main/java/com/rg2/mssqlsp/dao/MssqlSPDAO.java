@@ -1,6 +1,5 @@
 package com.rg2.mssqlsp.dao;
 
-import java.util.List;
 import java.util.Map;
 
 public interface MssqlSPDAO {

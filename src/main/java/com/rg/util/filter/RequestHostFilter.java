@@ -67,7 +67,6 @@ public class RequestHostFilter implements Filter {
             return values;
         }
 
-        @SuppressWarnings("unchecked")
 		@Override
         public Map<String, String[]> getParameterMap() {
         	Map<String, String[]> map = new HashMap<>(super.getParameterMap());
@@ -75,8 +74,6 @@ public class RequestHostFilter implements Filter {
             return map;
         }
 
-        
-        @SuppressWarnings("unchecked")
 		@Override
         public Enumeration<String> getParameterNames() {
         	Vector<String> v1 = new Vector<String>();

@@ -12,12 +12,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.rg.attachment.dto.AttachmentDTO;
 import com.rg.board.dao.BoardDAOImpl;
 import com.rg.board.dto.BoardDTO;
 import com.rg.comment.dao.CommentDAOImpl;
 import com.rg.comment.dto.CommentDTO;
-import com.rg.loginlog.dto.LoginLogDTO;
 import com.rg.util.IP;
 
 @Service("commentService")

@@ -46,7 +46,6 @@ import com.rg.manageBoard.service.ManageBoardService;
 import com.rg.util.AES256Util;
 import com.rg.util.CookieHandle;
 import com.rg.util.GeoLite2;
-import com.rg.util.IP;
 import com.rg.util.LocaleUtil;
 import com.rg.util.RedisService3;
 

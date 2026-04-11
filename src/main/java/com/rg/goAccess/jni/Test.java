@@ -1,7 +1,5 @@
 package com.rg.goAccess.jni;
 
-import com.rg.goAccess.jni.GoAccessJNI;
-
 public class Test {
 	public static void main(String[] args) {
 		System.out.println("Hello Test.");

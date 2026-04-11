@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<%@ taglib  prefix="c"    uri="jakarta.tags.core" %>
+<%@ taglib  prefix="fmt"  uri="jakarta.tags.fmt" %>
+<%@ taglib  prefix="fn"   uri="jakarta.tags.functions" %>
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -124,10 +126,10 @@ body {
 		      <td colspan="5" align="left">
 		      
 		        <c:forEach var="attach" items="${attachmentList }">
-		        <div style="line-height: 175%;">
-		          <a href="/fileDownload.do?idx=${attach.attachmentIdx }&filename=${attach.serverFileName }">${attach.attachmentName }.${attach.attachmentExt }</a>
-		          (<fmt:formatNumber value="${attach.attachmentSize }" pattern="#,###" /> <spring:message code="board.byte" text="byte" />)
-		        </div>
+		        	<div style="line-height: 175%;">
+		          		<a href="/fileDownload.do?idx=${attach.attachmentIdx }&filename=${attach.serverFileName }">${attach.attachmentName }.${attach.attachmentExt }</a>
+		          		(<fmt:formatNumber value="${attach.attachmentSize }" pattern="#,###" /> <spring:message code="board.byte" text="byte" />)
+		        	</div>
 		        </c:forEach>
 		        
 		      </td>

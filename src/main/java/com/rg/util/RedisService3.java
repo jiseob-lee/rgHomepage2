@@ -89,7 +89,6 @@ public class RedisService3 {
 		redisTemplate.expire(key, sessionTime, TimeUnit.SECONDS);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public UserDetailsVO selectRedisSession(String key) {
 		
 		HashOperations<String, Object, Object> stringObjectObjectHashOperations = redisTemplate.opsForHash();

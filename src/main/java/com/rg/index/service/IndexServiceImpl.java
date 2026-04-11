@@ -1,6 +1,5 @@
 package com.rg.index.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Map;
@@ -10,14 +9,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.maxmind.db.CHMCache;
-import com.maxmind.geoip2.DatabaseReader;
-import com.maxmind.geoip2.exception.AddressNotFoundException;
-import com.maxmind.geoip2.exception.GeoIp2Exception;
-import com.maxmind.geoip2.model.CityResponse;
-import com.maxmind.geoip2.record.City;
-import com.maxmind.geoip2.record.Country;
-import com.maxmind.geoip2.record.Subdivision;
 import com.rg.index.dao.IndexDAOImpl;
 import com.rg.index.dto.IndexDTO;
 import com.rg.util.GeoLite2;

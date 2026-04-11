@@ -3,8 +3,6 @@ package com.rg.typing.dao;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import com.rg.typing.dto.BibleDTO;
 import com.rg.typing.dto.ChaptersTypedCount;
 import com.rg.typing.dto.RecordCountDTO;

@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
 <%  
 
@@ -22,10 +24,10 @@ System.out.println( "Session ID : " + session.getId() );
     Integer ival = (Integer)session.getAttribute("_session_counter"); 
 
     if(ival==null) { 
-        ival = new Integer(1); 
+        ival = Integer.valueOf(1); 
     } 
     else { 
-        ival = new Integer(ival.intValue() + 1); 
+        ival = Integer.valueOf(ival.intValue() + 1); 
     } 
     session.setAttribute("_session_counter", ival); 
     System.out.println("here~~~~"); 
@@ -37,7 +39,7 @@ Session ID : <%= session.getId() %><br/>
 Current Session ID : <%= request.getRequestedSessionId() %><br /> 
  
  
-<center><h3>[ 세션 정보를 얻어오는 메소드를 사용한 예제 ]</h3></center> 
+<div style="margin-left: auto; margin-right: auto;"><h3>[ 세션 정보를 얻어오는 메소드를 사용한 예제 ]</h3></div> 
 <hr> 
 <% 
  
