@@ -23,6 +23,8 @@ public class LoginLogServiceImpl implements LoginLogService {
 	@Override
 	public Map<String, Object> getLoginLog(int pageNo) {
 		
+		logger.debug("");
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		map.put("pageNo", pageNo);

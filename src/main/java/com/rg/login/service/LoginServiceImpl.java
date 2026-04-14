@@ -18,6 +18,9 @@ public class LoginServiceImpl implements LoginService {
 	private LoginDAOImpl loginDAO;
 
 	public String loginProcess(String userId, String userPw) {
+		
+		logger.debug("");
+		
 		return loginDAO.loginProcess(userId, userPw);
 	}
 	

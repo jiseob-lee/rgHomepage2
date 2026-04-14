@@ -3,8 +3,6 @@ package com.rg.test.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.HashMap;
-import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,8 +22,8 @@ public class ImageCheckController {
 	//@ResponseBody
 	public ModelAndView getCountry(HttpServletRequest request, HttpServletResponse response) {
 		
-		Map<String, String> map = new HashMap<String, String>();
-		String countryStr = "";
+		//Map<String, String> map = new HashMap<String, String>();
+		//String countryStr = "";
 		ModelAndView mav = new ModelAndView();
 		/*
 		try {

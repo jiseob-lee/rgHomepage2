@@ -23,6 +23,9 @@ public class IndexDAOImpl implements IndexDAO {
 
 	@Override
 	public void insertAccessLog(IndexDTO indexDTO) {
+		
+		logger.debug("");
+		
 		sqlSession.insert(namespace + ".insertAccessLog", indexDTO);
 	}
 

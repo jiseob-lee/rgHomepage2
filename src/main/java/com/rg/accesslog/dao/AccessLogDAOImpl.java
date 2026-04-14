@@ -20,6 +20,9 @@ public class AccessLogDAOImpl {
 	private final String namespace = "com.rg.accesslog.AccessLogMapper";
 	
 	public String getArticleSubject(String articleId) {
+		
+		logger.debug("");
+		
 		return sqlSession.selectOne(namespace + ".getArticleSubject", articleId);
 	}
 }

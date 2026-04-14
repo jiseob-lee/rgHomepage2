@@ -26,6 +26,9 @@ public class LoginLogDAOImpl implements LoginLogDAO {
 	
 	@Override
 	public int getLoginLogCount() {
+		
+		logger.debug("");
+		
 		return sqlSession.selectOne(namespace + ".getLoginLogCount");
 	}
 	

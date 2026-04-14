@@ -26,6 +26,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Override
 	public Map<String, Object> getIpCount(int pageNo) {
 		
+		logger.debug("");
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		int listLimit = 20;

@@ -31,6 +31,8 @@ public class AccessLogController {
 	@ResponseBody
 	public List<BoardViewDTO> getAttachmentList(HttpServletRequest request, HttpServletResponse response) {
 		
+		logger.debug("");
+		
 		LocalDate today = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = today.format(formatter);

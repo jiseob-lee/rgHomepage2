@@ -23,6 +23,8 @@ public class GeoLite2Controller {
 	@ResponseBody
 	public Map<String, String> getCountry(HttpServletRequest request, HttpServletResponse response) {
 		
+		logger.debug("");
+		
 		Map<String, String> map = new HashMap<String, String>();
 		
 		Map<String, String> geoLiteMap = GeoLite2.getIpInfo(request);

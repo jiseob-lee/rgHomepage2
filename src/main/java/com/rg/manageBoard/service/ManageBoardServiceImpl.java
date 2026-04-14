@@ -21,6 +21,9 @@ public class ManageBoardServiceImpl implements ManageBoardService {
 
 	@Override
 	public int getManageBoardListCount(ManageBoardDTO boardDTO) {
+		
+		logger.debug("");
+		
 		return manageBoardDAO.getManageBoardListCount(boardDTO);
 	}
 

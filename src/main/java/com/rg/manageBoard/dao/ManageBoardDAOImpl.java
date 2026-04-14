@@ -26,6 +26,9 @@ public class ManageBoardDAOImpl implements ManageBoardDAO {
 
 	@Override
 	public int getManageBoardListCount(ManageBoardDTO boardDTO) {
+		
+		logger.debug("");
+		
 		return sqlSession.selectOne(namespace + ".getManageBoardListCount", boardDTO);
 	}
 

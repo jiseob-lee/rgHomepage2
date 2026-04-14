@@ -26,6 +26,9 @@ public class HistoryDAOImpl implements HistoryDAO {
 
 	@Override
 	public List<HistoryDTO> getHistoryList(HistoryDTO historyDTO) {
+		
+		logger.debug("");
+		
 		return sqlSession.selectList(namespace + ".getHistoryList", historyDTO);
 	}
 

@@ -11,8 +11,8 @@ public class HostName {
 	
 	public String getHostName(InetAddress inaHost) throws UnknownHostException {
 		try {
-			Class clazz = Class.forName("java.net.InetAddress");
-			Constructor[] constructors = clazz.getDeclaredConstructors();
+			Class<?> clazz = Class.forName("java.net.InetAddress");
+			Constructor<?>[] constructors = clazz.getDeclaredConstructors();
 			constructors[0].setAccessible(true);
 			InetAddress ina = (InetAddress) constructors[0].newInstance();
 

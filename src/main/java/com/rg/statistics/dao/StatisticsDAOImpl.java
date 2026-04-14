@@ -29,6 +29,9 @@ public class StatisticsDAOImpl implements StatisticsDAO {
 
 	@Override
 	public List<IpCountDTO> getIpCount() {
+		
+		logger.debug("");
+		
 		return sqlSession.selectList(namespace + ".getStatisticsIpCount", null);
 	}
 

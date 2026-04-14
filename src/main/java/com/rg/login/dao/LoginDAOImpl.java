@@ -25,6 +25,9 @@ public class LoginDAOImpl implements LoginDAO {
 	private final String namespace = "com.rg.login.LoginMapper";
 	
 	public String loginProcess(String userId, String userPw) {
+		
+		logger.debug("");
+		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("userId", userId);
 		map.put("userPassword", userPw);

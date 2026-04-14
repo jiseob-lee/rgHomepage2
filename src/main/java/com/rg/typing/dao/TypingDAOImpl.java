@@ -31,6 +31,9 @@ public class TypingDAOImpl implements TypingDAO {
 
 	@Override
 	public void insertTypingRecord(TypingParamDTO typingParamDTO) {
+		
+		logger.debug("");
+		
 		sqlSession.insert(namespace + ".insertTypingRecord", typingParamDTO);
 	}
 

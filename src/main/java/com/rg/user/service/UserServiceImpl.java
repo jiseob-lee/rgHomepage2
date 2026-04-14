@@ -20,6 +20,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public List<UserDTO> getUserList() {
+		
+		logger.debug("");
+		
 		return userDAO.getUserList();
 	}
 

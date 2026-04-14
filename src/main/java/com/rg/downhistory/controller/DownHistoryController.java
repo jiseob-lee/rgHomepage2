@@ -26,6 +26,8 @@ public class DownHistoryController {
 	@ResponseBody
 	public Map<String, Object> getDownHistory(HttpServletRequest request) throws IOException {
 		
+		logger.debug("");
+		
 		int pageNo = request.getParameter("pageNo") == null || "".equals(request.getParameter("pageNo")) 
 				? 1 : Integer.parseInt(request.getParameter("pageNo"));
 

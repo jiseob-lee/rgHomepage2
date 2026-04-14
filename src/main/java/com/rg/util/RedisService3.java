@@ -29,6 +29,8 @@ public class RedisService3 {
 
 	public void insertRedisMap(String redisKey, Map<String, Object> map) {
 
+		logger.debug("");
+		
 		HashOperations<String, Object, Object> stringObjectObjectHashOperations = redisTemplate.opsForHash();
 		
 		//Map<Integer, Integer> map = new HashMap<Integer, Integer>();
@@ -48,6 +50,9 @@ public class RedisService3 {
 	public void processRedisLogout(String redisKey) {
 		Set<String> keys = redisTemplate.keys(redisKey + "*");
 		for (String key : keys) {
+			
+			logger.debug("#### key : {}", key);
+			
 			redisTemplate.delete(key);
 		}
 	}
@@ -56,6 +61,9 @@ public class RedisService3 {
 		int count = 0;
 		Set<String> keys = redisTemplate.keys(redisKey + "*");
 		for (String key : keys) {
+			
+			logger.debug("#### key : {}", key);
+			
 			count++;
 		}
 		return count;

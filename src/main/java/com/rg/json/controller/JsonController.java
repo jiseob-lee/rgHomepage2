@@ -28,6 +28,8 @@ public class JsonController {
 	@ResponseBody
 	public String json(HttpServletResponse response, HttpServletRequest request) {
 		
+		logger.debug("");
+		
 		//response.setCharacterEncoding("UTF-8");
 		
 		Locale locale = new Locale(

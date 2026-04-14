@@ -27,6 +27,8 @@ public class HistoryServiceImpl implements HistoryService {
 	@Override
 	public int insertHistory(int year, List<HistoryDTO> list) {
 		
+		logger.debug("");
+		
 		historyDAO.deleteHistory(year);
 		
 		int i = 0;

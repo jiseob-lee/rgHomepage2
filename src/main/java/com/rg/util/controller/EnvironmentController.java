@@ -81,6 +81,8 @@ public class EnvironmentController {
 			e.printStackTrace();
 		}
 		
+		logger.debug("#### loginUserName : " + loginUserName);
+		
 		String redisKey = "LOGIN||SESSION||" + loginId + "||" + session.getId();
 		
 		//logger.info("#### redisKey : " + redisKey);

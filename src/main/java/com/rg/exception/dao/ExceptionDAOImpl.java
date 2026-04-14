@@ -23,6 +23,9 @@ public class ExceptionDAOImpl implements ExceptionDAO {
 	
 	@Override
 	public int insertException(ExceptionDTO exceptionDTO) {
+		
+		logger.debug("");
+		
 		return sqlSession.insert(namespace + ".insertException", exceptionDTO);
 	}
 

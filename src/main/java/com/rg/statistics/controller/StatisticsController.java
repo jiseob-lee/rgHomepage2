@@ -30,6 +30,8 @@ public class StatisticsController {
 	@ResponseBody
 	public Map<String, Object> getIpCount(HttpServletRequest request) throws IOException {
 		
+		logger.debug("");
+		
 		int pageNo = request.getParameter("pageNo") == null || "".equals(request.getParameter("pageNo")) 
 				? 1 : Integer.parseInt(request.getParameter("pageNo"));
 

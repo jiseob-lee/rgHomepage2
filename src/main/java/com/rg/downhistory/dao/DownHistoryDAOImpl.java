@@ -26,6 +26,9 @@ public class DownHistoryDAOImpl implements DownHistoryDAO {
 	
 	@Override
 	public int getDownHistoryCount() {
+		
+		logger.debug("");
+		
 		return sqlSession.selectOne(namespace + ".getDownHistoryCount");
 	}
 	

@@ -27,6 +27,9 @@ public class CustomerDAOImpl implements CustomerDAO {
 
 	@Override
 	public List<CustomerDTO> getCustomerList(CustomerDTO customerDTO) {
+		
+		logger.debug("");
+		
 		return sqlSession.selectList(namespace + ".getCustomerList", customerDTO);
 	}
 
