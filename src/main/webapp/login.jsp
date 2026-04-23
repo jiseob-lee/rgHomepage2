@@ -96,7 +96,7 @@ out.println(currentLocale);
     <td><input type="password" name="password" /></td>
   </tr>
   <tr>
-    <td><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /></td>
+    <td>&nbsp;</td>
     <td><input type="submit" value="<spring:message code="login.login" text="로그인" />" /></td>
   </tr>
   <c:if test="${param.error == 'true'}">

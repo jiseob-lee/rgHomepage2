@@ -13,7 +13,5 @@
 </head>
 <body>
 
-csrf : ${_csrf.token}
-
 </body>
 </html>

@@ -35,7 +35,7 @@ md-datepicker {
     </div>
 
 	<div style="clear: both; margin-left:30px; padding-top: 30px;">
-		<input type="button" value="Access 로그 분석 시작" ng-click="checkDates('${_csrf.parameterName}', '${_csrf.token}')" />
+		<input type="button" value="Access 로그 분석 시작" ng-click="checkDates()" />
 	</div>
 
 	<div style="clear: both; margin-left:30px; padding-top: 30px;">

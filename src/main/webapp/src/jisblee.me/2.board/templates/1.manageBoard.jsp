@@ -23,7 +23,6 @@
   <form name="frm2" method="post" action="/rg/editBoardName.do">
     <input type="hidden" name="boardIdx" value="" />
     <input type="hidden" name="boardName" value="" />
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
   
   
   <table class="notice">
@@ -52,7 +51,7 @@
       
       <span id="a_{{a.boardIdx}}"><a href="/rg/#/board/list/{{a.boardIdx}}/1">{{a.boardName}}</a> ({{a.articleCount | number}}, {{a.attachmentCount | number}})</span>
       <span id="e_{{a.boardIdx}}" style="display:none;"><input type="text" id="boardNewName_{{a.boardIdx}}" name="boardNewName" /></span>
-      <input type="button" value="수정" ng-click="editTitle(a.boardIdx, a.boardName, '${_csrf.parameterName}', '${_csrf.token}');" />
+      <input type="button" value="수정" ng-click="editTitle(a.boardIdx, a.boardName);" />
       
       </td>
       <td align="center">{{a.userNameCreated}}</td>
@@ -68,7 +67,7 @@
 <form name="frm" action="" method="post">
   게시판 명 : 
   <input type="text" name="boardName" ng-model="boardName" />
-  <input type="button" value="게시판 생성" ng-click="createBoard('${_csrf.parameterName}', '${_csrf.token}')" />
+  <input type="button" value="게시판 생성" ng-click="createBoard()" />
 </form>
 </div>
 

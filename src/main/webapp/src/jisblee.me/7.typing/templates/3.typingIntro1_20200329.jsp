@@ -206,7 +206,6 @@ select.bibleSelect, select.bibleSelect > option, input[type=button] {
 
 </div>
 
-<input type="hidden" name="csrfToken" id="csrfToken" value="${_csrf.token }" />
 <input type="hidden" name="loginId" id="loginId" value="${loginId }" />
 
 

@@ -12,7 +12,9 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import com.rg.csrf.handler.CustomCsrfTokenRequestHandler;
 import com.rg.login.controller.CustomAuthenticationProvider;
 
 @Configuration
@@ -31,13 +33,31 @@ public class SecurityConfiguration {
                                                    SessionRegistry sessionRegistry) throws Exception {
     	
     	//MvcRequestMatcher.Builder mvc = new MvcRequestMatcher.Builder(introspector).servletPath("/");
-    	
+        
+    	//HttpSessionCsrfTokenRepository repo = new HttpSessionCsrfTokenRepository();
+        //repo.setHeaderName("X-CSRF-TOKEN");
+        //repo.setParameterName("_csrf");
+        
+        //CookieCsrfTokenRepository repo = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        //repo.setCookiePath("/");
+        //repo.setHeaderName("X-XSRF-TOKEN");
+
+        //XorCsrfTokenRequestAttributeHandler delegate = new XorCsrfTokenRequestAttributeHandler();
+        //delegate.setCsrfRequestAttributeName("_csrf");
+
+        
         http
         	//.csrf(csrf -> csrf.disable())
         	.csrf(csrf -> csrf
+        		//.csrfTokenRepository(repo)
+        		//.csrfTokenRepository(repo)
+        	    //.csrfTokenRequestHandler(delegate)
+        	    .csrfTokenRequestHandler(new CustomCsrfTokenRequestHandler()) // 커스텀 핸들러 등록
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // SPA용 쿠키 저장소
                 .ignoringRequestMatchers("/getBoardContent.do")  // <-- CSRF 예외 등록
                 .ignoringRequestMatchers("/getBoardListCount.do")
                 .ignoringRequestMatchers("/createResponse.do")
+                //.ignoringRequestMatchers("/inputComment.do")
             )
 
             .authorizeHttpRequests(auth -> auth

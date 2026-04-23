@@ -55,10 +55,7 @@ appTest.controller('TestCtrl', [
 	            var req = {
 	    			    method: 'POST',
 	    			    url: '/rg/getCountry.do',
-	    			    params: param,
-	    			    headers: {
-	    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-	    			    }
+	    			    params: param
 	            	};
 
 				$http(req).then(function successCallback(response) {
@@ -96,10 +93,7 @@ appTest.controller('TestCtrl', [
 	            var req = {
 	    			    method: 'POST',
 	    			    url: '/rg/setSession.do',
-	    			    params: param,
-	    			    headers: {
-	    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-	    			    }
+	    			    params: param
 	            	};
 
 				$http(req).then(function successCallback(response) {
@@ -121,10 +115,7 @@ appTest.controller('TestCtrl', [
 	            var req = {
 	    			    method: 'POST',
 	    			    url: '/rg/getUuid.do',
-	    			    params: param,
-	    			    headers: {
-	    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-	    			    }
+	    			    params: param
 	            	};
 
 				$http(req).then(function successCallback(response) {

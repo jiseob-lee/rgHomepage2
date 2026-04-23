@@ -49,7 +49,7 @@ appDownHistory.controller('DownHistoryCtrl', ['$scope', '$http', '$routeParams',
 		$scope.myEndDate = this.myEndDate;
 		$scope.myDate = this.myDate;
 
-		$scope.checkDates2 = function(csrfParameterName, csrfToken) {
+		$scope.checkDates2 = function() {
 			//alert("1");
 			//alert(moment($scope.myStartDate).format('YYYY-MM-DD') + " : " + moment($scope.myEndDate).format('YYYY-MM-DD'));
 			
@@ -72,7 +72,6 @@ appDownHistory.controller('DownHistoryCtrl', ['$scope', '$http', '$routeParams',
     			    	}),
     			    headers: {
 	    			        'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
-	    			        'X-CSRF-TOKEN' : csrfToken
     			    	}
             	};
 
@@ -96,7 +95,7 @@ appDownHistory.controller('DownHistoryCtrl', ['$scope', '$http', '$routeParams',
         
 
         
-		$scope.checkDates3 = function(csrfParameterName, csrfToken) {
+		$scope.checkDates3 = function() {
 			
 			var myDate = moment($scope.myDate).format('YYYY-MM-DD');
 			
@@ -110,7 +109,6 @@ appDownHistory.controller('DownHistoryCtrl', ['$scope', '$http', '$routeParams',
     			    	}),
     			    headers: {
 	    			        'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
-	    			        'X-CSRF-TOKEN' : csrfToken
     			    	}
             	};
 

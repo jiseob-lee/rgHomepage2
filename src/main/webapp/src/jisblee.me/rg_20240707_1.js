@@ -142,6 +142,11 @@ myModule.controller('RgCtrl', ['$scope', '$routeParams', '$location', '$http', '
 		}
 		*/
 
+		$http.get("/csrf.do")
+		.then(function(response) {
+			$log.debug(response);
+		});
+
 	}
 ]);
 

@@ -82,7 +82,7 @@
   <table id="tableFile">
     <tr>
       <td>
-        <input name="inputFile" ng-model="inputFile" file-change="uploadFile($event, files, '${_csrf.parameterName}', '${_csrf.token}')" type="file" />
+        <input name="inputFile" ng-model="inputFile" file-change="uploadFile($event, files)" type="file" />
       
         <div ng-controller="AppCtrl as vm" ng-switch on="$parent.progress">
           <div layout="row" layout-sm="column" layout-align="space-around" ng-switch-when="true">
@@ -110,16 +110,13 @@
     </tr>
     <tr>
       <td colspan="4" align="right">
-        <input type="button" value="수정" ng-click="updateBoard('${_csrf.parameterName}', '${_csrf.token}')" ng-if="action == 'edit'" />
-        <input type="button" value="등록" ng-click="inputBoard('${_csrf.parameterName}', '${_csrf.token}')" ng-if="action == 'input'" />
-        <input type="button" value="삭제" ng-click="goDelete('${_csrf.parameterName}', '${_csrf.token}')" ng-if="action == 'edit'" />
+        <input type="button" value="수정" ng-click="updateBoard()" ng-if="action == 'edit'" />
+        <input type="button" value="등록" ng-click="inputBoard()" ng-if="action == 'input'" />
+        <input type="button" value="삭제" ng-click="goDelete()" ng-if="action == 'edit'" />
         <input type="button" value="목록" ng-click="goList()" ng-if="boardName != '채용안내'" />
       </td>
     </tr>
   </table>
 
-  <input type="hidden" name="csrfParameterName" id="csrfParameterName" value="${_csrf.parameterName}" />
-  <input type="hidden" name="csrfToken" id="csrfToken" value="${_csrf.token}" />
-  
 </body>
 </html>

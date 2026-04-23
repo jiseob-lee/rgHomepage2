@@ -16,7 +16,7 @@ appBoard.directive('fileChange', ['$parse', function($parse) {
 
       // This is a wrapper handler which will be attached to the
       // HTML change event.
-      var handler = function (e, csrf, token) {
+      var handler = function (e) {
 
         $scope.$apply(function () {
 

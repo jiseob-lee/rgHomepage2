@@ -82,9 +82,9 @@
     <tr>
       <td align="left" style="text-align: left;">
 
-        <input name="inputFile" ng-model="inputFile" file-change="uploadFile($event, files, '${_csrf.parameterName}', '${_csrf.token}')" type="file" />
+        <input name="inputFile" ng-model="inputFile" file-change="uploadFile($event, files)" type="file" />
         
-        <!-- <input name="inputFile" ng-model="inputFile" onchange="angular.element(this).scope().uploadFile(files, '${_csrf.parameterName}', '${_csrf.token}')" type="file" /> -->
+        <!-- <input name="inputFile" ng-model="inputFile" onchange="angular.element(this).scope().uploadFile(files)" type="file" /> -->
     
         <div ng-controller="AppCtrl as vm" ng-switch on="$parent.progress">
           <div layout="row" layout-sm="column" layout-align="space-around" ng-switch-when="true">

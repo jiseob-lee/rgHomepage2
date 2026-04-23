@@ -187,7 +187,7 @@ appBoard.controller('BoardCtrl',
 			$window.location.href = "/rg/#/board/edit/" + $routeParams['boardNo'] + "/" + $routeParams['pageNo'] + "/" + $routeParams['articleNo'] + "/" + (typeof $routeParams['openYn'] == "undefined" ? "" : $routeParams['openYn']);
 		}
 
-		$scope.goDelete = function(csrfName, csrfToken) {
+		$scope.goDelete = function() {
 
 			//alert("1, " + board.loginUserId + ", " + $routeParams['articleNo']);
 			
@@ -206,9 +206,6 @@ appBoard.controller('BoardCtrl',
     			    method: 'POST',
     			    url: '/rg/deleteBoardArticle.do',
     			    params: param,
-    			    headers: {
-    			        'X-CSRF-TOKEN' : csrfToken
-    			    }
             	};
 
 			$http(req).then(function successCallback(response) {
@@ -514,7 +511,7 @@ appBoard.controller('BoardCtrl',
         }
 
         // 어드민 게시글 삭제
-        $scope.deleteBoard = function(csrfParameterName, csrfToken) {
+        $scope.deleteBoard = function() {
         	
         	if ($routeParams['articleNo'] == undefined || $routeParams['articleNo'] == null || $routeParams['articleNo'] == "") {
         		alert("게시글 번호가 없습니다.");
@@ -534,7 +531,6 @@ appBoard.controller('BoardCtrl',
     			    data: $httpParamSerializerJQLike(param),
     			    headers: {
     			        'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
-    			        'X-CSRF-TOKEN' : csrfToken
     			    }
             };
 
@@ -573,7 +569,7 @@ appBoard.controller('BoardCtrl',
         }
         
         // 어드민
-        $scope.inputBoard = function(csrfParameterName, csrfToken) {
+        $scope.inputBoard = function() {
 
         	//alert("-" + $scope.subject + "-");
         	//return;
@@ -623,7 +619,6 @@ appBoard.controller('BoardCtrl',
     			        //'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
     			        'Content-Type' : 'application/x-www-form-urlencoded',
     			        //'Content-Type' : 'application/octet-stream',
-    			        'X-CSRF-TOKEN' : csrfToken
     			    }
             };
 
@@ -651,7 +646,7 @@ appBoard.controller('BoardCtrl',
         }
         
         // 어드민
-        $scope.updateBoard = function(csrfParameterName, csrfToken) {
+        $scope.updateBoard = function() {
         	
         	//alert("-" + $scope.subject + "-");
         	//return;
@@ -708,7 +703,6 @@ appBoard.controller('BoardCtrl',
     			    data: $httpParamSerializerJQLike(param),
     			    headers: {
     			        'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
-    			        'X-CSRF-TOKEN' : csrfToken
     			    }
             };
 
@@ -837,7 +831,6 @@ appBoard.controller('BoardCtrl',
 	                data: data,
 				    headers: {
 				    	"Content-Type": file.type != '' ? file.type : 'application/octet-stream',
-				        'X-CSRF-TOKEN' : $("#csrfToken").val()
 				    }
 	            });
 
@@ -850,7 +843,7 @@ appBoard.controller('BoardCtrl',
 	                    cb(imgFile, { title: file.name });
 	                    //$log.debug(file.result);
 	                    $scope.progress = "false";
-	                    //board.addFileInput(file.result, csrfParameterName, csrfToken);
+	                    //board.addFileInput(file.result);
 	                    
 	                    // input file 초기화
 	                    //angular.forEach(
@@ -876,7 +869,7 @@ appBoard.controller('BoardCtrl',
 		};
 		
         // 어드민
-        $scope.uploadFile = function($event, file, csrfParameterName, csrfToken) {
+        $scope.uploadFile = function($event, file) {
         	//$log.debug(file);
         	
         	var ext = "";
@@ -918,13 +911,11 @@ appBoard.controller('BoardCtrl',
         	    type: 'POST',
         	    contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
         	    processData: false, // NEEDED, DON'T OMIT THIS
-        	    beforeSend : function(xhr){
-                    xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
-                },
+
                 success : function(response) {
                     $log.debug(response);
 
-                    board.addFileInput(response, csrfParameterName, csrfToken);
+                    board.addFileInput(response);
                     
                     // input file 초기화
                     angular.forEach(
@@ -948,7 +939,6 @@ appBoard.controller('BoardCtrl',
                 data: data,
 			    headers: {
 			    	"Content-Type": file.type != '' ? file.type : 'application/octet-stream',
-			        'X-CSRF-TOKEN' : csrfToken
 			    }
             });
 
@@ -957,7 +947,7 @@ appBoard.controller('BoardCtrl',
                     file.result = response.data;
                     //$log.debug(file.result);
                     $scope.progress = "false";
-                    board.addFileInput(file.result, csrfParameterName, csrfToken);
+                    board.addFileInput(file.result);
                     
                     // input file 초기화
                     angular.forEach(
@@ -979,7 +969,7 @@ appBoard.controller('BoardCtrl',
         	
         };
         
-        board.addFileInput = function(fileResult, csrfParameterName, csrfToken) {
+        board.addFileInput = function(fileResult) {
             
         	var appendHtml = "<tr id='tr" + fileResult.attachmentIdx + "'><td>";
         	appendHtml += "<input type='hidden' id='attachmentIdx_" + fileResult.attachmentIdx + "' name='attachmentIdx' value='" + fileResult.attachmentIdx + "' /> "
@@ -1108,7 +1098,7 @@ appBoard.directive('fileChange', ['$parse', '$log', function($parse, $log) {
 
       // This is a wrapper handler which will be attached to the
       // HTML change event.
-      var handler = function (e, csrf, token) {
+      var handler = function (e) {
     	  
     	//alert("typeof e : " + typeof e);
 
@@ -1118,7 +1108,7 @@ appBoard.directive('fileChange', ['$parse', '$log', function($parse, $log) {
           // The files variable will be available for consumption
           // by the event handler.
 
-          //attrHandler($scope, { $event: e, files: e.target.files, csrf, token });
+          //attrHandler($scope, { $event: e, files: e.target.files});
           attrHandler($scope, { $event: e, files: e.target.files });
         });
       };

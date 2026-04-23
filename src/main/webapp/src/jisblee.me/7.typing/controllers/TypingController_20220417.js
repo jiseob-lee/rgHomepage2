@@ -312,10 +312,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 			            var req = {
 			    			    method: 'POST',
 			    			    url: '/rg/putTemporaryTypingStorage.do',
-			    			    params: param,
-			    			    headers: {
-			    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-			    			    }
+			    			    params: param
 			            	};
 			            
 			            check = 1;
@@ -375,10 +372,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
             var req = {
     			    method: 'POST',
     			    url: '/rg/getTypingContent.do',
-    			    params: param,
-    			    headers: {
-    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-    			    }
+    			    params: param
             	};
 
 			$http(req).then(function successCallback(response) {
@@ -448,10 +442,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 	            var req = {
 	    			    method: 'POST',
 	    			    url: '/rg/getTemporaryTypingStorage.do',
-	    			    params: param,
-	    			    headers: {
-	    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-	    			    }
+	    			    params: param
 	            	};
 
 				$http(req).then(function successCallback(response) {
@@ -573,10 +564,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 			            var req = {
 			    			    method: 'POST',
 			    			    url: '/rg/getDoingChapter.do',
-			    			    params: param,
-			    			    headers: {
-			    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-			    			    }
+			    			    params: param
 			            	};
 
 						// 시작에서 들어온 경우
@@ -623,10 +611,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
             var req = {
     			    method: 'POST',
     			    url: '/rg/getTypingRecord.do',
-    			    params: param,
-    			    headers: {
-    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-    			    }
+    			    params: param
             	};
 
 			$http(req).then(function successCallback(response) {
@@ -655,10 +640,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
             var req = {
     			    method: 'POST',
     			    url: '/rg/getRecordCountList.do',
-    			    params: param,
-    			    headers: {
-    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-    			    }
+    			    params: param
             	};
 
 			$http(req).then(function successCallback(response) {
@@ -771,10 +753,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
             var req = {
     			    method: 'POST',
     			    url: '/rg/deleteTyping.do',
-    			    params: param,
-    			    headers: {
-    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-    			    }
+    			    params: param
             	};
 
 			$http(req).then(function successCallback(response) {
@@ -1191,10 +1170,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 	            var req = {
 	    			    method: 'POST',
 	    			    url: '/rg/putTypingRecord.do',
-	    			    params: param,
-	    			    headers: {
-	    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-	    			    }
+	    			    params: param
 	            	};
 
 	            //alert("2");
@@ -1405,10 +1381,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
             var req = {
     			    method: 'POST',
     			    url: '/rg/getTypingRecord.do',
-    			    params: param,
-    			    headers: {
-    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-    			    }
+    			    params: param
             	};
 
 			$http(req).then(function successCallback(response) {

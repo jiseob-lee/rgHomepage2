@@ -384,10 +384,26 @@ function makeUnderline(elem) {
 		
 		</sec:authorize>
 
+<%
+    // 1. 모든 쿠키 가져오기
+    Cookie[] cookies = request.getCookies(); 
+    String cookieValue = "";
+
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            // 2. 특정 쿠키 이름 확인 ("myCookie")
+            if (cookie.getName().equals("XSRF-TOKEN")) {
+                cookieValue = cookie.getValue(); // 3. 값 가져오기
+                break;
+            }
+        }
+    }
+%>
+
     	<div style="text-align: right; margin-top: 10px; padding: 10px;">
 			<form name="logout" action="/logout" method="post" target="_top">
-			  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			  <input type="submit" value="로그아웃" />
+			  <input type="hidden" name="XSRF-TOKEN-PARAM" value="<%=cookieValue %>" />
 			</form>
 		</div>
 		

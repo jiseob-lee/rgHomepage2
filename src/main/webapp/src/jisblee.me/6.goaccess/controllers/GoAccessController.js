@@ -11,7 +11,7 @@ appGoAccess.controller('GoAccessCtrl', ['$scope', '$http', '$routeParams', '$log
 		$scope.myStartDate = this.myStartDate;
 		$scope.myEndDate = this.myEndDate;
 
-		$scope.checkDates = function(csrfParameterName, csrfToken) {
+		$scope.checkDates = function() {
 			//alert("1");
 			//alert(moment($scope.myStartDate).format('YYYY-MM-DD') + " : " + moment($scope.myEndDate).format('YYYY-MM-DD'));
 			
@@ -31,8 +31,7 @@ appGoAccess.controller('GoAccessCtrl', ['$scope', '$http', '$routeParams', '$log
     			    		toDate : toDate
     			    	}),
     			    headers: {
-	    			        'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
-	    			        'X-CSRF-TOKEN' : csrfToken
+	    			        'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
     			    	}
             	};
 

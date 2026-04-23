@@ -9,7 +9,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <form name="logout" action="/logout" method="post" target="_top">
-  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 </form>
 
 

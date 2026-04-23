@@ -171,10 +171,7 @@ appTest.controller('TestCtrl', ['$scope', '$parse', '$log', '$http', '$compile',
 	            var req = {
 	    			    method: 'POST',
 	    			    url: '/rg/temporaryStoreTyping.do',
-	    			    params: param,
-	    			    headers: {
-	    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-	    			    }
+	    			    params: param
 	            	};
 
 				$http(req).then(function successCallback(response) {
@@ -200,10 +197,7 @@ appTest.controller('TestCtrl', ['$scope', '$parse', '$log', '$http', '$compile',
             var req = {
     			    method: 'POST',
     			    url: '/rg/getTypingContent.do',
-    			    params: param,
-    			    headers: {
-    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-    			    }
+    			    params: param
             	};
 
 			$http(req).then(function successCallback(response) {
@@ -318,10 +312,7 @@ appTest.controller('TestCtrl', ['$scope', '$parse', '$log', '$http', '$compile',
             var req = {
     			    method: 'POST',
     			    url: '/rg/getTypingHistory.do',
-    			    params: param,
-    			    headers: {
-    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-    			    }
+    			    params: param
             	};
 
 			$http(req).then(function successCallback(response) {
@@ -477,10 +468,7 @@ appTest.controller('TestCtrl', ['$scope', '$parse', '$log', '$http', '$compile',
 	            var req = {
 	    			    method: 'POST',
 	    			    url: '/rg/putTypingHistory.do',
-	    			    params: param,
-	    			    headers: {
-	    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-	    			    }
+	    			    params: param
 	            	};
 
 	            
@@ -637,10 +625,7 @@ appTest.controller('TestCtrl', ['$scope', '$parse', '$log', '$http', '$compile',
             var req = {
     			    method: 'POST',
     			    url: '/rg/getTypingHistory.do',
-    			    params: param,
-    			    headers: {
-    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-    			    }
+    			    params: param
             	};
 
 			$http(req).then(function successCallback(response) {

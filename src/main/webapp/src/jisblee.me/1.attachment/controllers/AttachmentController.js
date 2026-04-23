@@ -232,7 +232,7 @@ appAttachment.controller('AttachmentCtrl', ['$scope', '$location', '$log', '$htt
 		
 		
         // 어드민
-        $scope.uploadFile = function($event, file, csrfParameterName, csrfToken) {
+        $scope.uploadFile = function($event, file) {
         	//$log.debug(file);
         	
         	var ext = "";
@@ -274,14 +274,12 @@ appAttachment.controller('AttachmentCtrl', ['$scope', '$location', '$log', '$htt
         	    type: 'POST',
         	    contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
         	    processData: false, // NEEDED, DON'T OMIT THIS
-        	    beforeSend : function(xhr){
-                    xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
-                },
+
                 success : function(response) {
                 	
                     $log.debug(response);
 
-                    attachment.addFileInput(response, csrfParameterName, csrfToken);
+                    attachment.addFileInput(response);
                     
                     // input file 초기화
                     angular.forEach(
@@ -307,7 +305,6 @@ appAttachment.controller('AttachmentCtrl', ['$scope', '$location', '$log', '$htt
                 data: data,
 			    headers: {
 			    	"Content-Type": file.type != '' ? file.type : 'application/octet-stream',
-			        'X-CSRF-TOKEN' : csrfToken
 			    }
             });
 
@@ -316,7 +313,7 @@ appAttachment.controller('AttachmentCtrl', ['$scope', '$location', '$log', '$htt
                     file.result = response.data;
                     $log.debug(file.result);
                     $scope.progress = "false";
-                    attachment.addFileInput(file.result, csrfParameterName, csrfToken);
+                    attachment.addFileInput(file.result);
                     
                     // input file 초기화
                     angular.forEach(
@@ -353,7 +350,7 @@ appAttachment.controller('AttachmentCtrl', ['$scope', '$location', '$log', '$htt
             
         };
         
-        attachment.addFileInput = function(fileResult, csrfParameterName, csrfToken) {
+        attachment.addFileInput = function(fileResult) {
             
         	var appendHtml = "<tr id='tr" + fileResult.attachmentIdx + "'><td>";
         	appendHtml += "<input type='hidden' name='attachmentIdx' value='" + fileResult.attachmentIdx + "' /> "

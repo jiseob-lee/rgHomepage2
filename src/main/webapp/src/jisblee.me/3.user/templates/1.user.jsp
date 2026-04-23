@@ -55,8 +55,8 @@ table.user td {
     </td>
     <td><input type="text" name="userPassword" /></td>
     <td>
-      <input type="button" value="변경" ng-click="updateUser(user.userId, $index, '${_csrf.parameterName}', '${_csrf.token}')"/>
-      <input type="button" value="삭제" ng-click="deleteUser(user.userId, '${_csrf.parameterName}', '${_csrf.token}')"/>
+      <input type="button" value="변경" ng-click="updateUser(user.userId, $index)"/>
+      <input type="button" value="삭제" ng-click="deleteUser(user.userId)"/>
     </td>
   </tr>
 </table>
@@ -76,7 +76,7 @@ table.user td {
     <td><input type="text" name="userNameKo" ng-model="userNameKo" /></td>
     <td><input type="text" name="userPassword" ng-model="userPassword" /></td>
     <td>
-      <input type="button" value="사용자 추가" ng-click="addUser('${_csrf.parameterName}', '${_csrf.token}')" />
+      <input type="button" value="사용자 추가" ng-click="addUser()" />
     </td>
   </tr>
 </table>

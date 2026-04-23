@@ -36,7 +36,7 @@ md-datepicker {
     </div>
 
 	<div style="clear: both; margin-left:30px; padding-top: 30px;">
-		<input type="button" value="조회된 글 일람" ng-click="checkDates2('${_csrf.parameterName}', '${_csrf.token}')" />
+		<input type="button" value="조회된 글 일람" ng-click="checkDates2()" />
 	</div>
 
 	<toaster-container toaster-options="{'time-out': 2000, 'position-class': 'toast-top-right'}"></toaster-container>

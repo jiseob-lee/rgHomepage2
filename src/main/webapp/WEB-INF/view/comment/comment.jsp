@@ -112,9 +112,6 @@ function inputComment() {
 	$.ajax({
 		type: "POST",
 		url: "/inputComment.do",
-		headers: {
-				'X-CSRF-Token' : "${_csrf.token}"
-			},
 		data: $( "#commentInputFrm" ).serialize(),
 		success: function(data) {
 				alert("<spring:message code="comment.inputed" text="입력되었습니다." />");
@@ -201,9 +198,6 @@ function submitPassword(commentIdx, action) {
 	$.ajax({
 		type: "POST",
 		url: "/checkCommentPassword.do",
-		headers: {
-				"X-CSRF-Token" : "${_csrf.token}"
-			},
 		data: { userPassword : userPassword, commentIdx : commentIdx, content : $("#content2Text").val(), action : action },
 		success: function(data) {
 				//alert("checkCommentPassword data : " + data);

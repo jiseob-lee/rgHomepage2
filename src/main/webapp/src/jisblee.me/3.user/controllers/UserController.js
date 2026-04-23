@@ -35,7 +35,7 @@ angular.module('rg.User', [])
 			$scope.userList = user.userList;
 		});
 		
-		$scope.addUser = function(csrfParameterName, csrfToken) {
+		$scope.addUser = function() {
 
 			if ($scope.userId == undefined || $scope.userId == "") {
 				alert("아이디를 입력해주시기 바랍니다.");
@@ -61,7 +61,6 @@ angular.module('rg.User', [])
     			    data: $httpParamSerializerJQLike(param),
     			    headers: {
     			        'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
-    			        'X-CSRF-TOKEN' : csrfToken
     			    }
             };
 
@@ -76,7 +75,7 @@ angular.module('rg.User', [])
 
 		}
 		
-		$scope.updateUser = function(userId, i, csrfParameterName, csrfToken) {
+		$scope.updateUser = function(userId, i) {
 
 			$log.debug(document.frm.userPassword);
 			
@@ -99,8 +98,6 @@ angular.module('rg.User', [])
 				    };
 			}
 			
-			param[csrfParameterName] = csrfToken;
-			
 			$http({
 			    method: 'POST',
 			    url: '/rg/updatetUser.do',
@@ -118,14 +115,12 @@ angular.module('rg.User', [])
 			});
 		}
 
-		$scope.deleteUser = function(userId, csrfParameterName, csrfToken) {
+		$scope.deleteUser = function(userId) {
 
 			var param = {
 			    	userId : userId,
 			    	userIdDeleted : $scope.$parent.loginId
 			    };
-			
-			param[csrfParameterName] = csrfToken;
 			
 			$http({
 			    method: 'POST',

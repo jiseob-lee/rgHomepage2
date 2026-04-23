@@ -155,8 +155,6 @@ input[type=text]::-ms-clear {
     </div>
   </div>
 
-
-<input type="hidden" name="csrfToken" id="csrfToken" value="${_csrf.token }" />
 <input type="hidden" name="loginId" id="loginId" value="${loginId }" />
 
 &nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>

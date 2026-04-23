@@ -117,8 +117,5 @@
         });
       });
     </script>
-    <!--
-    '${_csrf.parameterName}', '${_csrf.token}'
-    -->
   </body>
 </html>

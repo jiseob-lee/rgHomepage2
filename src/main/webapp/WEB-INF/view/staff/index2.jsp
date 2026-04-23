@@ -64,7 +64,6 @@ div.content {
       <br/><br/><br/>
 
       <form name="logout" action="/logout" method="post" target="_top">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         <input type="submit" value="로그아웃" />
       </form>
 

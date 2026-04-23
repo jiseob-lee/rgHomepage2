@@ -53,8 +53,7 @@
         const response = await fetch("/toss/confirm.do", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-            'X-CSRF-TOKEN' : "${_csrf.token}"
+            "Content-Type": "application/json"
           },
           body: JSON.stringify(requestData),
         });

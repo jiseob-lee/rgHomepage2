@@ -187,7 +187,6 @@ function getTextLength(str) {
 </div>
 
 
-<input type="hidden" name="csrfToken" id="csrfToken" value="${_csrf.token }" />
 <input type="hidden" name="loginId" id="loginId" value="${loginId }" />
 
 <form name="myForm">
@@ -221,7 +220,6 @@ country : <input type="text" name="inputCountry" id="inputCountry" ng-model="inp
 <span id="spanCountry"></span>
 </p>
 
-<input type="hidden" name="csrfToken" id="csrfToken" value="${_csrf.token }" />
 <input type="hidden" name="loginId" id="loginId" value="${loginId }" />
 
 <p>

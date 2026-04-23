@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.rg.login.dto.UserDetailsVO;
 import com.rg.login.service.LoginService;
@@ -26,6 +27,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import reactor.core.publisher.Mono;
 
 @Component
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
@@ -45,6 +47,8 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 	@Autowired
 	private RedisService3 redisService;
 
+	private final WebClient webClient = WebClient.create();
+	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
@@ -304,11 +308,21 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		// logger.info("################# result : " + result);
 		// logger.info("################# redisTemplate.hasKey : " +
 		// redisTemplate.hasKey("spring:session:sessions:" + sId));
-
+		
+		//callApi().subscribe(response1 -> {
+		    //System.out.println("#### 응답: " + response1);
+		//});
+		
 		response.sendRedirect(loginId.equals("rg111") ? "/" : "/rg/");
 	}
 
-
+    public Mono<String> callApi() {
+        return webClient.get()
+                .uri("https://jisblee.me/csrf.do")
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+    
 	//public <T> T getData(String key, Class<T> classType) throws Exception {
 		//String jsonResult = (String) redisTemplate.opsForValue().get(key);
 		//if (StringUtils.isBlank(jsonResult)) {

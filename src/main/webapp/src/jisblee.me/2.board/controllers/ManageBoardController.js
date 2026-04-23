@@ -29,7 +29,7 @@ appAttachment.controller('ManageBoardCtrl',
 		    }
 		}
 
-		$scope.editTitle = function(boardIdx, boardName, _csrf_parameterName, _csrf_token) {
+		$scope.editTitle = function(boardIdx, boardName) {
 			
 			//alert($("#boardNewName_" + boardIdx).val());
 			
@@ -45,8 +45,7 @@ appAttachment.controller('ManageBoardCtrl',
 	    			    url: '/rg/editBoardName.do',
 	    			    data: $httpParamSerializerJQLike(param),
 	    			    headers: {
-	    			        'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
-	    			        'X-CSRF-TOKEN' : _csrf_token
+	    			        'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
 	    			    }
 	            };
 
@@ -77,7 +76,7 @@ appAttachment.controller('ManageBoardCtrl',
 			}
 		}
 		
-		$scope.createBoard = function(csrfParameterName, csrfToken) {
+		$scope.createBoard = function() {
 			//alert($scope.boardName);
 			
 			var param = {
@@ -90,7 +89,6 @@ appAttachment.controller('ManageBoardCtrl',
     			    data: $httpParamSerializerJQLike(param),
     			    headers: {
     			        'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
-    			        'X-CSRF-TOKEN' : csrfToken
     			    }
             };
 

@@ -226,13 +226,13 @@ public class BoardController {
 		
 		logger.info("#### getBoardContent. 2");
 		
-		CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
+		//CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
 		// Spring Security will allow the Token to be included in this header name
-		response.setHeader("X-CSRF-HEADER", token == null ? "" : token.getHeaderName());
+		//response.setHeader("X-CSRF-HEADER", token == null ? "" : token.getHeaderName());
 		// Spring Security will allow the token to be included in this parameter name
-		response.setHeader("X-CSRF-PARAM", token == null ? "" : token.getParameterName());
+		//response.setHeader("X-CSRF-PARAM", token == null ? "" : token.getParameterName());
 		// this is the value of the token to be included as either a header or an HTTP parameter
-		response.setHeader("X-CSRF-TOKEN", token == null ? "" : token.getToken());
+		//response.setHeader("X-CSRF-TOKEN", token == null ? "" : token.getToken());
 
 		//Cookie setCookie = new Cookie("XSRF-TOKEN", token.getToken()); // 쿠키 이름을 name으로 생성
 		//setCookie.setMaxAge(60*60*24); // 기간을 하루로 지정

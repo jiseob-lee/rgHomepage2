@@ -187,9 +187,16 @@ public class EnvironmentController {
 		
 		//map.put("referrer", referrer);
 
+		
+		
+		
 		CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
 		
-		map.put("csrfToken", token == null ? "" : token.getToken());
+		//map.put("csrfToken", token == null ? "" : token.getToken());
+		
+		logger.debug("#### csrfToken : " + token.getToken());
+		
+		
 		
 		//logger.info("#### map : " + map);
 		

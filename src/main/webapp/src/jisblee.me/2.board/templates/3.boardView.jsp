@@ -41,7 +41,7 @@
         </div>
         <div style="float: right;">
           <button ng-click="goEdit()" ng-if="urlPath == 'rg'" translate>board.modify</button>
-          <button ng-click="goDelete('${_csrf.parameterName}', '${_csrf.token}')" ng-if="urlPath == 'rg'" translate>board.delete</button>
+          <button ng-click="goDelete()" ng-if="urlPath == 'rg'" translate>board.delete</button>
           <button ng-click="goList()" translate>board.list</button>
         </div>
       </td>
@@ -82,7 +82,7 @@
         </div>
         <div style="float: right;">
           <button ng-click="goEdit()" ng-if="urlPath == 'rg'" translate>board.modify</button>
-          <button ng-click="goDelete('${_csrf.parameterName}', '${_csrf.token}')" ng-if="urlPath == 'rg'" translate>board.delete</button>
+          <button ng-click="goDelete()" ng-if="urlPath == 'rg'" translate>board.delete</button>
           <button ng-click="goList()" translate>board.list</button>
         </div>
       </td>

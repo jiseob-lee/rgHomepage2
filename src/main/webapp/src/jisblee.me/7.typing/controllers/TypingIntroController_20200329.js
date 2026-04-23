@@ -24,10 +24,7 @@ appTypingIntro.controller('TypingIntroCtrl', ['$scope', '$log', '$http', '$q', '
         var req = {
 			    method: 'POST',
 			    url: '/rg/getTypingIntro.do',
-			    params: param,
-			    headers: {
-			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-			    }
+			    params: param
         	};
 
 		$http(req).then(function successCallback(response) {
@@ -91,10 +88,7 @@ appTypingIntro.controller('TypingIntroCtrl', ['$scope', '$log', '$http', '$q', '
             var req = {
     			    method: 'POST',
     			    url: '/rg/getTypingRecord.do',
-    			    params: param,
-    			    headers: {
-    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-    			    }
+    			    params: param
             	};
 
 			$http(req).then(function successCallback(response) {
@@ -119,10 +113,7 @@ appTypingIntro.controller('TypingIntroCtrl', ['$scope', '$log', '$http', '$q', '
             var req = {
     			    method: 'POST',
     			    url: '/rg/getRecordCountList.do',
-    			    params: param,
-    			    headers: {
-    			        'X-CSRF-TOKEN' : $("#csrfToken").val()
-    			    }
+    			    params: param
             	};
 
 			$http(req).then(function successCallback(response) {
