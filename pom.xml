@@ -38,9 +38,9 @@
         -->
         
         <!-- <spring.framework.version>6.1.21</spring.framework.version> -->
-        <spring.framework.version>7.0.6</spring.framework.version>
+        <spring.framework.version>7.0.7</spring.framework.version>
         
-        <spring.security.version>7.0.4</spring.security.version>
+        <spring.security.version>7.0.5</spring.security.version>
         
         
         <egovframework.rte.version>3.6.0</egovframework.rte.version>
