@@ -116,12 +116,28 @@ public class EnvironmentController {
 		//map.put("loginId", loginId);
 		//map.put("loginUserName", loginUserName);
 
+
+		String lang = "";
+		Cookie[] cs = request.getCookies();
+		if (cs != null) {
+			for (int i=0; i < cs.length; i++) {
+				Cookie c = cs[i];
+				//logger.debug("######### log 2 : " + i + " : " + c.getName() + " : " + c.getValue());
+				if ("org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE".equals(c.getName())) {
+					lang = c.getValue();
+				}
+			}
+		}
+		
 		
 		LocaleUtil localeUtil = new LocaleUtil();
 		String currentLocale = localeUtil.getLocale().getLanguage();
 		
-		if (langVal.isPresent()) {
-			currentLocale  = langVal.get();
+		if (lang != null && !"".equals(lang)) {
+			currentLocale = lang;
+			
+		} else if (langVal.isPresent()) {
+			currentLocale = langVal.get();
 			
 		//} else if ("fr".equals(currentLocale)) {
 		} else {
@@ -140,18 +156,6 @@ public class EnvironmentController {
 		//logger.debug("############## log 2 : " + request.getParameter("ip"));
 		//logger.debug("############## log 2 : " + request.getParameter("lang"));
 
-		String lang = "";
-		Cookie[] cs = request.getCookies();
-		if (cs != null) {
-			for (int i=0; i < cs.length; i++) {
-				Cookie c = cs[i];
-				//logger.debug("######### log 2 : " + i + " : " + c.getName() + " : " + c.getValue());
-				if ("org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE".equals(c.getName())) {
-					lang = c.getValue();
-				}
-			}
-		}
-		
 		//logger.debug("############## log 3 : " + request.getParameter("lang"));
 		
 		//logger.debug("############## log 4 : " + request.getRequestURL().toString() + "?" + request.getQueryString());

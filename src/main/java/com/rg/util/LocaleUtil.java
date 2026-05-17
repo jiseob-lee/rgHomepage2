@@ -12,6 +12,8 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Component("localeUtil")
 public class LocaleUtil {
@@ -46,16 +48,47 @@ public class LocaleUtil {
 	}
 	
 	public Locale getLocale() {
+
+	    ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+	    HttpServletRequest request = attr.getRequest();
+	    
+		String lang = "";
 		
+		if (request != null) {
+			
+			Cookie[] cs = request.getCookies();
+			
+			if (cs != null) {
+				for (int i=0; i < cs.length; i++) {
+					Cookie c = cs[i];
+					//logger.debug("######### log 2 : " + i + " : " + c.getName() + " : " + c.getValue());
+					if ("org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE".equals(c.getName())) {
+						lang = c.getValue();
+					}
+				}
+			}
+		}
+
 		Locale locale = LocaleContextHolder.getLocale();
 		
-		logger.debug("########################################## Current locale : " + locale.getLanguage());
-		
-		String language = locale.getLanguage();
-		
-		//if (!(language == null || "".equals(language) || "fr".equals(language) || "ko".equals(language) || "en".equals(language))) {
-		if (!("fr".equals(language) || "ko".equals(language) || "en".equals(language))) {
-			locale = new Locale(Locale.FRANCE.getLanguage());
+		if (lang != null && !"".equals(lang)) {
+			
+			if ("ko".equals(lang)) {
+				locale = new Locale("ko", "KR"); // 언어: ko, 국가: KR
+			} else if ("en".equals(lang)) {
+				locale = new Locale("en", "US");
+			}
+			
+		} else {
+			
+			logger.debug("########################################## Current locale : " + locale.getLanguage());
+			
+			String language = locale.getLanguage();
+			
+			//if (!(language == null || "".equals(language) || "fr".equals(language) || "ko".equals(language) || "en".equals(language))) {
+			if (!("fr".equals(language) || "ko".equals(language) || "en".equals(language))) {
+				locale = new Locale(Locale.FRANCE.getLanguage());
+			}
 		}
 
 		return locale;
