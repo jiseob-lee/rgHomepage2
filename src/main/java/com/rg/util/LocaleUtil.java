@@ -71,7 +71,7 @@ public class LocaleUtil {
 
 		Locale locale = LocaleContextHolder.getLocale();
 		
-		if (lang != null && !"".equals(lang)) {
+		if (lang != null && !"".equals(lang) && ("ko".equals(lang) || "en".equals(lang))) {
 			
 			if ("ko".equals(lang)) {
 				locale = new Locale("ko", "KR"); // 언어: ko, 국가: KR
