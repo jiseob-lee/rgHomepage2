@@ -135,8 +135,8 @@ a.underline {
 </style>
 
 <script type="text/javascript">
-var API_URL = "https://business.juso.go.kr";
-var GIS_SERVER_URL = "https://m1.juso.go.kr";
+//var API_URL = "https://business.juso.go.kr";
+//var GIS_SERVER_URL = "https://m1.juso.go.kr";
 </script>
 
 <!--
@@ -217,7 +217,7 @@ var GIS_SERVER_URL = "https://m1.juso.go.kr";
 
 <script type="text/javascript" src="/src/jisblee.me/9.s3/controllers/S3Controller.js"></script>
 
-<script type="text/javascript" src="/src/jisblee.me/10.juso/controllers/JidoController.js"></script>
+<!-- <script type="text/javascript" src="/src/jisblee.me/10.juso/controllers/JidoController.js"></script> -->
 
 <script type="text/javascript" src="/src/jisblee.me/13.loginlog/controllers/LoginLogController.js"></script>
 
