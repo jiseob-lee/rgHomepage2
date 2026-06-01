@@ -16,7 +16,7 @@ var myModule = angular.module('rg',
         'ngMessages',
         'pascalprecht.translate',
         'rg.S3',
-        'rg.Jido',
+        //'rg.Jido',
         'rg.LoginLog',
         'rg.DownHistory',
 		'rg.CommentList',
@@ -261,12 +261,12 @@ myModule.config(function($routeProvider, $locationProvider, $httpProvider, $tran
 	            requiresLogin: false
 	        })
 	        
-	    	.when('/juso', {
-	            templateUrl: '/src/jisblee.me/10.juso/templates/sampleTest.html',
-	            controller: 'JidoCtrl',
-	            controllerAs: '',
-	            requiresLogin: false
-	        })
+	    	//.when('/juso', {
+	            //templateUrl: '/src/jisblee.me/10.juso/templates/sampleTest.html',
+	            //controller: 'JidoCtrl',
+	            //controllerAs: '',
+	            //requiresLogin: false
+	        //})
 	        
 	    	.when('/attachment/:boardNo/:pageNo', {
 	            templateUrl: '/src/jisblee.me/1.attachment/templates/1.attachment.jsp',

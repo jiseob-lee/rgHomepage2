@@ -227,7 +227,7 @@ a.underline {
 
 <script type="text/javascript" src="/src/jisblee.me/16.boardView/controllers/BoardViewController.js"></script>
 
-<script type="text/javascript" src="/src/jisblee.me/rg_20240707_1.js"></script>
+<script type="text/javascript" src="/src/jisblee.me/rg_20260601.js"></script>
 
 
 <!-- <script type="text/javascript" src="https://business.juso.go.kr/juso_support_center/js/jquery-1.12.4.min.js"></script> -->
