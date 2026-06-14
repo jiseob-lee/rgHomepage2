@@ -167,7 +167,7 @@ a.underline {
 
 <!-- <script type="text/javascript" src="/assets/js/package/dist/js/service/HuskyEZCreator.js" charset="utf-8"></script> -->
 
-<script type="text/javascript" src="/assets/js/tinymce_8.5.1/tinymce.min.js"></script>
+<script type="text/javascript" src="/assets/js/tinymce_8.6.0/tinymce.min.js"></script>
 <script type="text/javascript" src="/assets/js/angular-ui-tinymce/tinymce.js"></script>
 
 <script type="text/javascript" src="/assets/js/moment-with-locales.js"></script>
