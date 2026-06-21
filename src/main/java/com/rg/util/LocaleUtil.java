@@ -40,6 +40,8 @@ public class LocaleUtil {
 		
 		//setLocale(locale);
 		
+		logger.debug("####### locale.toString()", locale.toString());
+		
 		Cookie cookie = new Cookie("org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE", locale.toString());
 		cookie.setMaxAge(60 * 60 * 60); // 1시간 동안 유효하도록 설정
 		cookie.setPath("/");      // 모든 경로에서 유효
@@ -63,12 +65,15 @@ public class LocaleUtil {
 					Cookie c = cs[i];
 					//logger.debug("######### log 2 : " + i + " : " + c.getName() + " : " + c.getValue());
 					if ("org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE".equals(c.getName())) {
+						logger.debug("#### c.getValue() : {}", c.getValue());
 						lang = c.getValue();
 					}
 				}
 			}
 		}
 
+		logger.debug("#### lang : {}", lang);
+		
 		Locale locale = LocaleContextHolder.getLocale();
 		
 		if (lang != null && !"".equals(lang) && ("ko".equals(lang) || "en".equals(lang))) {
