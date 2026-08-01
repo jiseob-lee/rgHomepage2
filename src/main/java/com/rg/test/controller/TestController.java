@@ -130,7 +130,6 @@ public class TestController {
 			response.sendRedirect("/forceLogin_rg2.do");
 			//return "";
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//return null;

@@ -50,7 +50,7 @@ public class WidgetController {
         obj.put("amount", amount);
         obj.put("paymentKey", paymentKey);
 
-        // TODO: 개발자센터에 로그인해서 내 결제위젯 연동 키 > 시크릿 키를 입력하세요. 시크릿 키는 외부에 공개되면 안돼요.
+        // 개발자센터에 로그인해서 내 결제위젯 연동 키 > 시크릿 키를 입력하세요. 시크릿 키는 외부에 공개되면 안돼요.
         // @docs https://docs.tosspayments.com/reference/using-api/api-keys
         //String widgetSecretKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
         String widgetSecretKey = "test_gsk_Gv6LjeKD8aP0R10qoQ7YrwYxAdXy";
@@ -88,7 +88,7 @@ public class WidgetController {
 
         InputStream responseStream = isSuccess ? connection.getInputStream() : connection.getErrorStream();
 
-        // TODO: 결제 성공 및 실패 비즈니스 로직을 구현하세요.
+        // 결제 성공 및 실패 비즈니스 로직을 구현하세요.
         Reader reader = new InputStreamReader(responseStream, StandardCharsets.UTF_8);
         jsonObject = (JSONObject) parser.parse(reader);
         responseStream.close();
