@@ -42,77 +42,77 @@
             <AppenderRef ref="STDOUT"/>
         </Logger>
         
-
-	<!--
-	<Logger name="jdbc" level="debug" additivity="false">
-		<AppenderRef ref="STDOUT"/>
-		<AppenderRef ref="file-log"/> 
-	</Logger>
-	-->
 	
-	<logger name="jdbc.sqlonly" level="debug" additivity="false"> 
-        <AppenderRef ref="file-log"/>
-		<AppenderRef ref="STDOUT"/> 
-	</logger>
+		<!--
+		<Logger name="jdbc" level="debug" additivity="false">
+			<AppenderRef ref="STDOUT"/>
+			<AppenderRef ref="file-log"/> 
+		</Logger>
+		-->
+		
+		<logger name="jdbc.sqlonly" level="debug" additivity="false"> 
+	        <AppenderRef ref="file-log"/>
+			<AppenderRef ref="STDOUT"/> 
+		</logger>
+	
+		<!--
+		<logger name="jdbc.audit" additivity="false"> 
+			<level value="debug"/>  
+			<AppenderRef ref="STDOUT"/> 
+		</logger> 
+	
+		<logger name="jdbc.resultset" additivity="false">
+			<level value="debug" />
+			<AppenderRef ref="STDOUT"/> 
+		</logger>
+	
+		<logger name="jdbc.resultsettable" additivity="false"> 
+			<level value="debug"/>  
+			<AppenderRef ref="STDOUT"/> 
+		</logger>
+		-->
+	
+	    <logger name="egovframework" level="debug" additivity="false">
+	            <AppenderRef ref="STDOUT"/>
+	            <AppenderRef ref="file-log"/>
+	    </logger>
+	 
+	    <!-- log SQL with timing information, post execution -->
+	    <logger name="jdbc.sqltiming" level="debug" additivity="false">
+	            <AppenderRef ref="STDOUT"/>
+	            <AppenderRef ref="file-log"/>
+	    </logger>
+	 
+	    <logger name="jdbc.audit" level="debug" additivity="false">
+	            <AppenderRef ref="STDOUT"/>
+	            <AppenderRef ref="file-log"/>
+	    </logger>
+	    
+	    <logger name="jdbc.resultset" level="error" additivity="false">
+	            <AppenderRef ref="STDOUT"/>
+	            <AppenderRef ref="file-log"/>
+	    </logger>
+	    
+	    <logger name="org.springframework" level="debug" additivity="false">
+	            <AppenderRef ref="STDOUT"/>
+	            <AppenderRef ref="file-log"/>
+	    </logger>
+	    
+	    <logger name="java.sql" level="debug" additivity="false">
+	            <AppenderRef ref="STDOUT"/>
+	            <AppenderRef ref="file-log"/>
+	    </logger> 
+	    
 
-	<!--
-	<logger name="jdbc.audit" additivity="false"> 
-		<level value="debug"/>  
-		<AppenderRef ref="STDOUT"/> 
-	</logger> 
-
-	<logger name="jdbc.resultset" additivity="false">
-		<level value="debug" />
-		<AppenderRef ref="STDOUT"/> 
-	</logger>
-
-	<logger name="jdbc.resultsettable" additivity="false"> 
-		<level value="debug"/>  
-		<AppenderRef ref="STDOUT"/> 
-	</logger>
-	-->
-
-    <logger name="egovframework" level="debug" additivity="false">
-            <AppenderRef ref="STDOUT"/>
-            <AppenderRef ref="file-log"/>
-    </logger>
- 
-    <!-- log SQL with timing information, post execution -->
-    <logger name="jdbc.sqltiming" level="debug" additivity="false">
-            <AppenderRef ref="STDOUT"/>
-            <AppenderRef ref="file-log"/>
-    </logger>
- 
-    <logger name="jdbc.audit" level="debug" additivity="false">
-            <AppenderRef ref="STDOUT"/>
-            <AppenderRef ref="file-log"/>
-    </logger>
-    
-    <logger name="jdbc.resultset" level="error" additivity="false">
-            <AppenderRef ref="STDOUT"/>
-            <AppenderRef ref="file-log"/>
-    </logger>
-    
-    <logger name="org.springframework" level="debug" additivity="false">
-            <AppenderRef ref="STDOUT"/>
-            <AppenderRef ref="file-log"/>
-    </logger>
-    
-    <logger name="java.sql" level="debug" additivity="false">
-            <AppenderRef ref="STDOUT"/>
-            <AppenderRef ref="file-log"/>
-    </logger> 
-    
-
-<!--
-<logger name="org.springframework" level="DEBUG " additivity="false">
-     <AppenderRef ref="STDOUT" />
-</logger>
--->
-
-<logger name="org.mybatis" level="DEBUG" additivity="false">
-    <AppenderRef ref="STDOUT" />
-</logger>
+		<!--
+		<logger name="org.springframework" level="DEBUG " additivity="false">
+		     <AppenderRef ref="STDOUT" />
+		</logger>
+		-->
+		
+		<logger name="org.mybatis" level="DEBUG" additivity="false">
+		    <AppenderRef ref="STDOUT" />
+		</logger>
 
         <Logger name="org.apache.log4j.xml" level="debug"/>
         
