@@ -42,13 +42,6 @@
             <AppenderRef ref="STDOUT"/>
         </Logger>
         
-        
-        	<!-- SQL Logger -->
-
-        <Logger name="java.sql" level="debug" additivity="false">
-            <AppenderRef ref="file-log"/>
-            <AppenderRef ref="STDOUT"/>
-        </Logger>
 
 	<!--
 	<Logger name="jdbc" level="debug" additivity="false">
