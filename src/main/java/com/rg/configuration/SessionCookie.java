@@ -47,14 +47,16 @@ public class SessionCookie {
 		}
 
 		DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-		if ("ip-172-31-27-22".equals(hostname)) {
-		//if ("jisblee.me".equals(hostname)) {
+		
+		//if ("ip-172-31-27-22".equals(hostname)) {
+		if ("jisblee.me".equals(hostname)) {
 			serializer.setDomainName("jisblee.me");
 		} else {
 			serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
 		}
 		serializer.setCookieName("JSESSIONID");
 		serializer.setCookiePath("/");
+		
 		return serializer;
 	}
 	
