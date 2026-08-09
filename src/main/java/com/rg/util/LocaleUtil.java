@@ -57,7 +57,7 @@ public class LocaleUtil {
 		    ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		    request = attr.getRequest();
 		} catch (Exception e) {
-			logger.debug("RequestContextHolder.currentRequestAttributes exception occurred : {}", e.getMessage());
+			logger.info("#### RequestContextHolder.currentRequestAttributes exception occurred : {}", e.getMessage());
 			request = null;
 		}
 	    
