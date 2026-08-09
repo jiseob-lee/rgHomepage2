@@ -50,9 +50,16 @@ public class LocaleUtil {
 	}
 	
 	public Locale getLocale() {
-
-	    ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-	    HttpServletRequest request = attr.getRequest();
+		
+		HttpServletRequest request = null;
+		
+		try {
+		    ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		    request = attr.getRequest();
+		} catch (Exception e) {
+			logger.debug("RequestContextHolder.currentRequestAttributes exception occurred : {}", e.getMessage());
+			request = null;
+		}
 	    
 		String lang = "";
 		
