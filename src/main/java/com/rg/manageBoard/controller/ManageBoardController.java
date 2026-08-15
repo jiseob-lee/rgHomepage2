@@ -45,6 +45,7 @@ public class ManageBoardController {
 		System.out.println();
 		
 		LocaleUtil localeUtil = new LocaleUtil();
+		
 		String currentLocale = localeUtil.getLocale().getLanguage();
 
 		logger.debug("################################### 1 # currentLocale : " + currentLocale);

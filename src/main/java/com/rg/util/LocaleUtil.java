@@ -28,14 +28,27 @@ public class LocaleUtil {
 		logger.debug("########################## Current locale / getPathInfo : " + request.getPathInfo());
 		logger.debug("########################## Current locale : " + language);
 		
-		Locale locale = new Locale(language);
+		Locale locale = null;
+		
+		if ("ko".equals(language) || "en".equals(language)) {
+			locale = new Locale(language);
+		} else {
+
+			String country = GeoLite2.getCountry(request, IP.getClientIP(request));
+			//logger.debug("###################### country : " + country);
+			if ("KR".equals(country)) {
+				locale = new Locale("ko");
+			} else {
+				locale = new Locale("en");
+			}			
+		}
 		
 		LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
 		if (localeResolver == null) {
 			logger.debug("####### localeResolver is null.");
 		}
 		//localeResolver.setLocale(request, response, locale);
-		
+
 		LocaleContextHolder.setLocale(locale);
 		
 		//setLocale(locale);
@@ -86,9 +99,9 @@ public class LocaleUtil {
 		if (lang != null && !"".equals(lang) && ("ko".equals(lang) || "en".equals(lang))) {
 			
 			if ("ko".equals(lang)) {
-				locale = new Locale("ko", "KR"); // 언어: ko, 국가: KR
+				locale = new Locale("ko"); // 언어: ko, 국가: KR
 			} else if ("en".equals(lang)) {
-				locale = new Locale("en", "US");
+				locale = new Locale("en");
 			}
 			
 		} else {

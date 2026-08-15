@@ -1,8 +1,6 @@
 package com.rg.util.controller;
 
-//import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-//import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -11,18 +9,18 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.csrf.CsrfToken;
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-//import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.util.WebUtils;
 
 import com.rg.login.dto.CustomUserDetails;
 import com.rg.login.dto.UserDetailsVO;
 import com.rg.login.service.LoginService;
 import com.rg.util.GeoLite2;
+import com.rg.util.IP;
 import com.rg.util.LocaleUtil;
 import com.rg.util.RedisService3;
 
@@ -51,6 +49,22 @@ public class EnvironmentController {
 	@ResponseBody
 	public Map<String, String> getEnvironment(@PathVariable("lang") Optional<String> langVal,
 			HttpServletRequest request, HttpServletResponse response) {
+		
+		LocaleUtil localeUtil = new LocaleUtil();
+		
+		Cookie cookieLocale = WebUtils.getCookie(request, 
+				"org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE");
+		
+		String cookieLocaleValue = "";
+		
+		if (cookieLocale != null) {
+			cookieLocaleValue = cookieLocale.getValue();
+		}
+		
+		if (!"ko".equals(cookieLocaleValue) && !"en".equals(cookieLocaleValue)) {
+			localeUtil.setLocale(null, request, response);
+		}
+		
 		
 		HttpSession session = request.getSession();
 
@@ -97,7 +111,7 @@ public class EnvironmentController {
 		
 		//loginId = (String)session.getAttribute("loginId");
 		
-		String ip2 = request.getHeader("X-Forwarded-For") == null ? request.getRemoteAddr() : request.getHeader("X-Forwarded-For");
+		//String ip2 = request.getHeader("X-Forwarded-For") == null ? request.getRemoteAddr() : request.getHeader("X-Forwarded-For");
 		
 		//logger.info("#### remoteAddr : " + ip2);
 		//logger.info("#### loginId : " + loginId);
@@ -130,18 +144,17 @@ public class EnvironmentController {
 		}
 		
 		
-		LocaleUtil localeUtil = new LocaleUtil();
 		String currentLocale = localeUtil.getLocale().getLanguage();
 		
 		if (lang != null && !"".equals(lang)) {
 			currentLocale = lang;
 			
-		} else if (langVal.isPresent()) {
-			currentLocale = langVal.get();
+		//} else if (langVal.isPresent()) {
+			//currentLocale = langVal.get();
 			
 		//} else if ("fr".equals(currentLocale)) {
 		} else {
-			String country = GeoLite2.getCountry(request, request.getParameter("ip"));
+			String country = GeoLite2.getCountry(request, IP.getClientIP(request));
 			//logger.debug("###################### country : " + country);
 			if ("KR".equals(country)) {
 				currentLocale = "ko";
