@@ -52,17 +52,24 @@ public class EnvironmentController {
 		
 		LocaleUtil localeUtil = new LocaleUtil();
 		
-		Cookie cookieLocale = WebUtils.getCookie(request, 
-				"org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE");
-		
-		String cookieLocaleValue = "";
-		
-		if (cookieLocale != null) {
-			cookieLocaleValue = cookieLocale.getValue();
-		}
-		
-		if (!"ko".equals(cookieLocaleValue) && !"en".equals(cookieLocaleValue)) {
-			localeUtil.setLocale(null, request, response);
+		if ("ko".equals(langVal.toString()) || "en".equals(langVal.toString())) {
+			
+			localeUtil.setLocale(langVal.toString(), request, response);
+			
+		} else {
+			
+			Cookie cookieLocale = WebUtils.getCookie(request, 
+					"org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE");
+			
+			String cookieLocaleValue = "";
+			
+			if (cookieLocale != null) {
+				cookieLocaleValue = cookieLocale.getValue();
+			}
+			
+			if (!"ko".equals(cookieLocaleValue) && !"en".equals(cookieLocaleValue)) {
+				localeUtil.setLocale(null, request, response);
+			}
 		}
 		
 		
