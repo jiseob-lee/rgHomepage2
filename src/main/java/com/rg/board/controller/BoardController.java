@@ -2,7 +2,9 @@ package com.rg.board.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -48,8 +50,16 @@ public class BoardController {
 	static private String ip = "";
 	
 	static {
+
+		URL whatismyip = null;
 		try {
-			URL whatismyip = new URL("http://checkip.amazonaws.com");
+			whatismyip = new URL("http://checkip.amazonaws.com");
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+
+		/*
+		try {
 			BufferedReader in = new BufferedReader(new InputStreamReader(
                 				whatismyip.openStream()));
 			ip = in.readLine();
@@ -57,7 +67,23 @@ public class BoardController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		*/
+		
+		if (whatismyip != null) {
+			try (
+					InputStream is = whatismyip.openStream();
+					InputStreamReader isr = new InputStreamReader(is);
+					BufferedReader br = new BufferedReader(isr)
+			) {
+				ip = br.readLine();
+				System.out.println("######################## machine ip : " + ip);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
+
 	
 	@RequestMapping("/getBoardListCount.do")
 	@ResponseBody
