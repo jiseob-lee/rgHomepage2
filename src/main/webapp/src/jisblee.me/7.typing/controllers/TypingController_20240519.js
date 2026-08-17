@@ -405,7 +405,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 						$("#sourceDiv_" + i).append("<span id='sourceSpan_" + i + "_" + j + "'>" + c + "</span>");
 					}
 
-					$('#typing_' + i).width( (Math.ceil(typing.getTextLength(str) * 10.7) + 48) + "px" );
+					$('#typing_' + i).width( (Math.ceil(typing.getTextLength(str) * 10.7 * 1.1) + 48) + "px" );
 					//$('#typing_' + i).attr('maxlength', str.length * 3);
 					$('#typing_' + i).attr('maxlength', 250);
 				}
