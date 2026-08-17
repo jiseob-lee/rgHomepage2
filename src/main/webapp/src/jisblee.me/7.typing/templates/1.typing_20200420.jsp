@@ -77,7 +77,7 @@ select.bibleSelect, select.bibleSelect > option, input[type=button] {
   font-family: 'NotoKrR', 궁서체, 바탕체, 궁서체, 새굴림, 'Nanum Gothic';
   font-size: 17pt;
   /* font-weight: normal; */
-  font-weight: 600;
+  font-weight: 560;
   word-spacing: 5px;
 }
 
@@ -85,7 +85,7 @@ select.bibleSelect, select.bibleSelect > option, input[type=button] {
   font-family: 'NotoKrR', 궁서체, 바탕체, 궁서체, 새굴림, 'Nanum Gothic';
   font-size: 17pt;
   /* font-weight: normal; */
-  font-weight: 600;
+  font-weight: 560;
   margin-left: -4px;
   word-spacing: 5px;
 }
