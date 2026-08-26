@@ -78,7 +78,23 @@ public class AccessLogServiceImpl implements AccessLogService {
 	            	
             		if (line.indexOf("GET /board/view/") > -1) {
 	            		logger.debug(line); // Process each line here
-	            		list.add(parseAccessLog(line));
+	            		String part1 = line.substring(line.indexOf("GET ") + 4);
+	            		String part2 = part1.substring(0, part1.indexOf(" "));
+	            		//System.out.println(part1);
+	            		//System.out.println(part2);
+	            		//String[] part3 = part2.split("\\/");
+	            		
+	            		//System.out.println(part3.length);
+	            		
+	            		//if (part3.length >= 6) {
+	            			//if (part3[5] == null || "".equals(part3[5].trim())) {
+	            				//continue;
+	            			//}
+	            		//}
+	            		
+	            		if (!part2.endsWith("/")) {
+	            			list.add(parseAccessLog(line));
+	            		}
 	            	
 	            	} else if (line.indexOf("GET /getBoardContent.do") > -1) {
 	            		logger.debug(line); // Process each line here
@@ -86,6 +102,7 @@ public class AccessLogServiceImpl implements AccessLogService {
 	            	}
             	}
             }
+        	
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
         }
@@ -211,5 +228,17 @@ public class AccessLogServiceImpl implements AccessLogService {
         return dto;
 	}
 
+
+	public static void main(String[] args) {
+		String log = "185.191.171.11 - - [25/Aug/2026:23:53:27 +0900] \"GET /board/view/0/3/159 HTTP/1.1\" 200 11832 \"-\" \"Mozilla/5.0 (compatible; SemrushBot/7~bl; +http://www.semrush.com/bot.html)";
+		String part1 = log.substring(log.indexOf("GET ") + 4);
+		String part2 = part1.substring(0, part1.indexOf(" "));
+		System.out.println(part1);
+		System.out.println(part2);
+		String[] part3 = part2.split("\\/");
+		
+		System.out.println(part3.length);
+		//if (part3.length >= 6)
+	}
 
 }
