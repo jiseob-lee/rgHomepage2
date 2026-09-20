@@ -11,6 +11,7 @@ public class BoardDTO {
 	private String contentEng;
 	private int hitCount;
 	private String dateCreated;
+	private String dateCreated2;
 	private String dateCreatedTime;
 	private String userIdCreated;
 	private String userNameCreated;
@@ -222,5 +223,11 @@ public class BoardDTO {
 	}
 	public void setDateModifiedTime(String dateModifiedTime) {
 		this.dateModifiedTime = dateModifiedTime;
+	}
+	public String getDateCreated2() {
+		return dateCreated2;
+	}
+	public void setDateCreated2(String dateCreated2) {
+		this.dateCreated2 = dateCreated2;
 	}
 }

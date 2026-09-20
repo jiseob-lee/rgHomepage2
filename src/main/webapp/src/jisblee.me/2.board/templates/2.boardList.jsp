@@ -151,7 +151,7 @@ table.view, td.view {
         <tr>
           <td class="view">{{boardListCount - $index - (pageNo - 1) * listLimit}}</td>
           <td class="view">{{a.subject}}</td>
-          <td class="view">{{a.dateCreated}}</td>
+          <td class="view">{{a.dateCreated2}}</td>
         </tr>
         <tr>
           <td colspan="3" ng-bind-html="a.content | unsafe" class="view"></td>

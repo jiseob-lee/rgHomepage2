@@ -98,9 +98,11 @@
 			hit_count         as hitCount,
 			<if test="locale == null or locale == 'ko'">
 			DATE_FORMAT(date_created, '%Y-%m-%d')      as dateCreated,
+			DATE_FORMAT(date_created, '%Y-%m-%d (%W) %H:%i')      as dateCreated2,
 			</if>
 			<if test="locale != null and locale != 'ko'">
 			DATE_FORMAT(date_created, '%b %e %Y')      as dateCreated,
+			DATE_FORMAT(date_created, '%b %e %Y')      as dateCreated2,
 			</if>
 			user_id_created   as userIdCreated,
 			(select user_name_ko from user where user_id = b.user_id_created) as userNameCreated,
