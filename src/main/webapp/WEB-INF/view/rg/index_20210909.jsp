@@ -32,7 +32,7 @@
 
 <link rel="stylesheet" type="text/css" href="/assets/css/backgroundPartialFill.css" />
 
-<link rel="stylesheet" type="text/css" href="/assets/css/board_20200907.css" />
+<link rel="stylesheet" type="text/css" href="/assets/css/board_20261009.css" />
 
 <!--
 <link href="https://fonts.googleapis.com/css?family=Gugi&amp;subset=korean" rel="stylesheet">
