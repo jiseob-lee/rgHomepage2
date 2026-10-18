@@ -1,11 +1,12 @@
 package com.rg.util;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,7 +95,8 @@ public class RedisService3 {
 	}
 	
 	public void setTimeOutSecond(String key, Integer sessionTime) {
-		redisTemplate.expire(key, sessionTime, TimeUnit.SECONDS);
+		//redisTemplate.expire(key, sessionTime, TimeUnit.SECONDS);
+		redisTemplate.expire(key, Duration.ofSeconds(sessionTime));
 	}
 	
 	public UserDetailsVO selectRedisSession(String key) {
