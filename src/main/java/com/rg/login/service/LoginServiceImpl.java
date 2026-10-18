@@ -14,9 +14,12 @@ public class LoginServiceImpl implements LoginService {
 
 	private final Logger logger = LogManager.getLogger(LoginServiceImpl.class);
 	
-	@Autowired
-	private LoginDAOImpl loginDAO;
-
+	private final LoginDAOImpl loginDAO;
+	
+	public LoginServiceImpl(LoginDAOImpl loginDAO) {
+		this.loginDAO = loginDAO;
+	}
+	
 	public String loginProcess(String userId, String userPw) {
 		
 		logger.debug("");
