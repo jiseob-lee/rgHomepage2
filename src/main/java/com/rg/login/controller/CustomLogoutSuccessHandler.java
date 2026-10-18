@@ -2,7 +2,6 @@ package com.rg.login.controller;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -18,8 +17,12 @@ import jakarta.servlet.http.HttpSession;
 @Component
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
-	@Autowired
-	private RedisService3 redisService;
+	//@Autowired
+	private final RedisService3 redisService;
+	
+	public CustomLogoutSuccessHandler(RedisService3 redisService) {
+		this.redisService = redisService;
+	}
 	
 	@Override
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
