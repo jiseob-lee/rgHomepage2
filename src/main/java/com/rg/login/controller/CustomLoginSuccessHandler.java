@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+//import org.springframework.web.reactive.function.client.WebClient;
 
 import com.rg.login.dto.UserDetailsVO;
 import com.rg.login.service.LoginService;
@@ -27,7 +27,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import reactor.core.publisher.Mono;
+//import reactor.core.publisher.Mono;
 
 @Component
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
@@ -41,13 +41,18 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 	//@Autowired
 	//private RedisTemplate<String, Object> redisTemplate;
 
-	@Autowired
-	private LoginService loginService;
+	//@Autowired
+	private final LoginService loginService;
 
-	@Autowired
-	private RedisService3 redisService;
+	//@Autowired
+	private final RedisService3 redisService;
 
-	private final WebClient webClient = WebClient.create();
+	//private final WebClient webClient = WebClient.create();
+	
+	public CustomLoginSuccessHandler(LoginService loginService, RedisService3 redisService) {
+		this.loginService = loginService;
+		this.redisService = redisService;
+	}
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -316,12 +321,12 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		response.sendRedirect(loginId.equals("rg111") ? "/" : "/rg/");
 	}
 
-    public Mono<String> callApi() {
-        return webClient.get()
-                .uri("https://jisblee.me/csrf.do")
-                .retrieve()
-                .bodyToMono(String.class);
-    }
+    //public Mono<String> callApi() {
+        //return webClient.get()
+                //.uri("https://jisblee.me/csrf.do")
+                //.retrieve()
+                //.bodyToMono(String.class);
+    //}
     
 	//public <T> T getData(String key, Class<T> classType) throws Exception {
 		//String jsonResult = (String) redisTemplate.opsForValue().get(key);
