@@ -62,7 +62,7 @@ public class GeoLite2 {
 
 			if (ip == null || "".equals(ip)) {
 				ipAddress = "127.0.0.1".equals(ip2) || "0:0:0:0:0:0:0:1".equals(ip2)
-						? InetAddress.getByName("13.124.60.122") : InetAddress.getByName(ip2);
+						? InetAddress.getByName("43.200.182.191") : InetAddress.getByName(ip2);
 			} else {
 				ipAddress = InetAddress.getByName(ip);
 			}
