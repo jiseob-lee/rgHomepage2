@@ -211,7 +211,7 @@ a.underline {
 <script type="text/javascript" src="/src/jisblee.me/5.statistics/controllers/StatisticsController.js"></script>
 <script type="text/javascript" src="/src/jisblee.me/6.goaccess/controllers/GoAccessController_20240707.js"></script>
 <script type="text/javascript" src="/src/jisblee.me/7.typing/controllers/TypingIntroController_20200329.js"></script>
-<script type="text/javascript" src="/src/jisblee.me/7.typing/controllers/TypingController_20240519.js"></script>
+<script type="text/javascript" src="/src/jisblee.me/7.typing/controllers/TypingController_20261030.js"></script>
 
 <script type="text/javascript" src="/src/jisblee.me/8.test/controllers/TestController.js"></script>
 
