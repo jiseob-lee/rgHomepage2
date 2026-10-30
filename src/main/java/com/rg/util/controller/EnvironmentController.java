@@ -35,11 +35,16 @@ public class EnvironmentController {
 
 	private final Logger logger = LogManager.getLogger(EnvironmentController.class);
 
-	@Autowired
-	private LoginService loginService;
+	//@Autowired
+	private final LoginService loginService;
 
-	@Autowired
-	private RedisService3 redisService;
+	//@Autowired
+	private final RedisService3 redisService;
+	
+	public EnvironmentController(LoginService loginService, RedisService3 redisService) {
+		this.loginService = loginService;
+		this.redisService = redisService;
+	}
 	
 	//@Autowired
 	//private LocaleResolver localeResolver;
