@@ -30,6 +30,12 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int getBoardListCountRg(BoardDTO boardDTO) {
+		String searchValue = boardDTO.getSearchValue();
+		if (searchValue != null && !"".equals(searchValue)) {
+			searchValue = searchValue.replace("_", "\\_");
+			searchValue = searchValue.replace("%", "\\%");
+		}
+		boardDTO.setSearchValue(searchValue);
 		return boardDAO.getBoardListCountRg(boardDTO);
 	}
 
@@ -40,6 +46,12 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public List<BoardDTO> getBoardListRg(BoardDTO boardDTO) {
+		String searchValue = boardDTO.getSearchValue();
+		if (searchValue != null && !"".equals(searchValue)) {
+			searchValue = searchValue.replace("_", "\\_");
+			searchValue = searchValue.replace("%", "\\%");
+		}
+		boardDTO.setSearchValue(searchValue);
 		return boardDAO.getBoardListRg(boardDTO);
 	}
 
