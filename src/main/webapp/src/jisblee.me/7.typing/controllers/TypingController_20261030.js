@@ -392,7 +392,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 					$("#sourceDiv").append("<div class='typing1' id='sourceDiv_" + i + "'></div>");
 					$("#sourceDiv").append('<input type="hidden" id="sourceHidden_' + i + '" value="' + response.data[i].replace(/"/g, "\"") + '" />');
 					
-					var input = angular.element('<input class="typing2" id="typing_' + i + '" ng-model="typing[' + i + ']" type="text" my-enter="checkResult(' + i + ')" onfocus="this.oldvalue = this.value;" onkeydown="this.oldvalue = this.value;" ng-keyup="checkKeyUp($event, ' + i + ')" ng-blur="checkTypingBlur(' + i + ')" ng-click="checkTyping(' + i + ')" ng-trim="false" onpaste="return false;" ondrop="return false;" autocomplete="off" />');
+					var input = angular.element('<input class="typing2" id="typing_' + i + '" ng-model="typing[' + i + ']" type="text" data-i="' + i + '" my-special-key my-enter="checkResult(' + i + ')" onfocus="this.oldvalue = this.value;" ng-blur="checkTypingBlur(' + i + ')" ng-click="checkTyping(' + i + ')" ng-trim="false" onpaste="return false;" ondrop="return false;" autocomplete="off" />');
 					var compile = $compile(input)($scope);
 					$("#sourceDiv").append(compile);
 					
@@ -1430,6 +1430,7 @@ function isHan(char) {
 	}
 }
 
+/*
 appTyping.directive('myEnter', function () {
     return function (scope, element, attrs) {
         element.bind("keyup", function (event) {
@@ -1453,4 +1454,54 @@ appTyping.directive('myEnter', function () {
             //}
         });
     };
+});
+*/
+
+appTyping.directive('mySpecialKey', function () {
+	return {
+		restrict: 'A',
+		link: function(scope, element, attrs) {
+			element.on('keydown keyup', function(event) {
+				
+				// Tab 은 기본적으로 keydown 에서 처리하는 것이 안전함
+				if (event.type === 'keydown') {
+					
+					element.oldvalue = element.value;
+					
+					scope.myEnterKey = 9;
+					
+					if (event.key === 'Tab' || event.keyCode === 9) {
+						scope.$applyAsync(function() {
+							scope.$eval(attrs.myEnter, { $event: event });
+						});
+					}
+				}
+				
+				// Enter 와 Space 는 keyup 에서 처리
+				if (event.type === 'keyup') {
+					
+					console.log("elelment.dataset.i", elelment.dataset.i);
+					
+					checkKeyUp(event, elelment.dataset.i); 
+
+					if (event.key === 'Enter' || event.keyCode === 13) {
+						
+						scope.myEnterKey = 13;
+						
+						scope.$applyAsync(function() {
+							scope.$eval(attrs.myEnter, { $event: event });
+						});
+
+					} else if (event.key === ' ' || event.key === 'Spacebar' || event.keyCode === 32) {
+						
+						scope.myEnterKey = 32;
+						
+						scope.$applyAsync(function() {
+							scope.$eval(attrs.myEnter, { $event: event });
+						});
+					}
+				}
+			})
+		}
+	}
 });
