@@ -797,7 +797,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
             typing.enterKeyInputed = true;
 			typing.activeElementIndex = index;
 			
-			if ($scope.myEnterKey == 32) {
+			if ($scope.myEnterKey == 32) {  // 32 : spacabar
 
 				var source = $("#sourceHidden_" + index).val();
 				var target = $("#typing_" + index).val();
@@ -923,7 +923,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 					checked = false;
 				}
 				
-			} else if ($scope.myEnterKey == 13 || $scope.myEnterKey == 9) {
+			} else if ($scope.myEnterKey == 13 || $scope.myEnterKey == 9) {  // 13 : enter, 9 : tab
 
 				var promise1 = typing.checkTyping(index, null, true);
 				promise1.then(function(){
