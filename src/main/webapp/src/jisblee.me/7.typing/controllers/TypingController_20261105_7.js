@@ -83,6 +83,10 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 			//$log.debug("keyCode", keyCode);
 			var functionalKey = false;
 			switch (keyCode) {
+			case 32 : //spacebar
+				returnValue = null;
+				functionalKey = true;
+				break;
 			case 9 : //tab
 			case 13 : //enter
 			case 36 : //home
