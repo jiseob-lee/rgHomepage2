@@ -83,10 +83,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 			//$log.debug("keyCode", keyCode);
 			var functionalKey = false;
 			switch (keyCode) {
-			case 32 : //spacebar
-				returnValue = null;
-				functionalKey = true;
-				break;
+			//case 32 : //spacebar
 			case 9 : //tab
 			case 13 : //enter
 			case 36 : //home
@@ -162,7 +159,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 			var deferred1 = $q.defer();
 
 			var check = 0;
-						
+			
 			typing.activeElementIndex = index;
 			var wrong = false;
 			
@@ -804,8 +801,8 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 				
 				if (source.length <= target.length) {
 				
-					var promise1 = typing.checkTyping(index, null, true);
-					promise1.then(function(){
+					//var promise1 = typing.checkTyping(index, null, true);
+					//promise1.then(function(){
 						
 						checked = false;
 						
@@ -918,15 +915,15 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 						}
 						*/
 
-					});
+					//});
 				} else {
 					checked = false;
 				}
 				
 			} else if ($scope.myEnterKey == 13 || $scope.myEnterKey == 9) {  // 13 : enter, 9 : tab
 
-				var promise1 = typing.checkTyping(index, null, true);
-				promise1.then(function(){
+				//var promise1 = typing.checkTyping(index, null, true);
+				//promise1.then(function(){
 					
 					checked = false;
 					
@@ -1042,7 +1039,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 					}
 					*/
 
-				});
+				//});
 			} 
 			
 			//출처: https://deafjwhong.tistory.com/27 [데프홍's Story]
