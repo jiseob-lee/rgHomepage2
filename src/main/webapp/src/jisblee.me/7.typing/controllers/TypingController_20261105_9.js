@@ -1,8 +1,8 @@
 var appTyping = angular.module('rg.Typing', ['ngMaterial']);
 
-appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdDialog', '$q', '$location', '$routeParams',
+appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdDialog', '$location', '$routeParams',
 	
-    function ($scope, $log, $http, $compile, $mdDialog, $q, $location, $routeParams) {
+    function ($scope, $log, $http, $compile, $mdDialog, $location, $routeParams) {
 
 		var typing = this;
 		
@@ -119,6 +119,8 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 				break;
 			}
 			
+			let skipCheckTyping = false;
+			
 			if (!functionalKey) {
 				if (typing.typing[index].length > val.length) {
 					//$log.debug("4", val);
@@ -129,7 +131,12 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 					if (isHan(val.substring(val.length - 1))) {
 						//$log.debug("1", val.substring(0, val.length - 1));
 						returnValue = val.substring(0, val.length - 1);
-						typing.typing[index].length = val.length;
+						
+						if (typing.typing[index].length == val.length) {
+							skipCheckTyping = true;
+						} else {
+							typing.typing[index].length = val.length;
+						}
 						//console.log("val.length - 1", val.length - 1);
 					} else {
 						//$log.debug("3", val);
@@ -141,7 +148,9 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 
 			if (returnValue != null) {
 				typing.activeElementIndex = index;
-	    		typing.checkTyping(index, returnValue);
+				if (!skipCheckTyping) {
+	    			typing.checkTyping(index, returnValue);
+				}
 	    		
 	    		//console.log("returnValue", returnValue);
 	    		
@@ -156,7 +165,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 			
 			//console.log("checkTyping");
 			
-			var deferred1 = $q.defer();
+			//var deferred1 = $q.defer();
 
 			var check = 0;
 			
@@ -325,7 +334,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 							//console.log("putTemporaryTypingStorage.do called.");
 							//typing.typingTemporarySaving[index] = 1;
 							
-							deferred1.resolve();
+							//deferred1.resolve();
 							
 							//if (resultString.indexOf("0") == -1 && resultString.indexOf("-1") == -1) {
 								typing.showMessage();
@@ -335,7 +344,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 						
 							//console.log("response", response);
 							alert("에러가 발생하였습니다.");
-							deferred1.reject("ERROR");
+							//deferred1.reject("ERROR");
 							
 							$http.get("/rg/getLoginUserInfo.do")
 							.then(function(response) {
@@ -352,13 +361,13 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 				}
 			}
 			
-			if (check == 0) {
-				deferred1.resolve();
+			//if (check == 0) {
+				//deferred1.resolve();
 				//typing.showMessage();
-			}
+			//}
 			
 			//deferred1.reject("ERROR");
-			return deferred1.promise;
+			//return deferred1.promise;
 		};
 		
 		typing.getContent = function(bibleName, bibleChapters, abbreviationKor, abbreviationEng) {
@@ -633,7 +642,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 		
 		typing.makeBibleChaptersList = function(phrase, articleCount, bibleChapter) {
 			
-			var deferred= $q.defer();
+			//var deferred = $q.defer();
 			
 			var param = {
 					phrase : phrase,
@@ -658,7 +667,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 					});
 				}
 				
-				deferred.resolve(chapterList);
+				//deferred.resolve(chapterList);
 				
 				//$scope.bibleChapters = bibleChapter == null ? 1 : bibleChapter;
 
@@ -674,7 +683,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 				alert("에러가 발생하였습니다.");
 			});
 			
-			return deferred.promise;
+			//return deferred.promise;
 			
 		}
 
