@@ -170,11 +170,15 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 			var check = 0;
 			
 			typing.activeElementIndex = index;
+			
 			var wrong = false;
 			
 			// 색상 초기화
 			//$("[id^=sourceSpan_" + index + "]").css("background-color", "#053c4f");
 			$("[id^=sourceSpan_]").css("background-color", "#303030");
+			$("[id^=sourceSpan_" + index + "]").css("background-color", "#053c4f");
+			//$("[id^=sourceSpan_]").css("background-color", "#053c4f");
+						
 			$("[id^=sourceSpan_]").css("color", "white");
 			$("[id^=sourceSpan_" + index + "_]").css("color", "#e8e8e8");
 			
@@ -205,7 +209,11 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 			for (var i=0; i < source.length; i++) {
 				
 				if (i >= target.length) {
-					$("#sourceSpan_" + index + "_" + i).css("background-color", "#053c4f");
+					
+					//$("#sourceSpan_" + index + "_" + i).css("background-color", "#053c4f");
+					
+					break;
+					
 					//typing.typing[i].status = 0;
 					//wrong = true;
 					//console.log("i >= target.length");
