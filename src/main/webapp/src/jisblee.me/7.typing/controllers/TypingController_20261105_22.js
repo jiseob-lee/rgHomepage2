@@ -93,11 +93,11 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 			case 37 : //left
 			case 39 : //right
 			case 46 : //delete
-				if (e.target.oldvalue != val) {
+				//if (e.target.oldvalue != val) {
 					//$log.debug("7", val);
 					returnValue = val;
 					typing.typing[index].length = val.length;
-				}
+				//}
 				functionalKey = true;
 				break;
 			case 8 : //backspace
@@ -274,7 +274,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 				wrong = true;
 			}
 			
-			if (target.trim().length = source.length) {
+			if (target.trim().length === source.length) {
 				
 				if (wrong) {
 					//typing.typing[index].status = -1;
@@ -376,6 +376,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 			
 			//deferred1.reject("ERROR");
 			//return deferred1.promise;
+			
 		};
 		
 		typing.getContent = function(bibleName, bibleChapters, abbreviationKor, abbreviationEng) {
@@ -410,8 +411,10 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 					$("#sourceDiv").append("<div class='typing1' id='sourceDiv_" + i + "'></div>");
 					$("#sourceDiv").append('<input type="hidden" id="sourceHidden_' + i + '" value="' + response.data[i].replace(/"/g, "\"") + '" />');
 					
-					var input = angular.element('<input class="typing2" id="typing_' + i + '" ng-model="typing[' + i + ']" type="text" my-special-key my-enter="checkResult(' + i + ')" onfocus="this.oldvalue = this.value;" ng-blur="checkTypingBlur(' + i + ')" ng-click="checkTyping(' + i + ')" ng-trim="false" onpaste="return false;" ondrop="return false;" autocomplete="off" />');
+					var input = angular.element('<input class="typing2" id="typing_' + i + '" ng-model="typing[' + i + ']" type="text" my-special-key my-enter="checkResult(' + i + ')" onfocus="this.oldvalue = this.value;" ng-blur="checkTypingBlur(' + i + ')" ng-click="checkTyping(' + i + ')" ng-trim="false" onpaste="return false;" ondrop="return false;" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" />');
+
 					var compile = $compile(input)($scope);
+					
 					$("#sourceDiv").append(compile);
 					
 					$("#sourceDiv").append("<div style='line-height: 52%;'><br/><br/></div>");
@@ -754,7 +757,7 @@ appTyping.controller('TypingCtrl', ['$scope', '$log', '$http', '$compile', '$mdD
 				//if (response.data.resultString.substr(i, 1) == "1") {
 					$('#typing_' + i).val("");
 					typing.typing[i].status = 0;
-					//typing.typing[i].status = 1;
+					//typing.typing[i].status = 1; 
 					typing.typingTemporarySaving[i] = 0;
 				//}
 			}
@@ -1475,11 +1478,13 @@ appTyping.directive('myEnter', function () {
 });
 */
 
+
 appTyping.directive('mySpecialKey', function () {
 	return {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
 			element.on('keydown keyup', function(event) {
+			//element.on('input', function(event) {
 				
 				// Tab 은 기본적으로 keydown 에서 처리하는 것이 안전함
 				if (event.type === 'keydown') {
@@ -1529,3 +1534,55 @@ appTyping.directive('mySpecialKey', function () {
 		}
 	}
 });
+
+
+
+
+/*
+appTyping.directive('mySpecialKey', function () {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            
+            // 1. input 이벤트: 실제 값이 변경될 때마다 검증 로직 실행
+            element.on('input', function(event) {
+                var dataI = element.attr('id').substring(7);
+                // 입력이 발생할 때마다 실시간으로 checkKeyUp 로직 수행
+                scope.checkKeyUp(event, dataI);
+            });
+
+            // 2. keydown 이벤트: Enter, Tab, Space 등 제어키 처리에만 집중
+            element.on('keydown', function(event) {
+                element.oldvalue = element.value;
+                
+                var keyCode = event.keyCode || event.which;
+
+                // Tab 처리
+                if (keyCode === 9) {
+                    event.preventDefault(); // 기본 탭 이동 방지
+                    scope.myEnterKey = 9;
+                    scope.$applyAsync(function() {
+                        scope.$eval(attrs.myEnter, { $event: event });
+                    });
+                }
+
+                // Enter 처리
+                if (keyCode === 13) {
+                    scope.myEnterKey = 13;
+                    scope.$applyAsync(function() {
+                        scope.$eval(attrs.myEnter, { $event: event });
+                    });
+                }
+
+                // Space 처리
+                if (keyCode === 32) {
+                    scope.myEnterKey = 32;
+                    scope.$applyAsync(function() {
+                        scope.$eval(attrs.myEnter, { $event: event });
+                    });
+                }
+            });
+        }
+    }
+});
+*/
